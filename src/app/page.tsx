@@ -1,37 +1,60 @@
-import Link from "next/link";
+import { asc, desc } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { db } from "~/server/db";
+import { posts } from "~/server/db/schema";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
+
+  const s = await db.query.posts.findMany({
+    orderBy: [asc(posts.createdAt)],
+  });
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
+    <main className=" flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center pb-10">
+        {t.map((t) => (
+          <div key={t.id}> {t.name} </div>
+        ))}
       </div>
+
+      <form action={action} className="flex gap-2 pb-3">
+        <input
+          type="text"
+          name="name"
+          className="block border border-red-800"
+        />
+        <button
+          className="rounded-md bg-green-500 p-1 text-white"
+          type="submit"
+        >
+          add post
+        </button>
+      </form>
+      <form action={remove}>
+        <button className="rounded-md bg-red-500 p-1 text-white" type="submit">
+          delete all of em
+        </button>
+      </form>
     </main>
   );
+}
+
+async function action(formdata: FormData) {
+  "use server";
+
+  if (formdata.has("name")) {
+    const nameentry = formdata.get("name")?.toString();
+    const name = nameentry ? nameentry : "not working";
+
+    await db.insert(posts).values({ name });
+  }
+
+  revalidatePath("/");
+}
+async function remove() {
+  "use server";
+
+  await db.delete(posts);
+
+  revalidatePath("/");
 }

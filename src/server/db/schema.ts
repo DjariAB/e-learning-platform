@@ -3,11 +3,11 @@
 
 import { sql } from "drizzle-orm";
 import {
-  bigint,
   index,
   mysqlTableCreator,
   timestamp,
   varchar,
+  
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -16,19 +16,25 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = mysqlTableCreator((name) => `elearning_platform_${name}`);
+export const createTable = mysqlTableCreator(
+  (name) => `elearning_platform_${name}`,
+);
 
 export const posts = createTable(
   "post",
   {
-    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+    id: varchar("id", { length: 196 })
+      .primaryKey()
+      .default(sql`(uuid())`),
     name: varchar("name", { length: 256 }),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    updatedAt: timestamp("updatedAt")
+      .onUpdateNow()
+      .default(sql`CURRENT_TIMESTAMP`),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
