@@ -1,5 +1,7 @@
 import { asc, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 import { db } from "~/server/db";
 import { posts } from "~/server/db/schema";
 
@@ -18,22 +20,25 @@ export default async function HomePage() {
       </div>
 
       <form action={action} className="flex gap-2 pb-3">
-        <input
+
+        <Input type="text" name="name" placeholder="Post name"/>
+        {/* <input
           type="text"
           name="name"
           className="block border border-red-800"
-        />
-        <button
-          className="rounded-md bg-green-500 p-1 text-white"
-          type="submit"
-        >
-          add post
-        </button>
+        /> */}
+
+        <Button type="submit"> add a post </Button>
       </form>
       <form action={remove}>
-        <button className="rounded-md bg-red-500 p-1 text-white" type="submit">
+        {/* <button className="rounded-md bg-red-500 p-1 text-white" type="submit">
           delete all of em
-        </button>
+        </button> */}
+
+        <Button type="submit" variant="outline">
+          {" "}
+          delete all of em
+        </Button>
       </form>
     </main>
   );
