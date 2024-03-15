@@ -35,22 +35,25 @@ export default async function HomePage() {
         </Button>
       </form> */}
       <div className="flex w-full  justify-between pl-16">
-        <div className="flex flex-col gap-14 pt-48">
-          <h1 className={`text-6xl text-[#1E1E1E] ${julius.className}`}>
+        <div className="flex flex-col gap-12 pt-44">
+          <h1 className={`text-7xl  text-[#1E1E1E] ${julius.className}`}>
             Max your potential <br /> With{" "}
-            <span className=" text-gray-500"> Skillmaxxing</span>{" "}
+            <span className=" text-neutral-500"> Skillmaxxing</span>{" "}
           </h1>
-          <p className=" text-xl font-light">
+          <p className=" text-2xl font-light leading-tight">
             Explore endless possibilities and ignite your curiosity <br /> with
             our interactive learning experience. <br /> Ready to embark on your
             learning journey?
           </p>
 
-          <Button className="w-fit py-7 text-xl"> Get Started</Button>
+          <Button className="w-fit py-9 text-2xl font-semibold">
+            {" "}
+            Get Started
+          </Button>
         </div>
 
         <div>
-          <Image src="/SVGs/Group 4.jpg" alt=" " width={637} height={763} />
+          <Image src="/SVGs/Group 6.png" alt=" " width={637} height={763} />
         </div>
       </div>
     </main>
