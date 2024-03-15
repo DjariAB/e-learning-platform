@@ -1,16 +1,16 @@
-import { asc, desc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { db } from "~/server/db";
-import { posts } from "~/server/db/schema";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { db } from "@/server/db";
+import { posts } from "@/server/db/schema";
 
 export default async function HomePage() {
   const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
 
-  const s = await db.query.posts.findMany({
-    orderBy: [asc(posts.createdAt)],
-  });
+  // const s = await db.query.posts.findMany({
+  //   orderBy: [asc(posts.createdAt)],
+  // });
   return (
     <main className=" flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center pb-10">
@@ -20,8 +20,7 @@ export default async function HomePage() {
       </div>
 
       <form action={action} className="flex gap-2 pb-3">
-
-        <Input type="text" name="name" placeholder="Post name"/>
+        <Input type="text" name="name" placeholder="Post name" />
         {/* <input
           type="text"
           name="name"

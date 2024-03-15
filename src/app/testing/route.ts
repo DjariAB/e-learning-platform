@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
-import { db } from "~/server/db";
-import { posts } from "~/server/db/schema";
+import { db } from "@/server/db";
+import { posts } from "@/server/db/schema";
 
 export async function GET() {
   return Response.json({ fuck: "mylife" });
