@@ -1,10 +1,11 @@
+import NavBar from "@/components/navbar";
 import "@/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Jost } from "next/font/google";
 
-const inter = Inter({
+const jost = Jost({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["400", "500"],
 });
 
 export const metadata = {
@@ -20,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>{children}</body>
+      <body className={`pt-10 font-sans ${jost.className}`}>
+        <NavBar />
+        {children}
+      </body>
     </html>
   );
 }
