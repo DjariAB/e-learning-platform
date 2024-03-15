@@ -25,8 +25,12 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex gap-3  ">
-        <Button variant="outline">Login</Button>
-        <Button variant="hover">Get Started</Button>
+        <Button variant="outline" className="font-semibold">
+          Login
+        </Button>
+        <Button variant="hover" className="font-semibold">
+          Get Started
+        </Button>
       </div>
     </nav>
   );

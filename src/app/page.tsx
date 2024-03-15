@@ -46,7 +46,7 @@ export default async function HomePage() {
             learning journey?
           </p>
 
-          <Button className="py w-fit text-xl"> Get Started</Button>
+          <Button className="w-fit py-7 text-xl"> Get Started</Button>
         </div>
 
         <div>
