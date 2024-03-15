@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db } from "@/server/db";
 import { posts } from "@/server/db/schema";
+import { julius } from "./layout";
+import Image from "next/image";
 
 export default async function HomePage() {
   const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
@@ -12,8 +14,8 @@ export default async function HomePage() {
   //   orderBy: [asc(posts.createdAt)],
   // });
   return (
-    <main className=" flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center pb-10">
+    <main className=" flex items-center justify-start ">
+      {/* <div className="flex flex-col items-center justify-center pb-10">
         {t.map((t) => (
           <div key={t.id}> {t.name} </div>
         ))}
@@ -21,24 +23,36 @@ export default async function HomePage() {
 
       <form action={action} className="flex gap-2 pb-3">
         <Input type="text" name="name" placeholder="Post name" />
-        {/* <input
-          type="text"
-          name="name"
-          className="block border border-red-800"
-        /> */}
+       
 
         <Button type="submit"> add a post </Button>
       </form>
       <form action={remove}>
-        {/* <button className="rounded-md bg-red-500 p-1 text-white" type="submit">
-          delete all of em
-        </button> */}
-
+      
         <Button type="submit" variant="outline">
           {" "}
           delete all of em
         </Button>
-      </form>
+      </form> */}
+      <div className="flex w-full  justify-between pl-16">
+        <div className="flex flex-col gap-14 pt-48">
+          <h1 className={`text-6xl text-[#1E1E1E] ${julius.className}`}>
+            Max your potential <br /> With{" "}
+            <span className=" text-gray-500"> Skillmaxxing</span>{" "}
+          </h1>
+          <p className=" text-xl font-light">
+            Explore endless possibilities and ignite your curiosity <br /> with
+            our interactive learning experience. <br /> Ready to embark on your
+            learning journey?
+          </p>
+
+          <Button className="py w-fit text-xl"> Get Started</Button>
+        </div>
+
+        <div>
+          <Image src="/SVGs/Group 4.jpg" alt=" " width={637} height={763} />
+        </div>
+      </div>
     </main>
   );
 }

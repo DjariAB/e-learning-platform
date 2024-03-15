@@ -1,7 +1,5 @@
 import Image from "next/image";
-import logo from "public/SVGs/skillmaxxing-brain-logo.svg";
-import { Button } from "./ui/button";
-import { log } from "console";
+import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 
 const NavBar = () => {
@@ -15,15 +13,18 @@ const NavBar = () => {
           alt="logo"
         />
       </div>
-      <div className="flex gap-7 text-lg ">
-        {/* <a variant="link">Courses</Button>
-        <Button variant="link">Pricing</Button>
-        <Button variant="link">Contact us</Button> */}
-        <Link href="">Courses</Link>
-        <Link href="">Pricing</Link>
-        <Link href="">Contact us</Link>
+      <div className="flex grow  items-end gap-7  pl-96  text-lg">
+        <Link className={buttonVariants({ variant: "link" })} href="">
+          Courses
+        </Link>
+        <Link className={buttonVariants({ variant: "link" })} href="">
+          Pricing
+        </Link>
+        <Link className={buttonVariants({ variant: "link" })} href="">
+          Contact us
+        </Link>
       </div>
-      <div className="flex gap-2 ">
+      <div className="flex gap-3  ">
         <Button variant="outline">Login</Button>
         <Button variant="hover">Get Started</Button>
       </div>
