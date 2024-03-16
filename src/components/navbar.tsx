@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 const NavBar = () => {
   return (
@@ -35,15 +34,22 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex gap-3  ">
-        <Button variant="outlinehover" className="text-lg font-semibold">
-          Login
-        </Button>
-        <Button
-          variant="hover"
-          className="text-lg font-semibold hover:-translate-y-1"
-        >
-          Get Started
-        </Button>
+        <Link href="/signin">
+          <Button
+            variant="outlinehover"
+            className="text-lg font-semibold hover:-translate-y-1"
+          >
+            Login
+          </Button>
+        </Link>
+        <Link href="/login">
+          <Button
+            variant="hover"
+            className="text-lg font-semibold hover:-translate-y-1 "
+          >
+            Get Started
+          </Button>
+        </Link>
       </div>
     </nav>
   );

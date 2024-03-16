@@ -1,11 +1,11 @@
 import { desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { db } from "@/server/db";
 import { posts } from "@/server/db/schema";
 import { julius } from "../layout";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function HomePage() {
   const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
@@ -45,11 +45,15 @@ export default async function HomePage() {
             our interactive learning experience. <br /> Ready to embark on your
             learning journey?
           </p>
-
-          <Button className="w-fit py-9 text-2xl font-semibold">
-            {" "}
-            Get Started
-          </Button>
+          <Link href="/signin">
+            <Button
+              variant="hover"
+              className="w-fit py-7 text-2xl font-semibold hover:-translate-y-1 hover:translate-x-1 hover:scale-110"
+            >
+              {" "}
+              Get Started
+            </Button>
+          </Link>
         </div>
 
         <div>

@@ -16,12 +16,15 @@ const Signin = () => {
       </div>
       <div className="basis-1/2 ">
         <div className="flex items-center justify-between px-8 pt-12">
-          <Image
-            src="/SVGs/skillmaxxing-brain-logo.jpg"
-            alt="logo"
-            width={48}
-            height={38}
-          />
+          <Link href="/">
+            <Image
+              src="/SVGs/skillmaxxing-brain-logo.svg"
+              alt="logo"
+              width={48}
+              height={38}
+            />
+          </Link>
+
           <Link href="login">
             <Button className="rounded-md px-6" variant="ghost">
               {" "}
@@ -36,7 +39,7 @@ const Signin = () => {
           </div>
           <div className="m-auto space-y-7 text-center ">
             <form className="w-[488px] space-y-7" action="">
-              <Input placeholder="Enter your full name" />
+              <Input placeholder="Enter your user name" />
               <Input placeholder="Enter your e-mail address" />
               <Input placeholder="Enter your password" />
 

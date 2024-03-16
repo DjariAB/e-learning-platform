@@ -1,4 +1,3 @@
-import NavBar from "@/components/navbar";
 import "@/styles/globals.css";
 
 import { Jost } from "next/font/google";

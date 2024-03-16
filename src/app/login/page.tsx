@@ -16,12 +16,15 @@ const Login = () => {
       </div>
       <div className="basis-1/2">
         <div className="flex items-center justify-between px-8 pt-12">
-          <Image
-            src="/SVGs/skillmaxxing-brain-logo.jpg"
-            alt=""
-            width={48}
-            height={38}
-          />
+          <Link href="/">
+            <Image
+              src="/SVGs/skillmaxxing-brain-logo.svg"
+              alt=""
+              width={48}
+              height={38}
+            />
+          </Link>
+
           <Link href="signin">
             <Button className="rounded-md px-4" variant="ghost">
               {" "}
