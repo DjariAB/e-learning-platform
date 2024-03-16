@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db } from "@/server/db";
 import { posts } from "@/server/db/schema";
-import { julius } from "./layout";
+import { julius } from "../layout";
 import Image from "next/image";
 
 export default async function HomePage() {

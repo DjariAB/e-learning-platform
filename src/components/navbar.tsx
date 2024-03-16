@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const NavBar = () => {
   return (
-    <nav className="flex items-center justify-between px-14">
+    <nav className="flex items-center justify-between px-14 pt-8">
       <div>
         <Image
           width="58"
@@ -35,10 +35,13 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex gap-3  ">
-        <Button variant="outline" className="text-lg font-semibold">
+        <Button variant="outlinehover" className="text-lg font-semibold">
           Login
         </Button>
-        <Button variant="hover" className="text-lg font-semibold">
+        <Button
+          variant="hover"
+          className="text-lg font-semibold hover:-translate-y-1"
+        >
           Get Started
         </Button>
       </div>

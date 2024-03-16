@@ -29,10 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`pt-8 font-sans  ${jost.className}  `}>
-        <NavBar />
-        {children}
-      </body>
+      <body className={`font-sans  ${jost.className}  `}>{children}</body>
     </html>
   );
 }
