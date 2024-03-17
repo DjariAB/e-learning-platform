@@ -1,14 +1,14 @@
-import { desc } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+// import { desc } from "drizzle-orm";
+// import { revalidatePath } from "next/cache";
+// import { db } from "@/server/db";
+// import { posts } from "@/server/db/schema";
 import { Button } from "@/components/ui/button";
-import { db } from "@/server/db";
-import { posts } from "@/server/db/schema";
 import { julius } from "../layout";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function HomePage() {
-  const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
+export default function HomePage() {
+  // const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
 
   // const s = await db.query.posts.findMany({
   //   orderBy: [asc(posts.createdAt)],
@@ -45,6 +45,9 @@ export default async function HomePage() {
             our interactive learning experience. <br /> Ready to embark on your
             learning journey?
           </p>
+
+          {/* TODO: change this code to be just a link this shit smelly af*/}
+
           <Link href="/signin">
             <Button
               variant="hover"
@@ -64,22 +67,22 @@ export default async function HomePage() {
   );
 }
 
-async function action(formdata: FormData) {
-  "use server";
+// async function action(formdata: FormData) {
+//   "use server";
 
-  if (formdata.has("name")) {
-    const nameentry = formdata.get("name")?.toString();
-    const name = nameentry ? nameentry : "not working";
+//   if (formdata.has("name")) {
+//     const nameentry = formdata.get("name")?.toString();
+//     const name = nameentry ? nameentry : "not working";
 
-    await db.insert(posts).values({ name });
-  }
+//     await db.insert(posts).values({ name });
+//   }
 
-  revalidatePath("/");
-}
-async function remove() {
-  "use server";
+//   revalidatePath("/");
+// }
+// async function remove() {
+//   "use server";
 
-  await db.delete(posts);
+//   await db.delete(posts);
 
-  revalidatePath("/");
-}
+//   revalidatePath("/");
+// }

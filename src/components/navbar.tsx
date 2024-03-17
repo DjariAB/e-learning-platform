@@ -34,15 +34,18 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex gap-3  ">
-        <Link href="/signin">
+        {/* TODO: change this code to be just a link this is a bad thing to do*/}
+        <Link href="/login">
           <Button
             variant="outlinehover"
             className="text-lg font-semibold hover:-translate-y-1"
           >
             Login
           </Button>
+
+          {/* TODO: change this code to be just a link this is a bad thing to do*/}
         </Link>
-        <Link href="/login">
+        <Link href="/signin">
           <Button
             variant="hover"
             className="text-lg font-semibold hover:-translate-y-1 "
