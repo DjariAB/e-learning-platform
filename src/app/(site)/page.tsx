@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { julius } from "../layout";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { lucia } from "@/server/auth";
+import { redirect } from "next/navigation";
+import { db } from "@/server/db";
+import { sessionTable, userTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export default function HomePage() {
   // const t = await db.select().from(posts).orderBy(desc(posts.createdAt));
@@ -58,6 +64,7 @@ export default function HomePage() {
             </Button>
           </Link>
         </div>
+       
 
         <div>
           <Image src="/SVGs/Group 6.png" alt=" " width={637} height={763} />
@@ -66,23 +73,3 @@ export default function HomePage() {
     </main>
   );
 }
-
-// async function action(formdata: FormData) {
-//   "use server";
-
-//   if (formdata.has("name")) {
-//     const nameentry = formdata.get("name")?.toString();
-//     const name = nameentry ? nameentry : "not working";
-
-//     await db.insert(posts).values({ name });
-//   }
-
-//   revalidatePath("/");
-// }
-// async function remove() {
-//   "use server";
-
-//   await db.delete(posts);
-
-//   revalidatePath("/");
-// }

@@ -7,7 +7,7 @@ import {
   mysqlTableCreator,
   timestamp,
   varchar,
-  
+  datetime,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -38,3 +38,23 @@ export const posts = createTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+
+export const userTable = createTable("user", {
+  id: varchar("id", {
+    length: 255,
+  }).primaryKey(),
+  userName: varchar("username", { length: 255 }).unique().notNull(),
+  password: varchar("password", { length: 255 }).notNull(),
+});
+
+export const sessionTable = createTable("session", {
+  id: varchar("id", {
+    length: 255,
+  }).primaryKey(),
+  userId: varchar("user_id", {
+    length: 255,
+  })
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: datetime("expires_at").notNull(),
+});
