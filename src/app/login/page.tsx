@@ -6,7 +6,7 @@ import Link from "next/link";
 const Login = () => {
   return (
     <div className="flex h-screen flex-row-reverse">
-      <div className="relative basis-1/2">
+      <div className="sm:disabled basis-1/2 lg:relative">
         <Image
           src="/SVGs/Side login image.jpg"
           alt="side image"
@@ -15,7 +15,7 @@ const Login = () => {
         />
       </div>
       <div className="basis-1/2">
-        <div className="flex items-center justify-between px-8 pt-12">
+        <div className="flex items-center justify-between px-8 pt-12 sm:px-12">
           <Link href="/">
             <Image
               src="/SVGs/skillmaxxing-brain-logo.svg"
@@ -38,7 +38,7 @@ const Login = () => {
             <p>Reconnect and start your journey</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <form className="w-[488px] space-y-7" action="">
+            <form className="w-[300px] space-y-7" action="">
               <Input placeholder="Enter your e-mail address" />
               <Input placeholder="Enter your password" />
 

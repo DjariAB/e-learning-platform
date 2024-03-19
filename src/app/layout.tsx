@@ -18,7 +18,7 @@ export const julius = Julius_Sans_One({
 export const metadata = {
   title: "SkillMaxxing",
   description: "uni project",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicons/favicon.ico" }],
 };
 
 export default function RootLayout({
@@ -28,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans  ${jost.className}  `}>{children}</body>
+      <body className={`font-sans  ${jost.className} h-screen w-screen `}>
+        {children}
+      </body>
     </html>
   );
 }
