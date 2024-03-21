@@ -2,11 +2,7 @@ import Image from "next/image";
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { validateRequest } from "@/server/auth";
-import { cookies } from "next/headers";
-import { db } from "@/server/db";
-import { redirect } from "next/navigation";
-import { sessionTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { logoutAction } from "@/actions/auth";
 
 const NavBar = async () => {
   const { user } = await validateRequest();
@@ -65,7 +61,7 @@ const NavBar = async () => {
             </Link>
           </>
         ) : (
-          <form action={logout}>
+          <form action={logoutAction}>
             <Button type="submit">logout</Button>
           </form>
         )}
@@ -75,16 +71,3 @@ const NavBar = async () => {
 };
 
 export default NavBar;
-
-async function logout() {
-  "use server";
-
-  const c = cookies().get("auth_session");
-
-  await db.delete(sessionTable).where(eq(sessionTable.id, c!.value));
-  // await lucia.invalidateSession(sessionCookie!);
-
-  cookies().delete("auth_session");
-
-  return redirect("/");
-}

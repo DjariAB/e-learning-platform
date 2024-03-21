@@ -8,6 +8,7 @@ import {
   timestamp,
   varchar,
   datetime,
+  bigint,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -44,7 +45,8 @@ export const userTable = createTable("user", {
     length: 255,
   }).primaryKey(),
   userName: varchar("username", { length: 255 }).unique().notNull(),
-  password: varchar("password", { length: 255 }).notNull(),
+  password: varchar("password", { length: 255 }),
+  github_id: varchar("github_id", { length: 255 }).unique(),
 });
 
 export const sessionTable = createTable("session", {

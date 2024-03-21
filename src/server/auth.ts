@@ -4,6 +4,7 @@ import { sessionTable, userTable } from "./db/schema";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { cache } from "react";
 import { cookies } from "next/headers";
+import { GitHub } from "arctic";
 
 export const adapter = new DrizzleMySQLAdapter(db, sessionTable, userTable);
 
@@ -22,11 +23,11 @@ export const lucia = new Lucia(adapter, {
   },
 });
 
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-  }
-}
+// declare module "lucia" {
+//   interface Register {
+//     Lucia: typeof lucia;
+//   }
+// }
 
 export const validateRequest = cache(
   async (): Promise<
@@ -70,3 +71,8 @@ declare module "lucia" {
     DatabaseUserAttributes: Omit<DatabaseUser, "id">;
   }
 }
+
+export const github = new GitHub(
+  process.env.GITHUB_CLIENT_ID!,
+  process.env.GITHUB_CLIENT_SECRET!,
+);

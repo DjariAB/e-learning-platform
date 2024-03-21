@@ -1,16 +1,15 @@
+import { loginAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ActionResult } from "@/lib/Form";
-import { lucia } from "@/server/auth";
-import { db } from "@/server/db";
-import { userTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
+import { validateRequest } from "@/server/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const Login = () => {
+const Login = async () => {
+  const { user } = await validateRequest();
+  if (user) return redirect("/");
+
   return (
     <div className="flex h-screen flex-row-reverse">
       <div className="sm:disabled basis-1/2 lg:relative">
@@ -45,7 +44,7 @@ const Login = () => {
             <p>Reconnect and start your journey</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <form className="w-[488px] space-y-7" action={login}>
+            <form className="w-[488px] space-y-7" action={loginAction}>
               {/* should be a, e-mail address instead of username */}
               <Input name="username" placeholder="Enter your username" />
               <Input name="password" placeholder="Enter your password" />
@@ -73,61 +72,3 @@ const Login = () => {
 };
 
 export default Login;
-
-async function login(formData: FormData) {
-  "use server";
-  const username = formData.get("username");
-  if (
-    typeof username !== "string" ||
-    username.length < 3 ||
-    username.length > 31 ||
-    !/^[a-z0-9_-]+$/.test(username)
-  ) {
-    return {
-      error: "Invalid username",
-    };
-  }
-  const password = formData.get("password");
-  if (
-    typeof password !== "string" ||
-    password.length < 6 ||
-    password.length > 255
-  ) {
-    return {
-      error: "Invalid password",
-    };
-  }
-
-  // const existingUser = db
-  //   .prepare("SELECT * FROM user WHERE username = ?")
-  //   .get(username) as DatabaseUser | undefined;
-
-  const existingUser = await db
-    .select()
-    .from(userTable)
-    .where(eq(userTable.userName, username));
-  if (existingUser[0]) {
-    // const validPassword = await new Argon2id().verify(
-    //   existingUser.password,
-    //   password,
-    // );
-
-    if (existingUser[0].password !== password) {
-      return {
-        error: "Incorrect password",
-      };
-    }
-
-    const session = await lucia.createSession(existingUser[0].id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
-    return redirect("/");
-  } else
-    return {
-      error: "Incorrect username",
-    };
-}
