@@ -22,6 +22,9 @@ const config = {
         jost: "var(--font-jost)",
         julius: "var(--font-julius)",
       },
+      dropShadow: {
+        'card': '0 17px 20px rgba(7, 46, 106, 0.15)',
+      },
 
       colors: {
         border: "hsl(var(--border))",
