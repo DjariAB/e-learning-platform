@@ -18,6 +18,7 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      githubId: attributes.github_id,
       username: attributes,
     };
   },
@@ -34,6 +35,7 @@ export const validateRequest = cache(
     { user: User; session: Session } | { user: null; session: null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+    console.log(sessionId);
     if (!sessionId) {
       return {
         user: null,
@@ -68,7 +70,7 @@ export const validateRequest = cache(
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<DatabaseUser, "id">;
+    DatabaseUserAttributes: DatabaseUserAttributes;
   }
 }
 
@@ -76,3 +78,10 @@ export const github = new GitHub(
   process.env.GITHUB_CLIENT_ID!,
   process.env.GITHUB_CLIENT_SECRET!,
 );
+
+// github.createAuthorizationURL()
+
+interface DatabaseUserAttributes {
+  github_id: number;
+  username: string;
+}

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,9 +51,9 @@ const Signin = async () => {
             <p>Start your learning journey now!</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <form className="w-[488px] space-y-7" action={signupAction}>
+            <form  className="w-[488px] space-y-7" action={signupAction}>
               <Input name="username" placeholder="Enter your user name" />
-              <Input type="email" placeholder="Enter your e-mail address" />
+              {/* <Input type="email" placeholder="Enter your e-mail address" /> */}
               <Input
                 type="password"
                 name="password"
@@ -71,9 +71,12 @@ const Signin = async () => {
               />
             </div>
             <form action="">
-              <Button className="w-full rounded-lg" variant="outline">
+              <Link
+                href="/login/github"
+                className={`${buttonVariants({ variant: "outline" })}   w-full rounded-lg`}
+              >
                 Github
-              </Button>
+              </Link>
             </form>
           </div>
         </div>
