@@ -1,5 +1,5 @@
 import { loginAction } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { validateRequest } from "@/server/auth";
 import Image from "next/image";
@@ -45,10 +45,13 @@ const Login = async () => {
           </div>
           <div className="m-auto space-y-7 text-center ">
             <form className="w-[488px] space-y-7" action={loginAction}>
-              {/* should be a, e-mail address instead of username */}
-              <Input name="username" placeholder="Enter your username" />
-              <Input name="password" placeholder="Enter your password" />
-
+              <Input name="username" placeholder="Enter your user name" />
+              {/* <Input type="email" placeholder="Enter your e-mail address" /> */}
+              <Input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+              />
               <Button className="w-full rounded-lg">Login</Button>
             </form>
             <div className="flex items-center justify-center gap-3">
@@ -60,9 +63,16 @@ const Login = async () => {
               />
             </div>
             <form action="">
-              <Button className="w-full rounded-lg" variant="outline">
+              {/* <Button className="w-full rounded-lg" variant="outline">
                 Github
-              </Button>
+              </Button> */}
+
+              <Link
+                href="/login/github"
+                className={`${buttonVariants({ variant: "outline" })}   w-full rounded-lg`}
+              >
+                Github
+              </Link>
             </form>
           </div>
         </div>
