@@ -1,14 +1,15 @@
 "use server";
 
-import { lucia } from "@/server/auth";
+import { lucia, validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { sessionTable, userTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { userTable } from "@/server/db/schema";
+import { DrizzleError, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";
+import { type ActionResult } from "@/lib/Form";
 
-export async function loginAction(formData: FormData) {
+export async function loginAction(_: unknown, formData: FormData) {
   const username = formData.get("username");
   if (
     typeof username !== "string" ||
@@ -59,14 +60,14 @@ export async function loginAction(formData: FormData) {
       sessionCookie.value,
       sessionCookie.attributes,
     );
-    return redirect("/");
+    return redirect("/courses");
   } else
     return {
       error: "Incorrect username",
     };
 }
 
-export async function signupAction(formData: FormData) {
+export async function signupAction(_: unknown, formData: FormData) {
   const username = formData.get("username");
   // username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
   // keep in mind some database (e.g. mysql) are case insensitive
@@ -101,7 +102,6 @@ export async function signupAction(formData: FormData) {
 
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    await lucia.invalidateSession(userId);
 
     // const cookiess = lucia.readSessionCookie("username");
 
@@ -113,26 +113,34 @@ export async function signupAction(formData: FormData) {
 
     cookies().delete("username");
   } catch (e) {
-    // if (e instanceof DrizzleError ) {
-    //   return {
-    //     error: "Username already used",
-    //   };
-    // }
+    if (e instanceof DrizzleError) {
+      return {
+        error: "Username already used",
+      };
+    }
 
     return {
       error: "An unknown error occurred",
     };
   }
-  return redirect("/");
+  return redirect("/courses");
 }
 
-export async function logoutAction() {
-  const c = cookies().get("auth_session");
+export async function logoutAction(): Promise<ActionResult> {
+  const { session } = await validateRequest();
+  if (!session) {
+    return {
+      error: "Unauthorized",
+    };
+  }
 
-  await db.delete(sessionTable).where(eq(sessionTable.id, c!.value));
-  // await lucia.invalidateSession(sessionCookie!);
+  await lucia.invalidateSession(session.id);
 
-  cookies().delete("auth_session");
-
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
   return redirect("/");
 }

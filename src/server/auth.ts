@@ -1,4 +1,4 @@
-import { type DatabaseUser, Lucia, type Session, type User } from "lucia";
+import { Lucia, type Session, type User } from "lucia";
 import { db } from "./db";
 import { sessionTable, userTable } from "./db/schema";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
@@ -19,7 +19,7 @@ export const lucia = new Lucia(adapter, {
     return {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       githubId: attributes.github_id,
-      username: attributes,
+      user: attributes,
     };
   },
 });
@@ -35,7 +35,6 @@ export const validateRequest = cache(
     { user: User; session: Session } | { user: null; session: null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-    console.log(sessionId);
     if (!sessionId) {
       return {
         user: null,
@@ -83,5 +82,5 @@ export const github = new GitHub(
 
 interface DatabaseUserAttributes {
   github_id: number;
-  username: string;
+  userName: string;
 }
