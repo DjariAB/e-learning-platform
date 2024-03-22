@@ -9,8 +9,8 @@ const HeroSec = () => {
           </h1>
           <p className="text-2xl font-normal">
             Our curated courses designed to empower you on your learning
-            journey. <br /> Whether you're a beginner or a seasoned learner,
-            there's something here <br />
+            journey. <br /> Whether you&apos;re a beginner or a seasoned
+            learner, there&apos;s something here <br />
             to spark your curiosity and fuel your growth.
           </p>
         </div>

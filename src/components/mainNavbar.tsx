@@ -1,26 +1,54 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { Input } from "./ui/input";
+import Image from "next/image";
 
 const MainNavBar = () => {
   return (
     <>
-      <div className="flex items-center justify-center gap-4 px-6">
-        <img src="/SVGs/logo text.svg" alt="text logo" className="h-8" />
-        <div className="flex grow gap-1 rounded-full border border-solid border-black px-2 py-1">
+      <div className="flex items-center justify-center gap-4 px-5 py-1">
+        <Link
+          href="/"
+          // className="flex gap-2"
+        >
+          <Image
+            src="/SVGs/logo text.svg"
+            alt="text logo"
+            className=" "
+            width={170}
+            height={43}
+          />
+          {/* <p>Skillmaxxing</p> */}
+        </Link>
+        <div className="grow">
+          <Input
+            type="text"
+            placeholder="  Search for a course"
+            className=" rounded-full border border-solid border-gray-950"
+          />
+        </div>
+        {/* <div className="flex grow gap-1 rounded-full border border-solid border-black px-2 py-1">
           <img
             src="/SVGs/search-icon.svg"
             alt=""
             className="h-8 rounded-full"
           />
           <input type="text" placeholder="Search for a course" />
-        </div>
-        <Link href="">my courses</Link>
-        <Link href="">
-          <img src="/SVGs/leaderBoard.svg" alt="" className="h-8 " />
+        </div> */}
+        <Link href="" className="w-20 break-normal">
+          my courses
         </Link>
-        <div className="h-10 w-10 rounded-[100%] bg-black p-2 text-center">
-          <p className="font-semibold text-white">B</p>
+        <Link href="">
+          <Image
+            src="/SVGs/leaderBoard.svg"
+            height={0}
+            width={32}
+            alt=""
+            className="h-8 "
+          />
+        </Link>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-center">
+          <p className="text-xl font-semibold text-white">B</p>
         </div>
       </div>
     </>
