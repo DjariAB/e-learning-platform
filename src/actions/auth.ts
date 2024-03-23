@@ -112,16 +112,9 @@ export async function signupAction(
 
     cookies().delete("username");
   } catch (e) {
-    if (e instanceof DrizzleError) {
-      return {
-        error: "Username already used",
-        type: "userName",
-      };
-    }
-
     return {
-      error: "An unknown error occurred",
-      type: "password",
+      error: "Username already used",
+      type: "userName",
     };
   }
   return redirect("/courses");
