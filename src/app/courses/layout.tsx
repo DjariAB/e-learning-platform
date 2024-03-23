@@ -10,15 +10,13 @@ export default async function RootLayout({
 }) {
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
-  console.log(user);
-
   return (
     <main className="flex flex-col gap-6 px-4 pt-4">
       <MainNavBar />
       <HeroSec />
       {children}
 
-      <h1> hello {user.user.userName}</h1>
+      <h1> hello {user.userName}</h1>
     </main>
   );
 }

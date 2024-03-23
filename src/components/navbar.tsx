@@ -7,7 +7,6 @@ import { logoutAction } from "@/actions/auth";
 const NavBar = async () => {
   const { user } = await validateRequest();
 
-  console.log(user);
   return (
     <nav className="flex items-center justify-between px-14 ">
       <div>

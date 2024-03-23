@@ -19,7 +19,7 @@ export const lucia = new Lucia(adapter, {
     return {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       githubId: attributes.github_id,
-      user: attributes,
+      userName: attributes.userName,
     };
   },
 });

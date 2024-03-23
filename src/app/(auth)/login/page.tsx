@@ -1,7 +1,6 @@
 import { loginAction } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Form } from "@/lib/Form";
+import { AuthForm } from "@/lib/Form";
 import { validateRequest } from "@/server/auth";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
@@ -46,7 +45,7 @@ const Login = async () => {
             <p>Reconnect and start your journey</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <Form className="w-[488px] space-y-7" action={loginAction}>
+            {/* <Form className="w-[488px] space-y-7" action={loginAction}>
               <Input name="username" placeholder="Enter your user name" />
               <Input
                 type="password"
@@ -54,7 +53,9 @@ const Login = async () => {
                 placeholder="Enter your password"
               />
               <Button className="w-full rounded-lg">Login</Button>
-            </Form>
+            </Form> */}
+            <AuthForm action={loginAction} className="w-[488px] space-y-7" />
+
             <div className="flex items-center justify-center gap-3">
               <hr className="  h-1 grow" />
               <p className="text-md text-gray-500">Or Continue With</p>

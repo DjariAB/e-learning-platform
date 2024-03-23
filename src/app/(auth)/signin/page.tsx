@@ -3,10 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 import { validateRequest } from "@/server/auth";
-import { Form } from "@/lib/Form";
+import { AuthForm } from "@/lib/Form";
 import { signupAction } from "@/actions/auth";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
@@ -48,9 +47,8 @@ const Signin = async () => {
             <p>Start your learning journey now!</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <Form className="w-[488px] space-y-7" action={signupAction}>
+            {/* <Form className="w-[488px] space-y-7" action={signupAction}>
               <Input name="username" placeholder="Enter your user name" />
-              {/* <Input type="email" placeholder="Enter your e-mail address" /> */}
               <Input
                 type="password"
                 name="password"
@@ -58,7 +56,8 @@ const Signin = async () => {
               />
 
               <Button className="w-full rounded-lg">Create Account</Button>
-            </Form>
+            </Form> */}
+            <AuthForm action={signupAction} className="w-[488px] space-y-7" />
             <div className="flex items-center justify-center gap-3">
               <hr className="  h-1 grow" />
               <p className="text-md text-gray-500">Or Continue With</p>

@@ -7,9 +7,12 @@ import { DrizzleError, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";
-import { type ActionResult } from "@/lib/Form";
+import { type AuthActionResult, type ActionResult } from "@/lib/Form";
 
-export async function loginAction(_: unknown, formData: FormData) {
+export async function loginAction(
+  _: unknown,
+  formData: FormData,
+): Promise<AuthActionResult> {
   const username = formData.get("username");
   if (
     typeof username !== "string" ||
@@ -19,6 +22,7 @@ export async function loginAction(_: unknown, formData: FormData) {
   ) {
     return {
       error: "Invalid username",
+      type: "userName",
     };
   }
   const password = formData.get("password");
@@ -29,26 +33,19 @@ export async function loginAction(_: unknown, formData: FormData) {
   ) {
     return {
       error: "Invalid password",
+      type: "password",
     };
   }
-
-  // const existingUser = db
-  //   .prepare("SELECT * FROM user WHERE username = ?")
-  //   .get(username) as DatabaseUser | undefined;
 
   const existingUser = await db
     .select()
     .from(userTable)
     .where(eq(userTable.userName, username));
   if (existingUser[0]) {
-    // const validPassword = await new Argon2id().verify(
-    //   existingUser.password,
-    //   password,
-    // );
-
     if (existingUser[0].password !== password) {
       return {
         error: "Incorrect password",
+        type: "password",
       };
     }
 
@@ -64,13 +61,15 @@ export async function loginAction(_: unknown, formData: FormData) {
   } else
     return {
       error: "Incorrect username",
+      type: "userName",
     };
 }
 
-export async function signupAction(_: unknown, formData: FormData) {
+export async function signupAction(
+  _: unknown,
+  formData: FormData,
+): Promise<AuthActionResult> {
   const username = formData.get("username");
-  // username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
-  // keep in mind some database (e.g. mysql) are case insensitive
   if (
     typeof username !== "string" ||
     username.length < 3 ||
@@ -79,6 +78,7 @@ export async function signupAction(_: unknown, formData: FormData) {
   ) {
     return {
       error: "Invalid username",
+      type: "userName",
     };
   }
   const password = formData.get("password");
@@ -89,6 +89,7 @@ export async function signupAction(_: unknown, formData: FormData) {
   ) {
     return {
       error: "Invalid password",
+      type: "password",
     };
   }
 
@@ -103,8 +104,6 @@ export async function signupAction(_: unknown, formData: FormData) {
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
-    // const cookiess = lucia.readSessionCookie("username");
-
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
@@ -116,11 +115,13 @@ export async function signupAction(_: unknown, formData: FormData) {
     if (e instanceof DrizzleError) {
       return {
         error: "Username already used",
+        type: "userName",
       };
     }
 
     return {
       error: "An unknown error occurred",
+      type: "password",
     };
   }
   return redirect("/courses");

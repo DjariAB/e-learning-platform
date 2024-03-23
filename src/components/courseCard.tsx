@@ -12,7 +12,7 @@ const CourseCard = () => {
   return (
     <>
       <div
-        className={`${anekLatin.className} hover:filter: hover:drop-shadow-card flex h-[385px] w-[350px] flex-col gap-3 rounded-[35px]  bg-white p-4 transition duration-150  ease-in hover:-translate-y-2 hover:translate-x-2`}
+        className={`${anekLatin.className}  flex h-[385px] w-[350px] flex-col gap-3 rounded-[35px] bg-white p-4 transition duration-150 ease-in  hover:-translate-y-2 hover:translate-x-2 hover:drop-shadow-card`}
       >
         <div className="relative h-[260px] w-[100%]">
           <img
