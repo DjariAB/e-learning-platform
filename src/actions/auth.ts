@@ -3,7 +3,7 @@
 import { lucia, validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import { userTable } from "@/server/db/schema";
-import { DrizzleError, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";

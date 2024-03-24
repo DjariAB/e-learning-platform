@@ -20,7 +20,7 @@ const NavBar = async () => {
       <div className="flex grow  items-end  justify-end pr-56  text-lg">
         <Link
           className={buttonVariants({ variant: "link", size: "lg" })}
-          href=""
+          href="/courses"
         >
           Courses
         </Link>
