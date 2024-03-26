@@ -1,6 +1,6 @@
-import { loginAction } from "@/actions/auth";
+// import { loginAction } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { AuthForm } from "@/lib/Form";
+import { LoginForm } from "@/lib/Form";
 import { validateRequest } from "@/server/auth";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
@@ -54,7 +54,7 @@ const Login = async () => {
               />
               <Button className="w-full rounded-lg">Login</Button>
             </Form> */}
-            <AuthForm action={loginAction} className="w-[488px] space-y-7" />
+            <LoginForm className="w-[488px] space-y-7" />
 
             <div className="flex items-center justify-center gap-3">
               <hr className="  h-1 grow" />

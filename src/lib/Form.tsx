@@ -1,5 +1,6 @@
 "use client";
 
+import { loginAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
@@ -44,6 +45,40 @@ export function AuthForm({
       </div>
 
       <Button className="w-full rounded-lg">Create Account</Button>
+    </form>
+  );
+}
+
+export function LoginForm({
+  className,
+}: {
+  // action: (prevState: unknown, formData: FormData) => Promise<AuthActionResult>;
+  className: string;
+}) {
+  const [state, formAction] = useFormState(loginAction, {
+    error: null,
+    type: null,
+  });
+  return (
+    <form action={formAction} className={className}>
+      <div className="space-y-1">
+        <Input name="username" placeholder="Enter your user name" />
+        {state.type === "userName" && (
+          <p className="text-md pl-2 text-start text-red-500">{state.error}</p>
+        )}
+      </div>
+      <div>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+        />
+        {state.type === "password" && (
+          <p className="text-md pl-2 text-start text-red-500">{state.error}</p>
+        )}
+      </div>
+
+      <Button className="w-full rounded-lg">Login</Button>
     </form>
   );
 }
