@@ -13,7 +13,7 @@ export default async function RootLayout({
   return (
     <main className="flex flex-col gap-6 px-4 pt-4">
       <MainNavBar />
-      <HeroSec />
+
       {children}
 
       <h1> hello {user.userName}</h1>

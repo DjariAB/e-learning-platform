@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 const HeroSec = () => {
   return (
     <div className=" flex h-72 items-center rounded-[38px] bg-[#072E6A] p-[0px_20px_0px_20px] px-7 text-white drop-shadow-[-8px_10px_0px_rgba(0,0,0,1)]">

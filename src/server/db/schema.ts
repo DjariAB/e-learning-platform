@@ -8,7 +8,6 @@ import {
   timestamp,
   varchar,
   datetime,
-  bigint,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -17,28 +16,7 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = mysqlTableCreator(
-  (name) => `elearning_platform_${name}`,
-);
-
-export const posts = createTable(
-  "post",
-  {
-    id: varchar("id", { length: 196 })
-      .primaryKey()
-      .default(sql`(uuid())`),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt")
-      .onUpdateNow()
-      .default(sql`CURRENT_TIMESTAMP`),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
+export const createTable = mysqlTableCreator((name) => `${name}`);
 
 export const userTable = createTable("user", {
   id: varchar("id", {
@@ -60,3 +38,30 @@ export const sessionTable = createTable("session", {
     .references(() => userTable.id),
   expiresAt: datetime("expires_at").notNull(),
 });
+export const courseTable = createTable(
+  "courses",
+  {
+    id: varchar("id", { length: 196 })
+      .primaryKey()
+      .default(sql`(uuid())`),
+    title: varchar("name", { length: 256 }).notNull(),
+    imageUrl: varchar("image_url", { length: 511 }).notNull(),
+    educatorId: varchar("educator_id", { length: 256 })
+      .references(() => userTable.id)
+      .notNull(),
+    level: varchar("level", {
+      length: 256,
+      enum: ["beginner", "intermediate", "advanced"],
+    }).notNull(),
+
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt")
+      .onUpdateNow()
+      .default(sql`CURRENT_TIMESTAMP`),
+  },
+  (example) => ({
+    nameIndex: index("name_idx").on(example.title),
+  }),
+);
