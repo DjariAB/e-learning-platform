@@ -9,7 +9,7 @@ const MainNavBar = async () => {
   if (user)
     return (
       <>
-        <div className="flex items-center justify-center gap-4 px-5 py-1">
+        <div className="flex items-center justify-center gap-4 px-5 py-1 ">
           <Link
             href="/"
             // className="flex gap-2"
@@ -27,7 +27,7 @@ const MainNavBar = async () => {
             <Input
               type="text"
               placeholder="  Search for a course"
-              className=" rounded-full border border-solid border-gray-950"
+              className=" rounded-full border border-solid border-gray-950 "
             />
           </div>
           {/* <div className="flex grow gap-1 rounded-full border border-solid border-black px-2 py-1">

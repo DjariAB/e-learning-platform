@@ -1,6 +1,5 @@
 import MainNavBar from "@/components/mainNavbar";
 
-import HeroSec from "@/components/heroSection";
 import { validateRequest } from "@/server/auth";
 import { redirect } from "next/navigation";
 export default async function RootLayout({
@@ -11,7 +10,7 @@ export default async function RootLayout({
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
   return (
-    <main className="flex flex-col gap-6 ">
+    <main className="flex flex-col gap-6 px-0 ">
       {children}
 
       <h1> hello {user.userName}</h1>
