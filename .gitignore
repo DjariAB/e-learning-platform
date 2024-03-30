@@ -47,4 +47,4 @@ yarn-error.log*
 
 .turbo
 
-.db/migration
+.src/db/migration
