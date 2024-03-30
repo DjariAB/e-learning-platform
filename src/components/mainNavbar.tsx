@@ -9,7 +9,8 @@ const MainNavBar = async () => {
   if (user)
     return (
       <>
-        <div className="flex items-center justify-center gap-4 px-5 py-1">
+        <div className="flex items-center justify-center gap-4 px-5 py-1 ">
+          {" "}
           <Link
             href="/"
             // className="flex gap-2"
