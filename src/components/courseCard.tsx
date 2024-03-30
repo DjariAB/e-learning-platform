@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { Anek_Latin } from "next/font/google";
-import CourseLevel from "./courselevel";
 
 const anekLatin = Anek_Latin({
   subsets: ["latin"],
@@ -32,8 +31,16 @@ const CourseCard = ({
             alt="Course image"
             className="size-auto h-full  rounded-[20px] object-cover"
           />
-        <CourseLevel level={level} additionalStyle="absolute bottom-4 left-3" />
-
+          <div className="absolute bottom-4 left-3 flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1 ">
+            <Image
+              src="/SVGs/Level_icon.svg"
+              className="h-3 w-3"
+              width={8}
+              height={8}
+              alt="level icon"
+            />
+            <p>{level}</p>
+          </div>
         </div>
         <div className="font-m flex flex-col gap-2 font-medium">
           <p className="text-2xl/6"> {title} </p>

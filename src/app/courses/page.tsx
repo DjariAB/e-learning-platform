@@ -14,8 +14,6 @@ const Courses = async () => {
   const courses = await db.select().from(courseTable);
   return (
     <>
-          <MainNavBar />
-
       <HeroSec />
 
       <div className="flex  gap-3 overflow-x-scroll">
