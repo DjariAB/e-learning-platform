@@ -11,7 +11,7 @@ export default async function RootLayout({
     <main className="flex flex-col gap-6 px-0 ">
       {children}
 
-      <h1> hello {user.userName}</h1>
+      
     </main>
   );
 }

@@ -8,7 +8,7 @@ const NavBar = async () => {
   const { user } = await validateRequest();
 
   return (
-    <nav className="flex items-center justify-between px-14 ">
+    <nav className="flex items-center justify-between bg-transparent px-14">
       <div>
         <Image
           width="58"
