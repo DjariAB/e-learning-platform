@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className={`${styles.background}  pt-5`}>
+    <main className={`${styles.mainBg}  pt-5`}>
       <NavBar />
       {children}
     </main>
