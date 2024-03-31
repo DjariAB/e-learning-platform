@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button } from "./ui/button"; 
 import Link from "next/link";
 import { validateRequest } from "@/server/auth";
 import { logoutAction } from "@/actions/auth";
