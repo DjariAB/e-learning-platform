@@ -17,6 +17,7 @@ export default async function RootLayout({
       {children}
 
       <h1> hello {user.userName}</h1>
+      <h3> and here is your id {user.id} </h3>
     </main>
   );
 }

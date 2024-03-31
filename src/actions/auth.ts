@@ -94,8 +94,7 @@ export async function signupAction(
   }
 
   // const hashedPassword = await new Argon2id().hash(password);
-  const userId = generateId(15);
-
+  const userId = generateId(7);
   try {
     await db
       .insert(userTable)

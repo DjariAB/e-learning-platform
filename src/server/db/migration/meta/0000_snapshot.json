@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "e8d67d21-30d5-46d7-8446-ebd5c52c9774",
+  "id": "3ea17f7f-0ac6-459f-8b2b-4f14f394c328",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "courses": {
@@ -12,8 +12,7 @@
           "type": "varchar(196)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(uuid())"
+          "autoincrement": false
         },
         "name": {
           "name": "name",

@@ -1,5 +1,6 @@
 import NavBar from "@/components/navbar";
 
+import styles from "@/styles/main.module.css";
 
 export default function RootLayout({
   children,
@@ -7,9 +8,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="pt-8">
-        <NavBar />
-        {children}
+    <main className={`${styles.background}  pt-5`}>
+      <NavBar />
+      {children}
     </main>
-    );
+  );
 }

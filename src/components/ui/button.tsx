@@ -22,10 +22,10 @@ const buttonVariants = cva(
         hover:
           "bg-primary text-secondary shadow hover:bg-[#E3E3E3] hover:text-primary ",
         outlinehover:
-          "border border-[#717171] bg-background shadow-sm hover:bg-primary hover:text-secondary ",
+          "border border-[#717171] bg-transparent shadow-sm hover:bg-primary hover:text-secondary ",
       },
       size: {
-        default: "h-9 px-9 py-6",
+        default: "h-9 px-10 py-6",
         sm: "h-9 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",

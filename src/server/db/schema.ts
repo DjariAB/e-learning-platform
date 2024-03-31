@@ -41,9 +41,7 @@ export const sessionTable = createTable("session", {
 export const courseTable = createTable(
   "courses",
   {
-    id: varchar("id", { length: 196 })
-      .primaryKey()
-      .default(sql`(uuid())`),
+    id: varchar("id", { length: 196 }).primaryKey(),
     title: varchar("name", { length: 256 }).notNull(),
     imageUrl: varchar("image_url", { length: 511 }).notNull(),
     educatorId: varchar("educator_id", { length: 256 })

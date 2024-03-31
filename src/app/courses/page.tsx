@@ -7,6 +7,7 @@ import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import { courseTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
 
@@ -54,7 +55,9 @@ async function AddCourse() {
   "use server";
   const { user } = await validateRequest();
   if (user) {
+    const id = generateId(7);
     await db.insert(courseTable).values({
+      id,
       level: "beginner",
       title: "first course",
       educatorId: user.id,

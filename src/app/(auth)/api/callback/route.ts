@@ -49,7 +49,7 @@ export async function GET(request: Request): Promise<Response> {
       });
     }
 
-    const userId = generateId(15);
+    const userId = generateId(7);
 
     await db.insert(userTable).values({
       id: userId,
@@ -67,7 +67,7 @@ export async function GET(request: Request): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: "/courses",
       },
     });
   } catch (e) {
