@@ -8,11 +8,10 @@ export default async function RootLayout({
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
   return (
-    <main className="flex flex-col gap-6 ">
-
+    <main className="flex flex-col gap-6 px-0 ">
       {children}
 
-      <h1> hello {user.userName}</h1>
+      
     </main>
   );
 }
