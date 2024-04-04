@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Poppins } from "next/font/google";
 import styles from "@/styles/main.module.css";
 import NavBar from "@/components/navbar";
-export const poppins = Poppins({
+const poppins = Poppins({
   weight: ["600"],
   subsets: ["latin"],
 });

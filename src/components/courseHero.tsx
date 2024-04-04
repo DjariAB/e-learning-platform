@@ -1,5 +1,5 @@
-const CourseHeroSec = ({course} : {course : courseTable}) => {
-    return (  );
-}
- 
-export default CourseHeroSec;
+// const CourseHeroSec = ({course} : {course : courseTable}) => {
+//     return (  );
+// }
+
+// export default CourseHeroSec;

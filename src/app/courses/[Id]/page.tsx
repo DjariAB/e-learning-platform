@@ -11,7 +11,7 @@ export default async function CoursePage() {
   return (
     <>
       <div
-        className={`bg-backgroundImage-course-hero bg-cover ${styles.background}`}
+        className={` bg-cover ${styles.background}`}
       >
         <MainNavBar />
 

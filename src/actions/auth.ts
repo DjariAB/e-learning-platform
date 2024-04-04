@@ -48,8 +48,9 @@ export async function loginAction(
         type: "password",
       };
     }
+    const sessionId = generateId(7);
 
-    const session = await lucia.createSession(existingUser[0].id, {});
+    const session = await lucia.createSession(existingUser[0].id, {},{sessionId});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(
@@ -99,8 +100,9 @@ export async function signupAction(
     await db
       .insert(userTable)
       .values({ id: userId, userName: username, password });
+      const sessionId = generateId(7);
 
-    const session = await lucia.createSession(userId, {});
+    const session = await lucia.createSession(userId, {},{sessionId});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(

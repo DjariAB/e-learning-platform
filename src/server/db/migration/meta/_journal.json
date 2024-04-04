@@ -8,6 +8,20 @@
       "when": 1711829304921,
       "tag": "0000_unique_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1712256895695,
+      "tag": "0001_striped_scarecrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712259878288,
+      "tag": "0002_exotic_human_torch",
+      "breakpoints": true
     }
   ]
 }

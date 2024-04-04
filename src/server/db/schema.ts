@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import {
   index,
   mysqlTableCreator,
@@ -10,7 +10,6 @@ import {
   datetime,
   int,
 } from "drizzle-orm/mysql-core";
-import { number } from "zod";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -87,25 +86,20 @@ export const lessonTable = createTable("lesson", {
     .notNull(),
 });
 
-export const quizTable = createTable("quiz", {
-  id: varchar("id", { length: 196 }).primaryKey(),
-  lessonId: varchar("quiz_id", { length: 196 }).references(
-    () => lessonTable.id,
-  ),
-});
 export const questionTable = createTable("question", {
   id: varchar("id", { length: 196 }).primaryKey(),
-  quizId: varchar("quiz_id", { length: 196 }).references(() => quizTable.id),
+  lessonId: varchar("lesson_id", { length: 196 }).references(
+    () => lessonTable.id,
+  ),
   question: varchar("question", { length: 255 }).notNull(),
   choice1: varchar("choice_1", { length: 255 }).notNull(),
   choice2: varchar("choice_2", { length: 255 }).notNull(),
   choice3: varchar("choice_3", { length: 255 }).notNull(),
-  choice4: varchar("choice_4", { length: 255 }),
-  correctAnswer: varchar("choice_4", { length: 255 }).notNull(),
+  correctAnswer: varchar("correct_choice", { length: 255 }).notNull(),
 });
 export const enrolledCoursesTable = createTable("enrolled_Courses", {
   courseId: varchar("course_id", { length: 196 }).primaryKey(),
   userId: varchar("user_id", { length: 255 }).primaryKey(),
   progress: int("user_progress").$default(() => 0),
-  currentLesson : varchar("current_lesson_id",{length : 196}),
+  currentLesson: varchar("current_lesson_id", { length: 196 }),
 });

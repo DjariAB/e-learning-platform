@@ -34,7 +34,12 @@ export async function GET(request: Request): Promise<Response> {
       .where(eq(userTable.github_id, githubUser.id));
 
     if (existingUser[0]) {
-      const session = await lucia.createSession(existingUser[0].id, {});
+      const sessionId = generateId(7);
+      const session = await lucia.createSession(
+        existingUser[0].id,
+        {},
+        { sessionId },
+      );
       const sessionCookie = lucia.createSessionCookie(session.id);
       cookies().set(
         sessionCookie.name,
@@ -56,8 +61,8 @@ export async function GET(request: Request): Promise<Response> {
       github_id: githubUser.id,
       userName: githubUser.login,
     });
-
-    const session = await lucia.createSession(userId, {});
+    const sessionId = generateId(7);
+    const session = await lucia.createSession(userId, {}, { sessionId });
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,
