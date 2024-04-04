@@ -53,7 +53,7 @@ export default function HomePage() {
         <Button variant="default" className="bg-[#072E6A] ">
           Get Started
         </Button>
-        <Button variant="outlinehover">I'm a Mentor</Button>
+        <Button variant="outlinehover">I&apos;m a Mentor</Button>
       </div>
     </main>
   );

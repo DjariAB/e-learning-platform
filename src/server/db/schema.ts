@@ -1,14 +1,16 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   index,
   mysqlTableCreator,
   timestamp,
   varchar,
   datetime,
+  int,
 } from "drizzle-orm/mysql-core";
+import { number } from "zod";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -42,13 +44,13 @@ export const courseTable = createTable(
   "courses",
   {
     id: varchar("id", { length: 196 }).primaryKey(),
-    title: varchar("name", { length: 256 }).notNull(),
+    title: varchar("name", { length: 255 }).notNull(),
     imageUrl: varchar("image_url", { length: 511 }).notNull(),
-    educatorId: varchar("educator_id", { length: 256 })
+    educatorId: varchar("educator_id", { length: 255 })
       .references(() => userTable.id)
       .notNull(),
     level: varchar("level", {
-      length: 256,
+      length: 255,
       enum: ["beginner", "intermediate", "advanced"],
     }).notNull(),
 
@@ -59,7 +61,51 @@ export const courseTable = createTable(
       .onUpdateNow()
       .default(sql`CURRENT_TIMESTAMP`),
   },
+
   (example) => ({
     nameIndex: index("name_idx").on(example.title),
   }),
 );
+export const educatorTable = createTable("educator", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  name: varchar("educator_name", { length: 255 }).notNull(),
+  userName: varchar("user_name", { length: 255 }).notNull(),
+  description: varchar("description", { length: 1000 }).notNull(),
+});
+export const chapterTable = createTable("chapter", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  courseId: varchar("course_id", { length: 196 })
+    .references(() => courseTable.id)
+    .notNull(),
+  name: varchar("chapter_name", { length: 255 }).notNull(),
+});
+export const lessonTable = createTable("lesson", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  title: varchar("lesson_title", { length: 255 }).notNull(),
+  chapterId: varchar("chapter_id", { length: 196 })
+    .references(() => chapterTable.id)
+    .notNull(),
+});
+
+export const quizTable = createTable("quiz", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  lessonId: varchar("quiz_id", { length: 196 }).references(
+    () => lessonTable.id,
+  ),
+});
+export const questionTable = createTable("question", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  quizId: varchar("quiz_id", { length: 196 }).references(() => quizTable.id),
+  question: varchar("question", { length: 255 }).notNull(),
+  choice1: varchar("choice_1", { length: 255 }).notNull(),
+  choice2: varchar("choice_2", { length: 255 }).notNull(),
+  choice3: varchar("choice_3", { length: 255 }).notNull(),
+  choice4: varchar("choice_4", { length: 255 }),
+  correctAnswer: varchar("choice_4", { length: 255 }).notNull(),
+});
+export const enrolledCoursesTable = createTable("enrolled_Courses", {
+  courseId: varchar("course_id", { length: 196 }).primaryKey(),
+  userId: varchar("user_id", { length: 255 }).primaryKey(),
+  progress: int("user_progress").$default(() => 0),
+  currentLesson : varchar("current_lesson_id",{length : 196}),
+});
