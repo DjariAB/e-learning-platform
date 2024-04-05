@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
@@ -87,6 +88,10 @@ export default async function CoursePage({
                 ))}
               </Accordion>
             </div>
+
+            <form action="">
+              <Button type="submit">enroll</Button>
+            </form>
           </div>
         </div>
         <div>Scroll tracker</div>
@@ -117,3 +122,5 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
     </AccordionItem>
   );
 }
+
+

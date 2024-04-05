@@ -2,8 +2,8 @@
 
 import { lucia, validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { userTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { enrolledCoursesTable, userTable } from "@/server/db/schema";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";
@@ -50,7 +50,11 @@ export async function loginAction(
     }
     const sessionId = generateId(7);
 
-    const session = await lucia.createSession(existingUser[0].id, {},{sessionId});
+    const session = await lucia.createSession(
+      existingUser[0].id,
+      {},
+      { sessionId },
+    );
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(
@@ -100,9 +104,9 @@ export async function signupAction(
     await db
       .insert(userTable)
       .values({ id: userId, userName: username, password });
-      const sessionId = generateId(7);
+    const sessionId = generateId(7);
 
-    const session = await lucia.createSession(userId, {},{sessionId});
+    const session = await lucia.createSession(userId, {}, { sessionId });
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(
@@ -138,4 +142,17 @@ export async function logoutAction(): Promise<ActionResult> {
     sessionCookie.attributes,
   );
   return redirect("/");
+}
+
+export async function enroll(courseId: string) {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login");
+
+  try {
+    await db.insert(enrolledCoursesTable).values({ courseId, userId: user.id });
+    return { error: null };
+  } catch (err) {
+    return { error: "failed enrolling the course" };
+  }
 }

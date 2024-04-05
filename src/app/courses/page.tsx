@@ -5,19 +5,44 @@ import MainNavBar from "@/components/mainNavbar";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable } from "@/server/db/schema";
+import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 const Courses = async () => {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login");
+  const enrolledcourses = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(eq(enrolledCoursesTable.userId, user.id));
+
   const courses = await db.select().from(courseTable);
+
   return (
     <>
       <MainNavBar />
       <HeroSec />
 
+      <div>
+      <div className="flex  gap-3 overflow-x-scroll">
+        {courses.map((course) => (
+          <Link href={`/courses/${course.id}`} key={course.id}>
+            <CourseCard
+              educatorName={course.educatorId}
+              title={course.title}
+              imageUrl={course.imageUrl}
+              level={course.level}
+            />
+          </Link>
+        ))}
+      </div>
+
+      </div>
       <div className="flex  gap-3 overflow-x-scroll">
         {courses.map((course) => (
           <Link href={`/courses/${course.id}`} key={course.id}>
