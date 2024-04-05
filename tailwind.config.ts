@@ -18,6 +18,7 @@ const config = {
       },
     },
     extend: {
+      
       fontFamily: {
         jost: "var(--font-jost)",
         julius: "var(--font-julius)",
