@@ -1,15 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import CourseLevel from "@/components/courselevel";
 import MainNavBar from "@/components/mainNavbar";
-import { Button } from "@/components/ui/button";
-import { validateRequest } from "@/server/auth";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { db } from "@/server/db";
-import { chapterTable, courseTable } from "@/server/db/schema";
+import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
-import Link from "next/link";
 
 export default async function CoursePage({
   params,
@@ -26,8 +27,6 @@ export default async function CoursePage({
     .select()
     .from(chapterTable)
     .where(eq(chapterTable.courseId, params.courseId));
-
-  const bindedAddLesson = addLesson.bind(null, params.courseId);
 
   return (
     <>
@@ -84,21 +83,13 @@ export default async function CoursePage({
           <br />
 
           <div>
-            <form action={bindedAddLesson}>
-              <input type="hidden" value={params.courseId} />
-              <Button type="submit">add a chapter</Button>
-            </form>
-
-            <div>
-              {chapters.map((chapter) => (
-                <Link
-                  className="block"
-                  href={`/courses/wbe9zdv/${chapter.id}`}
-                  key={chapter.id}
-                >
-                  {chapter.name}{" "}
-                </Link>
-              ))}
+            <h1 className=" pb-2 font-bold">Chapters</h1>
+            <div className="p-4 pl-8 pr-24">
+              <Accordion type="single" collapsible className="w-full">
+                {chapters.map((chapter) => (
+                  <CHapterAccordionItem chapter={chapter} key={chapter.id} />
+                ))}
+              </Accordion>
             </div>
           </div>
         </div>
@@ -108,16 +99,25 @@ export default async function CoursePage({
   );
 }
 
-async function addLesson(courseId: string) {
-  "use server";
-  const { user } = await validateRequest();
-  if (user) {
-    const id = generateId(7);
-    await db.insert(chapterTable).values({
-      id,
-      name: "first chapter",
-      courseId,
-    });
-    revalidatePath("/courses");
-  }
+type CHapterAccordionItemPorps = {
+  chapter: {
+    id: string;
+    name: string;
+  };
+};
+async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
+  const lessons = await db
+    .select()
+    .from(lessonTable)
+    .where(eq(lessonTable.chapterId, chapter.id));
+
+  return (
+    <AccordionItem key={chapter.id} value={chapter.id}>
+      <AccordionTrigger>{chapter.name}</AccordionTrigger>
+
+      {lessons.map((lesson) => (
+        <AccordionContent key={lesson.id}>{lesson.title}</AccordionContent>
+      ))}
+    </AccordionItem>
+  );
 }
