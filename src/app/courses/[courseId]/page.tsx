@@ -1,18 +1,37 @@
+/* eslint-disable @next/next/no-img-element */
 import CourseLevel from "@/components/courselevel";
 import MainNavBar from "@/components/mainNavbar";
+import { Button } from "@/components/ui/button";
+import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable } from "@/server/db/schema";
+import { chapterTable, courseTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
+import Link from "next/link";
 
-export default async function CoursePage() {
-  const courses = await db.select().from(courseTable);
+export default async function CoursePage({
+  params,
+}: {
+  params: { courseId: string };
+}) {
+  const courses = await db
+    .select()
+    .from(courseTable)
+    .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
+
+  const chapters = await db
+    .select()
+    .from(chapterTable)
+    .where(eq(chapterTable.courseId, params.courseId));
+
+  const bindedAddLesson = addLesson.bind(null, params.courseId);
 
   return (
     <>
-      <div
-        className={` bg-cover ${styles.background}`}
-      >
+      <div className={` bg-cover ${styles.background}`}>
         <MainNavBar />
 
         <div className="flex items-center gap-20 px-32 py-16 ">
@@ -61,9 +80,44 @@ export default async function CoursePage() {
             deleniti ipsam. Quaerat nisi, mollitia quia ab quo molestias rem
             modi recusandae in delectus! Totam, temporibus incidunt?
           </p>
+
+          <br />
+
+          <div>
+            <form action={bindedAddLesson}>
+              <input type="hidden" value={params.courseId} />
+              <Button type="submit">add a chapter</Button>
+            </form>
+
+            <div>
+              {chapters.map((chapter) => (
+                <Link
+                  className="block"
+                  href={`/courses/wbe9zdv/${chapter.id}`}
+                  key={chapter.id}
+                >
+                  {chapter.name}{" "}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
         <div>Scroll tracker</div>
       </div>
     </>
   );
+}
+
+async function addLesson(courseId: string) {
+  "use server";
+  const { user } = await validateRequest();
+  if (user) {
+    const id = generateId(7);
+    await db.insert(chapterTable).values({
+      id,
+      name: "first chapter",
+      courseId,
+    });
+    revalidatePath("/courses");
+  }
 }
