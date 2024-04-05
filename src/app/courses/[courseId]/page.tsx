@@ -34,15 +34,15 @@ export default async function CoursePage({
       <div className={` bg-cover ${styles.background}`}>
         <MainNavBar />
 
-        <div className="flex items-center gap-20 px-32 py-16 ">
+        <div className="flex items-center gap-16 px-32 py-12 ">
           <img
             src="https://miro.medium.com/v2/resize:fit:2000/1*y6C4nSvy2Woe0m7bWEn4BA.png"
             alt="Course image"
-            className="size-[380px] rounded-2xl object-cover"
+            className="size-[280px] rounded-2xl object-cover"
           />
-          <div className="flex flex-col gap-6 text-white">
-            <h1 className="text-5xl font-medium">Introduction to REACT JS</h1>
-            <p className="text-3xl font-light">
+          <div className="flex flex-col gap-4 text-white">
+            <h1 className="text-3xl font-medium">Introduction to REACT JS</h1>
+            <p className="text-2xl font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
               tempore impedit, assumenda nisi. Dolor, harum atque facere eaque
@@ -66,18 +66,22 @@ export default async function CoursePage({
         </div>
       </div>
       <div className="flex">
-        <div className="w-3/4 px-24 pb-6 pt-8 text-4xl">
-          <h1 className="font-bold">Description</h1>
-          <p className="p-8 text-2xl font-extralight ">
-            Our &quot;React for Beginners&quot; course is your gateway to
-            mastering the fundamentals of React development. This course is
-            designed for absolute beginners, taking you through essential
-            concepts like components, state management, and routing, all the way
-            to building real-world applications. With hands-on projects and
-            practical exercises, you&apos;ll gain the skills and confidence to
-            start your journey as a React developer. Join us and unlock the
-            power of React!
+        <div className="w-3/4 px-24 py-6 text-2xl">
+          <h1 className="text-3xl font-medium">Description</h1>
+          <p className="text p-4 font-light">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia,
+            quod placeat. Officia libero voluptate animi ratione, nesciunt
+            repellendus delectus facere cupiditate deleniti magni ab, eos nobis
+            ipsa, eveniet sint atque! Lorem ipsum, dolor sit amet consectetur
+            adipisicing elit. Voluptate fugit quibusdam ab maxime magnam velit
+            quidem ut et, labore expedita quo, rem voluptatibus? Aliquam minima
+            incidunt porro quaerat dolores ex! Lorem ipsum, dolor sit amet
+            consectetur adipisicing elit. Dolore officia magni ducimus esse
+            deleniti ipsam. Quaerat nisi, mollitia quia ab quo molestias rem
+            modi recusandae in delectus! Totam, temporibus incidunt?
           </p>
+
+          <br />
 
           <div>
             <h1 className=" pb-2 font-bold">Chapters</h1>
