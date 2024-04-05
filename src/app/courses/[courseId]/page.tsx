@@ -1,21 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import CourseLevel from "@/components/courselevel";
 import MainNavBar from "@/components/mainNavbar";
-// import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-// import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable } from "@/server/db/schema";
+import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
-// import { generateId } from "lucia";
-// import { revalidatePath } from "next/cache";
-// import Link from "next/link";
 
 export default async function CoursePage({
   params,
@@ -28,12 +23,10 @@ export default async function CoursePage({
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
 
-  // const chapters = await db
-  //   .select()
-  //   .from(chapterTable)
-  //   .where(eq(chapterTable.courseId, params.courseId));
-
-  // const bindedAddLesson = addLesson.bind(null, params.courseId);
+  const chapters = await db
+    .select()
+    .from(chapterTable)
+    .where(eq(chapterTable.courseId, params.courseId));
 
   return (
     <>
@@ -85,34 +78,13 @@ export default async function CoursePage({
             power of React!
           </p>
 
-          <br />
-
           <div>
             <h1 className=" pb-2 font-bold">Chapters</h1>
             <div className="p-4 pl-8 pr-24">
               <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>
-                    Getting Started With React
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Core Concepts of React</AccordionTrigger>
-                  <AccordionContent>
-                    Yes. It comes with default styles that matches the other
-                    components&apos; aesthetic.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>Working with React Hooks</AccordionTrigger>
-                  <AccordionContent>
-                    Yes. It&apos;s animated by default, but you can disable it
-                    if you prefer.
-                  </AccordionContent>
-                </AccordionItem>
+                {chapters.map((chapter) => (
+                  <CHapterAccordionItem chapter={chapter} key={chapter.id} />
+                ))}
               </Accordion>
             </div>
           </div>
@@ -123,16 +95,25 @@ export default async function CoursePage({
   );
 }
 
-// async function addLesson(courseId: string) {
-//   "use server";
-//   const { user } = await validateRequest();
-//   if (user) {
-//     const id = generateId(7);
-//     await db.insert(chapterTable).values({
-//       id,
-//       name: "first chapter",
-//       courseId,
-//     });
-//     revalidatePath("/courses");
-//   }
-// }
+type CHapterAccordionItemPorps = {
+  chapter: {
+    id: string;
+    name: string;
+  };
+};
+async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
+  const lessons = await db
+    .select()
+    .from(lessonTable)
+    .where(eq(lessonTable.chapterId, chapter.id));
+
+  return (
+    <AccordionItem key={chapter.id} value={chapter.id}>
+      <AccordionTrigger>{chapter.name}</AccordionTrigger>
+
+      {lessons.map((lesson) => (
+        <AccordionContent key={lesson.id}>{lesson.title}</AccordionContent>
+      ))}
+    </AccordionItem>
+  );
+}

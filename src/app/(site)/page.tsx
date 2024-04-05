@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <main className={``}>
       <div
-        className={`${styles.mainBg} relative flex h-[765px] flex-col  gap-12   rounded-[0px_0px_200px_200px]  pt-8 text-center`}
+        className={`${styles.mainBg} relative flex h-[765px] flex-col gap-12 rounded-[0px_0px_200px_200px]  pt-8 text-center`}
       >
         <NavBar />
         <div className="relative flex grow flex-col items-center gap-12 overflow-hidden">
