@@ -90,7 +90,7 @@ export function Form({
 }: {
   children: React.ReactNode;
   action: (prevState: unknown, formData: FormData) => Promise<ActionResult>;
-  className?: string;
+  className: string;
 }) {
   const [state, formAction] = useFormState(action, {
     error: null,

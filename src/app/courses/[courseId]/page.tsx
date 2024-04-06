@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/auth";
 import CourseLevel from "@/components/courselevel";
 import MainNavBar from "@/components/mainNavbar";
 import {
@@ -16,7 +15,6 @@ import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
-import { Form } from "@/lib/Form";
 
 export default async function CoursePage({
   params,
@@ -29,7 +27,6 @@ export default async function CoursePage({
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
 
-  // const bindedchapteraciton = chapteraciton.bind(null, params.courseId);
   const chapters = await db
     .select()
     .from(chapterTable)
@@ -112,11 +109,6 @@ export default async function CoursePage({
                 ))}
               </Accordion>
             </div>
-            <p> {params.courseId} </p>
-            <Form action={enroll}>
-              <input type="hidden" value={params.courseId} name="courseId" />
-              <Button type="submit">ENroll </Button>
-            </Form>
           </div>
           <form action={AddChapter}>
             <Button className="bg-[#072E6A]" type="submit">
@@ -152,15 +144,4 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
       ))}
     </AccordionItem>
   );
-}
-
-async function chapteraciton(courseId: string) {
-  "use server";
-
-  const id = generateId(7);
-  await db
-    .insert(lessonTable)
-    .values({ chapterId: "p7a6hcj", title: "testing", id });
-  const path = `/courses/${courseId}`;
-  revalidatePath(path);
 }

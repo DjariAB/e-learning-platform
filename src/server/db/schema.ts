@@ -9,7 +9,6 @@ import {
   varchar,
   datetime,
   int,
-  primaryKey,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -98,19 +97,9 @@ export const questionTable = createTable("question", {
   choice3: varchar("choice_3", { length: 255 }).notNull(),
   correctAnswer: varchar("correct_choice", { length: 255 }).notNull(),
 });
-export const enrolledCoursesTable = createTable(
-  "enrolled_Courses",
-  {
-    courseId: varchar("course_id", { length: 196 }).references(
-      () => courseTable.id,
-    ),
-    userId: varchar("user_id", { length: 255 }).references(() => userTable.id),
-    progress: int("user_progress").$default(() => 0),
-    currentLessonId: varchar("current_lesson_id", { length: 196 }),
-  },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.courseId, table.userId] }),
-    };
-  },
-);
+export const enrolledCoursesTable = createTable("enrolled_Courses", {
+  courseId: varchar("course_id", { length: 196 }).primaryKey(),
+  userId: varchar("user_id", { length: 255 }).primaryKey(),
+  progress: int("user_progress").$default(() => 0),
+  currentLesson: varchar("current_lesson_id", { length: 196 }),
+});

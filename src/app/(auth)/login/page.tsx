@@ -31,6 +31,7 @@ const Login = async () => {
               height={38}
             />
           </Link>
+
           <Link href="signin">
             <Button className="rounded-md px-4" variant="ghost">
               {" "}
@@ -41,9 +42,7 @@ const Login = async () => {
         <div className="flex flex-col justify-center gap-7 pt-20">
           <div className="text-center">
             <h1 className="text-3xl font-semibold">Welcome back</h1>
-            {/* TODO choose between text-zinc or text-gray  */}
-
-            <p className="text-zinc-500">Reconnect and start your journey</p>
+            <p>Reconnect and start your journey</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
             {/* <Form className="w-[488px] space-y-7" action={loginAction}>
@@ -59,8 +58,6 @@ const Login = async () => {
 
             <div className="flex items-center justify-center gap-3">
               <hr className="  h-1 grow" />
-              {/* TODO choose between text-zinc or text-gray  */}
-
               <p className="text-md text-gray-500">Or Continue With</p>
               <hr
                 className=" h-1
