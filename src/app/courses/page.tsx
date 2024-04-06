@@ -19,7 +19,8 @@ const Courses = async () => {
   const enrolledcourses = await db
     .select()
     .from(enrolledCoursesTable)
-    .where(eq(enrolledCoursesTable.userId, user.id));
+    .where(eq(enrolledCoursesTable.userId, user.id))
+    .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id));
 
   const courses = await db.select().from(courseTable);
 
@@ -29,20 +30,28 @@ const Courses = async () => {
       <HeroSec />
 
       <div>
-      <div className="flex  gap-3 overflow-x-scroll">
-        {courses.map((course) => (
-          <Link href={`/courses/${course.id}`} key={course.id}>
-            <CourseCard
-              educatorName={course.educatorId}
-              title={course.title}
-              imageUrl={course.imageUrl}
-              level={course.level}
-            />
-          </Link>
-        ))}
+        <h1>enrolled</h1>
+        <div className="flex  gap-3 overflow-x-scroll">
+          {enrolledcourses.length ? (
+            enrolledcourses.map((enrolled) => (
+              <Link
+                href={`/courses/${enrolled.courses.id}`}
+                key={enrolled.courses.id}
+              >
+                <CourseCard
+                  educatorName={enrolled.courses.educatorId}
+                  title={enrolled.courses.title}
+                  imageUrl={enrolled.courses.imageUrl}
+                  level={enrolled.courses.level}
+                />
+              </Link>
+            ))
+          ) : (
+            <p>no enrolled courses found</p>
+          )}
+        </div>
       </div>
-
-      </div>
+      <h1>new courses</h1>
       <div className="flex  gap-3 overflow-x-scroll">
         {courses.map((course) => (
           <Link href={`/courses/${course.id}`} key={course.id}>
@@ -59,7 +68,7 @@ const Courses = async () => {
       <form action={AddCourse}>
         <Button className="bg-[#072E6A]" type="submit">
           {" "}
-          add your first course
+          add a course
         </Button>
       </form>
       <form action={deleteCourse}>
@@ -84,10 +93,11 @@ async function AddCourse() {
     const id = generateId(7);
     await db.insert(courseTable).values({
       id,
-      level: "beginner",
-      title: "first course",
+      level: "intermediate",
+      title: "nextjs course",
       educatorId: user.id,
-      imageUrl: "https://www.patterns.dev/img/reactjs/react-logo@3x.svg",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
     });
     revalidatePath("/courses");
   }

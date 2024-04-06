@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";
 import { type AuthActionResult, type ActionResult } from "@/lib/Form";
+import { revalidatePath } from "next/cache";
 
 export async function loginAction(
   _: unknown,
@@ -144,13 +145,32 @@ export async function logoutAction(): Promise<ActionResult> {
   return redirect("/");
 }
 
-export async function enroll(courseId: string) {
+export async function enroll(
+  _: unknown,
+  formData: FormData,
+  //  courseId: string
+): Promise<ActionResult> {
   const { user } = await validateRequest();
 
   if (!user) redirect("/login");
 
+  const courseId = formData.get("courseId")?.toString();
+  if (!courseId) return { error: "please provide a courseId" };
+  const isEnrolled = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(
+      and(
+        eq(enrolledCoursesTable.userId, user.id),
+        eq(enrolledCoursesTable.courseId, courseId),
+      ),
+    );
+
+  if (isEnrolled[0]?.courseId) return { error: "coures is already enrolled" };
+
   try {
     await db.insert(enrolledCoursesTable).values({ courseId, userId: user.id });
+    revalidatePath("/courses");
     return { error: null };
   } catch (err) {
     return { error: "failed enrolling the course" };
