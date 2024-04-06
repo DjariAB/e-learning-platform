@@ -5,19 +5,53 @@ import MainNavBar from "@/components/mainNavbar";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable } from "@/server/db/schema";
+import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 const Courses = async () => {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login");
+  const enrolledcourses = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(eq(enrolledCoursesTable.userId, user.id))
+    .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id));
+
   const courses = await db.select().from(courseTable);
+
   return (
     <>
       <MainNavBar />
       <HeroSec />
 
+      <div>
+        <h1>enrolled</h1>
+        <div className="flex  gap-3 overflow-x-scroll">
+          {enrolledcourses.length ? (
+            enrolledcourses.map((enrolled) => (
+              <Link
+                href={`/courses/${enrolled.courses.id}`}
+                key={enrolled.courses.id}
+              >
+                <CourseCard
+                  educatorName={enrolled.courses.educatorId}
+                  title={enrolled.courses.title}
+                  imageUrl={enrolled.courses.imageUrl}
+                  level={enrolled.courses.level}
+                />
+              </Link>
+            ))
+          ) : (
+            <p>no enrolled courses found</p>
+          )}
+        </div>
+      </div>
+      <h1>new courses</h1>
       <div className="flex  gap-3 overflow-x-scroll">
         {courses.map((course) => (
           <Link href={`/courses/${course.id}`} key={course.id}>
@@ -34,7 +68,7 @@ const Courses = async () => {
       <form action={AddCourse}>
         <Button className="bg-[#072E6A]" type="submit">
           {" "}
-          add your first course
+          add a course
         </Button>
       </form>
       <form action={deleteCourse}>
@@ -59,10 +93,11 @@ async function AddCourse() {
     const id = generateId(7);
     await db.insert(courseTable).values({
       id,
-      level: "beginner",
-      title: "first course",
+      level: "intermediate",
+      title: "nextjs course",
       educatorId: user.id,
-      imageUrl: "https://www.patterns.dev/img/reactjs/react-logo@3x.svg",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
     });
     revalidatePath("/courses");
   }
