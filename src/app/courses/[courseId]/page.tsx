@@ -7,14 +7,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 
 export default async function CoursePage({
   params,
@@ -31,20 +27,7 @@ export default async function CoursePage({
     .select()
     .from(chapterTable)
     .where(eq(chapterTable.courseId, params.courseId));
-  async function AddChapter() {
-    "use server";
-    const { user } = await validateRequest();
-    if (user) {
-      const id = generateId(7);
-      await db.insert(chapterTable).values({
-        id,
-        courseId : course.id,
-        name: "Hello mf"
 
-      });
-      revalidatePath("/courses");
-    }
-  }
   return (
     <>
       <div className={` bg-cover ${styles.background}`}>
@@ -56,9 +39,8 @@ export default async function CoursePage({
             alt="Course image"
             className="size-[280px] rounded-2xl object-cover"
           />
-
           <div className="flex flex-col gap-4 text-white">
-            <h1 className="text-4xl font-bold">Introduction to REACT JS</h1>
+            <h1 className="text-3xl font-medium">Introduction to REACT JS</h1>
             <p className="text-2xl font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
@@ -84,7 +66,7 @@ export default async function CoursePage({
       </div>
       <div className="flex">
         <div className="w-3/4 px-24 py-6 text-2xl">
-          <h1 className="text-3xl font-bold">Description</h1>
+          <h1 className="text-3xl font-medium">Description</h1>
           <p className="text p-4 font-light">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia,
             quod placeat. Officia libero voluptate animi ratione, nesciunt
@@ -110,12 +92,6 @@ export default async function CoursePage({
               </Accordion>
             </div>
           </div>
-          <form action={AddChapter}>
-            <Button className="bg-[#072E6A]" type="submit">
-              {" "}
-              add your first Chapter
-            </Button>
-          </form>
         </div>
         <div>Scroll tracker</div>
       </div>
