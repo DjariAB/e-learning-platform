@@ -25,13 +25,13 @@ const Courses = async () => {
   const courses = await db.select().from(courseTable);
 
   return (
-    <>
-      <MainNavBar />
+    <div className="pt-16">
+      {/* <MainNavBar /> */}
       <HeroSec />
 
       <div>
         <h1>enrolled</h1>
-        <div className="flex  gap-3 overflow-x-scroll">
+        <div className="flex  gap-3 overflow-x-auto ">
           {enrolledcourses.length ? (
             enrolledcourses.map((enrolled) => (
               <Link
@@ -52,7 +52,7 @@ const Courses = async () => {
         </div>
       </div>
       <h1>new courses</h1>
-      <div className="flex  gap-3 overflow-x-scroll">
+      <div className="flex  gap-3 overflow-x-auto">
         {courses.map((course) => (
           <Link href={`/courses/${course.id}`} key={course.id}>
             <CourseCard
@@ -64,6 +64,7 @@ const Courses = async () => {
           </Link>
         ))}
       </div>
+<div className=" flex flex-col gap-3">
 
       <form action={AddCourse}>
         <Button className="bg-[#072E6A]" type="submit">
@@ -80,7 +81,8 @@ const Courses = async () => {
       <form action={logoutAction}>
         <Button type="submit">logout</Button>
       </form>
-    </>
+</div>
+    </div>
   );
 };
 
@@ -106,7 +108,11 @@ async function deleteCourse() {
   "use server";
   const { user } = await validateRequest();
   if (user) {
-    await db.delete(courseTable).where(eq(courseTable.educatorId, user.id));
-    revalidatePath("/courses");
+    try {
+      await db.delete(courseTable).where(eq(courseTable.educatorId, user.id));
+      revalidatePath("/courses");
+    } catch (error) {
+      console.log("there is an erorr in here ", error);
+    }
   }
 }

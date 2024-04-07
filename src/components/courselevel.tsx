@@ -1,4 +1,12 @@
-import Image from "next/image";
+import {
+  BarChart,
+  SignalHigh,
+  SignalHighIcon,
+  SignalIcon,
+  SignalMediumIcon,
+} from "lucide-react";
+// import Image from "next/image";
+// import {} from "@heroicons/react";
 
 function CourseLevel({
   level,
@@ -7,18 +15,28 @@ function CourseLevel({
   level: string;
   additionalStyle: string;
 }) {
+  const levelColor =
+    level === "advanced"
+      ? "text-red-600"
+      : level === "beginner"
+        ? "text-green-600"
+        : "text-orange-500";
   return (
     <div
-      className={`flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1 ${additionalStyle}`}
+      className={`flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1 ${additionalStyle}`}
     >
-      <Image
+      {/* <Image
         src="/SVGs/Level_icon.svg"
         className="h-3 w-3"
         width={8}
         height={8}
         alt="level icon"
-      />
-      <p className="font-medium">{level}</p>
+      /> */}
+
+      <BarChart className={`${levelColor} h-5 w-5`} />
+
+      {/* <SignalHigh  /> */}
+      <p className="font-medium">{level} </p>
     </div>
   );
 }
