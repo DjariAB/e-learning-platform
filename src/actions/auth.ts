@@ -2,12 +2,13 @@
 
 import { lucia, validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { userTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { enrolledCoursesTable, userTable } from "@/server/db/schema";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { generateId } from "lucia";
 import { type AuthActionResult, type ActionResult } from "@/lib/Form";
+import { revalidatePath } from "next/cache";
 
 export async function loginAction(
   _: unknown,
@@ -50,7 +51,11 @@ export async function loginAction(
     }
     const sessionId = generateId(7);
 
-    const session = await lucia.createSession(existingUser[0].id, {},{sessionId});
+    const session = await lucia.createSession(
+      existingUser[0].id,
+      {},
+      { sessionId },
+    );
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(
@@ -100,9 +105,9 @@ export async function signupAction(
     await db
       .insert(userTable)
       .values({ id: userId, userName: username, password });
-      const sessionId = generateId(7);
+    const sessionId = generateId(7);
 
-    const session = await lucia.createSession(userId, {},{sessionId});
+    const session = await lucia.createSession(userId, {}, { sessionId });
     const sessionCookie = lucia.createSessionCookie(session.id);
 
     cookies().set(
@@ -138,4 +143,36 @@ export async function logoutAction(): Promise<ActionResult> {
     sessionCookie.attributes,
   );
   return redirect("/");
+}
+
+export async function enroll(
+  _: unknown,
+  formData: FormData,
+  //  courseId: string
+): Promise<ActionResult> {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login");
+
+  const courseId = formData.get("courseId")?.toString();
+  if (!courseId) return { error: "please provide a courseId" };
+  const isEnrolled = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(
+      and(
+        eq(enrolledCoursesTable.userId, user.id),
+        eq(enrolledCoursesTable.courseId, courseId),
+      ),
+    );
+
+  if (isEnrolled[0]?.courseId) return { error: "coures is already enrolled" };
+
+  try {
+    await db.insert(enrolledCoursesTable).values({ courseId, userId: user.id });
+    revalidatePath("/courses");
+    return { error: null };
+  } catch (err) {
+    return { error: "failed enrolling the course" };
+  }
 }
