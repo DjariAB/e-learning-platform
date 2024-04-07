@@ -8,14 +8,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/lib/Form";
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
+import { Form } from "@/lib/Form";
 
 export default async function CoursePage({
   params,
@@ -33,8 +32,6 @@ export default async function CoursePage({
     .select()
     .from(chapterTable)
     .where(eq(chapterTable.courseId, params.courseId));
-
-  // const bindedEnroll = enroll.bind(null, params.courseId);
 
   return (
     <>
