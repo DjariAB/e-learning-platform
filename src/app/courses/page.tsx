@@ -1,7 +1,6 @@
 import { logoutAction } from "@/actions/auth";
-import CourseCard from "@/components/courseCard";
+import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
-import MainNavBar from "@/components/mainNavbar";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
@@ -10,7 +9,6 @@ import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 const Courses = async () => {
   const { user } = await validateRequest();
@@ -25,26 +23,23 @@ const Courses = async () => {
   const courses = await db.select().from(courseTable);
 
   return (
-    <div className="pt-16">
-      {/* <MainNavBar /> */}
+    <div className="px-3 pt-16">
       <HeroSec />
 
-      <div>
+      <div className="pt-4">
         <h1>enrolled</h1>
         <div className="flex  gap-3 overflow-x-auto ">
           {enrolledcourses.length ? (
             enrolledcourses.map((enrolled) => (
-              <Link
-                href={`/courses/${enrolled.courses.id}`}
+              <EnrolledCourseCard
+                educatorName={enrolled.courses.educatorId}
+                title={enrolled.courses.title}
+                imageUrl={enrolled.courses.imageUrl}
+                level={enrolled.courses.level}
+                progress={enrolled.enrolled_Courses?.progress ?? 0}
+                courseId={enrolled.courses.id}
                 key={enrolled.courses.id}
-              >
-                <CourseCard
-                  educatorName={enrolled.courses.educatorId}
-                  title={enrolled.courses.title}
-                  imageUrl={enrolled.courses.imageUrl}
-                  level={enrolled.courses.level}
-                />
-              </Link>
+              />
             ))
           ) : (
             <p>no enrolled courses found</p>
@@ -54,34 +49,33 @@ const Courses = async () => {
       <h1>new courses</h1>
       <div className="flex  gap-3 overflow-x-auto">
         {courses.map((course) => (
-          <Link href={`/courses/${course.id}`} key={course.id}>
-            <CourseCard
-              educatorName={course.educatorId}
-              title={course.title}
-              imageUrl={course.imageUrl}
-              level={course.level}
-            />
-          </Link>
+          <CourseCard
+            educatorName={course.educatorId}
+            title={course.title}
+            imageUrl={course.imageUrl}
+            level={course.level}
+            courseId={course.id}
+            key={course.id}
+          />
         ))}
       </div>
-<div className=" flex flex-col gap-3">
-
-      <form action={AddCourse}>
-        <Button className="bg-[#072E6A]" type="submit">
-          {" "}
-          add a course
-        </Button>
-      </form>
-      <form action={deleteCourse}>
-        <Button variant="destructive" type="submit">
-          {" "}
-          remove all courses
-        </Button>
-      </form>
-      <form action={logoutAction}>
-        <Button type="submit">logout</Button>
-      </form>
-</div>
+      <div className=" flex flex-col gap-3">
+        <form action={AddCourse}>
+          <Button className="bg-[#072E6A]" type="submit">
+            {" "}
+            add a course
+          </Button>
+        </form>
+        <form action={deleteCourse}>
+          <Button variant="destructive" type="submit">
+            {" "}
+            remove all courses
+          </Button>
+        </form>
+        <form action={logoutAction}>
+          <Button type="submit">logout</Button>
+        </form>
+      </div>
     </div>
   );
 };

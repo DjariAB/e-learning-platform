@@ -15,6 +15,7 @@ import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { Form } from "@/lib/Form";
+import { Button } from "@/components/ui/button";
 
 export default async function CoursePage({
   params,
