@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/auth";
+import { enroll } from "@/actions/helpers";
 import CourseLevel from "@/components/courselevel";
-import MainNavBar from "@/components/mainNavbar";
 import {
   Accordion,
   AccordionContent,
@@ -12,8 +11,6 @@ import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { eq } from "drizzle-orm";
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 import { Form } from "@/lib/Form";
 import { Button } from "@/components/ui/button";
 
@@ -28,7 +25,6 @@ export default async function CoursePage({
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
 
-  // const bindedchapteraciton = chapteraciton.bind(null, params.courseId);
   const chapters = await db
     .select()
     .from(chapterTable)
@@ -133,13 +129,13 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
   );
 }
 
-async function chapteraciton(courseId: string) {
-  "use server";
+// async function chapteraciton(courseId: string) {
+//   "use server";
 
-  const id = generateId(7);
-  await db
-    .insert(lessonTable)
-    .values({ chapterId: "p7a6hcj", title: "testing", id });
-  const path = `/courses/${courseId}`;
-  revalidatePath(path);
-}
+//   const id = generateId(7);
+//   await db
+//     .insert(lessonTable)
+//     .values({ chapterId: "p7a6hcj", title: "testing", id });
+//   const path = `/courses/${courseId}`;
+//   revalidatePath(path);
+// }
