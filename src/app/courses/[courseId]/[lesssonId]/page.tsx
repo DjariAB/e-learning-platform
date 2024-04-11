@@ -16,8 +16,8 @@ export default function LessonPage({
   params: { lessonId: string };
 }) {
   return (
-    <div className="pt-4">
-      <NavBar />
+    <div className="pt-10">
+      {/* <NavBar /> */}
       <div className="px-32">
         <div className="flex w-fit items-center gap-20  py-12">
           <img
@@ -68,7 +68,7 @@ export default function LessonPage({
                   Take Your Quiz
                 </Button>
                 <Button
-                  disabled={true}
+                  // disabled={true}
                   variant={"outline"}
                   className="w-40 items-center gap-2 rounded-md text-xl font-normal"
                 >

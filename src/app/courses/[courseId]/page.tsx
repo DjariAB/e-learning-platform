@@ -53,17 +53,17 @@ export default async function CoursePage({
 
   return (
     <>
-      <div className={` bg-cover ${styles.background}`}>
-        <MainNavBar />
+      <div className={` bg-cover pt-10 ${styles.background}`}>
+        {/* <MainNavBar /> */}
 
         <div className="flex items-center gap-16 px-32 py-12 ">
           <img
-            src="https://miro.medium.com/v2/resize:fit:2000/1*y6C4nSvy2Woe0m7bWEn4BA.png"
+            src={course?.imageUrl}
             alt="Course image"
             className="size-[280px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-4 text-white">
-            <h1 className="text-3xl font-medium">Introduction to REACT JS</h1>
+            <h1 className="text-3xl font-medium">{course?.title}</h1>
             <p className="text-2xl font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
@@ -113,7 +113,7 @@ export default async function CoursePage({
       </div>
       <div className="flex">
         <div className="w-3/4 px-24 py-6 text-2xl">
-          <h1 className="text-3xl font-medium">Description</h1>
+          <h1 className="text-3xl font-medium">Description </h1>
           <p className="text p-4 font-light">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia,
             quod placeat. Officia libero voluptate animi ratione, nesciunt
