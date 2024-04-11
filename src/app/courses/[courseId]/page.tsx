@@ -9,12 +9,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { db } from "@/server/db";
-import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
+import {
+  chapterTable,
+  courseTable,
+  enrolledCoursesTable,
+  lessonTable,
+} from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { Form } from "@/lib/Form";
+import { Button } from "@/components/ui/button";
+import { validateRequest } from "@/server/auth";
 
 export default async function CoursePage({
   params,
@@ -26,12 +33,23 @@ export default async function CoursePage({
     .from(courseTable)
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
+  const { user } = await validateRequest();
 
   // const bindedchapteraciton = chapteraciton.bind(null, params.courseId);
   const chapters = await db
     .select()
     .from(chapterTable)
     .where(eq(chapterTable.courseId, params.courseId));
+  const isEnrolled = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(
+      and(
+        eq(enrolledCoursesTable.userId, user!.id),
+        eq(enrolledCoursesTable.courseId, params.courseId),
+      ),
+    );
+  console.log(isEnrolled);
 
   return (
     <>
@@ -58,13 +76,37 @@ export default async function CoursePage({
                 additionalStyle="text-black"
               />
             </div>
-            <div className="flex items-center gap-5">
-              <img
-                src="https://i.pinimg.com/736x/f1/50/2c/f1502cf311fc2652aba302f0513a2490.jpg"
-                className="size-10 rounded-full object-cover"
-                alt="educator's avatar"
-              />
-              <p>Educator name</p>
+            <div className="flex justify-between pr-10">
+              <div className="flex items-center gap-5">
+                <img
+                  src="https://i.pinimg.com/736x/f1/50/2c/f1502cf311fc2652aba302f0513a2490.jpg"
+                  className="size-10 rounded-full object-cover"
+                  alt="educator's avatar"
+                />
+                <p>Educator name</p>
+              </div>
+              {isEnrolled.length ? (
+                <Button
+                  type="submit"
+                  className="bg-white px-7 py-5 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
+                >
+                  Continue Learning{" "}
+                </Button>
+              ) : (
+                <Form action={enroll}>
+                  <input
+                    type="hidden"
+                    value={params.courseId}
+                    name="courseId"
+                  />
+                  <Button
+                    type="submit"
+                    className="bg-white px-7 py-5 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
+                  >
+                    Enroll{" "}
+                  </Button>
+                </Form>
+              )}
             </div>
           </div>
         </div>
@@ -97,10 +139,6 @@ export default async function CoursePage({
               </Accordion>
             </div>
             <p> {params.courseId} </p>
-            <Form action={enroll}>
-              <input type="hidden" value={params.courseId} name="courseId" />
-              <Button type="submit">ENroll </Button>
-            </Form>
           </div>
         </div>
         <div>Scroll tracker</div>
