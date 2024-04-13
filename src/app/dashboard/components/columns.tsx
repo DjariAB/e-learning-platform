@@ -1,12 +1,12 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+type studentCell = { imgUrl: string; studentName: string };
 export type Student = {
   id: string;
-  name: string;
+  student: studentCell;
   score: number;
   course: string;
   progress: string;
@@ -15,9 +15,21 @@ export type Student = {
 
 export const columns: ColumnDef<Student>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "student",
     header: "Student",
-    cell: ({ row, column }) => <div> {row.original.name} {row.original.course}</div>,
+    cell({ row }) {
+      return (
+        <div className="flex min-w-36 items-center gap-4">
+          <img
+            className="size-8 overflow-hidden rounded-full object-cover"
+            src={row.original.student.imgUrl}
+            alt="Student avatar image"
+          />
+
+          <p>{row.original.student.studentName}</p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "score",
