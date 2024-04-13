@@ -17,6 +17,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "name",
     header: "Student",
+    cell: ({ row, column }) => <div> {row.original.name} {row.original.course}</div>,
   },
   {
     accessorKey: "score",

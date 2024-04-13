@@ -137,6 +137,7 @@ export async function logoutAction(): Promise<ActionResult> {
 
   const sessionCookie = lucia.createBlankSessionCookie();
   cookies().set(
+  
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
