@@ -33,12 +33,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { columns, type Student } from "./components/columns";
 import { DataTable } from "./components/data-table";
+import Link from "next/link";
+import CourseRow from "./components/courseRow";
+import StatContainer from "./components/statConainter";
+
 async function getData(): Promise<Student[]> {
   // Fetch data from your API here.
   return [
     {
       id: "728ed52f",
-      name: "saif",
+      student: {
+        imgUrl:
+          "https://upload.wikimedia.org/wikipedia/en/f/ff/Timoth%C3%A9e_Chalamet_as_Paul_Atreides_%28Dune_2021%29.jpg",
+        studentName: "Messi",
+      },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -46,7 +54,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -54,7 +62,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -62,7 +70,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -70,7 +78,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -78,7 +86,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -86,7 +94,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -94,7 +102,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -102,7 +110,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -110,7 +118,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -118,7 +126,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -126,7 +134,7 @@ async function getData(): Promise<Student[]> {
     },
     {
       id: "728ed52f",
-      name: "saif",
+      student: { imgUrl: "url ", studentName: "Messi" },
       course: "testing",
       progress: "test",
       rank: "# 1",
@@ -144,29 +152,30 @@ export default async function Page() {
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
           <Card className="sm:col-span-2 " x-chunk="dashboard-05-chunk-0">
             <CardHeader className="pb-3">
-              <CardTitle>Your Orders</CardTitle>
-              <CardDescription className="max-w-lg text-balance leading-relaxed">
-                Introducing Our Dynamic Orders Dashboard for Seamless Management
-                and Insightful Analysis.
-              </CardDescription>
+              <CardTitle>
+                <Link href={""} className="flex h-10 items-center gap-3 ">
+                  <p className="leading-7">My courses</p>{" "}
+                  <ChevronRight className="size-4" />
+                </Link>
+              </CardTitle>
             </CardHeader>
-            <CardFooter>
-              <Button>Create New Order</Button>
-            </CardFooter>
+            <CourseRow
+              courseImage="https://static.qobuz.com/images/covers/9a/8k/mrvlalpv78k9a_600.jpg"
+              courseRating="4.3"
+              courseTag="Survival"
+              courseTitle="Freemen Survival Skills"
+            />
           </Card>
           <Card className="h-72 sm:col-span-2" x-chunk="dashboard-05-chunk-1">
             <CardHeader className="pb-2">
-              <CardDescription>This Week</CardDescription>
-              <CardTitle className="text-4xl">$1,329</CardTitle>
+              <CardTitle>
+                <Link href={""} className="flex h-10 items-center gap-3 ">
+                  <p className="leading-7">My Stats</p>{" "}
+                  <ChevronRight className="size-4" />
+                </Link>
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-xs text-muted-foreground">
-                +25% from last week
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Progress value={25} aria-label="25% increase" />
-            </CardFooter>
+            <StatContainer statTitle="Created Courses" value="4" />
           </Card>
         </div>
         {/* <Tabs defaultValue="week">
@@ -218,7 +227,7 @@ export default async function Page() {
             </Tabs> */}
         <Card x-chunk="dashboard-05-chunk-3" className="overflow-x-scroll">
           <CardHeader className="px-7">
-            <CardTitle>Orders</CardTitle>
+            <CardTitle>Your Students LeaderBoard</CardTitle>
             {/* <CardDescription>
                       Recent orders from your store.
                     </CardDescription> */}
