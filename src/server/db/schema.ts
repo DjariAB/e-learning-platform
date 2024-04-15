@@ -10,6 +10,7 @@ import {
   datetime,
   int,
   primaryKey,
+  boolean,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -27,6 +28,8 @@ export const userTable = createTable("user", {
   userName: varchar("username", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }),
   github_id: varchar("github_id", { length: 255 }).unique(),
+  isMentor: boolean("is_mentor").default(false),
+  
 });
 
 export const sessionTable = createTable("session", {

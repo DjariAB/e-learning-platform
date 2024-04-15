@@ -20,6 +20,7 @@ export const lucia = new Lucia(adapter, {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       githubId: attributes.github_id,
       userName: attributes.userName,
+      isMentor: attributes.isMentor,
     };
   },
 });
@@ -83,4 +84,5 @@ export const github = new GitHub(
 interface DatabaseUserAttributes {
   github_id: number;
   userName: string;
+  isMentor: boolean;
 }

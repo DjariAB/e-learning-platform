@@ -1,5 +1,5 @@
 // import { loginAction } from "@/actions/auth";
-import { loginAction } from "@/actions/auth";
+import { mentorLoginAction } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { AuthForm } from "@/lib/Form";
 import { validateRequest } from "@/server/auth";
@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 
 const Login = async () => {
   const { user } = await validateRequest();
-  if (user) return redirect("/courses");
+  if (user && user.isMentor) return redirect("/dashboard");
 
   return (
     <div className="flex h-screen flex-row-reverse">
@@ -32,7 +32,7 @@ const Login = async () => {
               height={38}
             />
           </Link>
-          <Link href="signin">
+          <Link href="/signin/mentor">
             <Button className="rounded-md px-4" variant="ghost">
               {" "}
               Create an account{" "}
@@ -57,7 +57,7 @@ const Login = async () => {
               <Button className="w-full rounded-lg">Login</Button>
             </Form> */}
             <AuthForm
-              action={loginAction}
+              action={mentorLoginAction}
               ButtonText="Login"
               className="w-[488px] space-y-7"
             />
