@@ -19,7 +19,7 @@ export const columns: ColumnDef<Student>[] = [
     header: "Student",
     cell({ row }) {
       return (
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-36 items-center gap-4">
           <img
             className="size-8 overflow-hidden rounded-full object-cover"
             src={row.original.student.imgUrl}

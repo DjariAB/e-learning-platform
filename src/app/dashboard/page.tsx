@@ -45,102 +45,72 @@ async function getData(): Promise<Student[]> {
       student: {
         imgUrl:
           "https://upload.wikimedia.org/wikipedia/en/f/ff/Timoth%C3%A9e_Chalamet_as_Paul_Atreides_%28Dune_2021%29.jpg",
-        studentName: "Messi",
+        studentName: "paul atreides",
       },
-      course: "testing",
+      course: "Freemen Survival Skills",
       progress: "test",
-      rank: "# 1",
+      rank: "#1",
       score: 22,
     },
     {
       id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
+      student: {
+        imgUrl:
+          "https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zendaya_as_Chani_%28Dune_2021%29.jpg/220px-Zendaya_as_Chani_%28Dune_2021%29.jpg",
+        studentName: "Chani",
+      },
+      course: "Freemen Survival Skills",
       progress: "test",
-      rank: "# 1",
+      rank: "#2",
       score: 22,
     },
     {
       id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
+      student: {
+        imgUrl:
+          "https://upload.wikimedia.org/wikipedia/en/c/c2/Jason_Momoa_Duncan_Idaho.png",
+        studentName: "Duncan Idaho",
+      },
+      course: "Duncan Idaho",
       progress: "test",
-      rank: "# 1",
+      rank: "#3",
       score: 22,
     },
     {
       id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
+      student: {
+        imgUrl:
+          "https://i.kym-cdn.com/entries/icons/facebook/000/048/705/stilgar_dune.jpg",
+        studentName: "Stilgar",
+      },
+      course: "Freemen Survival Skills",
       progress: "test",
-      rank: "# 1",
+      rank: "#4",
       score: 22,
     },
     {
       id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
+      student: {
+        imgUrl:
+          "https://imgix.bustle.com/uploads/image/2023/6/8/f70f1e10-8726-4643-b80f-a826c0bb60c4-dune-part-two-lady-jessica.jpg",
+        studentName: "Lady jessica",
+      },
+      course: "Freemen Survival Skills",
       progress: "test",
-      rank: "# 1",
+      rank: "#5",
       score: 22,
     },
     {
       id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
+      student: {
+        imgUrl: "https://i.redd.it/16gvesb43bj71.jpg",
+        studentName: "Gurney Halleck",
+      },
+      course: "Freemen Survival Skills",
       progress: "test",
-      rank: "# 1",
+      rank: "#6",
       score: 22,
     },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    {
-      id: "728ed52f",
-      student: { imgUrl: "url ", studentName: "Messi" },
-      course: "testing",
-      progress: "test",
-      rank: "# 1",
-      score: 22,
-    },
-    // ...
   ];
 }
 
@@ -159,12 +129,26 @@ export default async function Page() {
                 </Link>
               </CardTitle>
             </CardHeader>
-            <CourseRow
-              courseImage="https://static.qobuz.com/images/covers/9a/8k/mrvlalpv78k9a_600.jpg"
-              courseRating="4.3"
-              courseTag="Survival"
-              courseTitle="Freemen Survival Skills"
-            />
+            <CardContent className="flex flex-col gap-1 p-0">
+              <CourseRow
+                courseImage="https://legendary-digital-network-assets.s3.amazonaws.com/wp-content/uploads/2024/02/29104928/Dune-Part-Two-Paul-Atreides.jpg"
+                courseRating="4.8"
+                courseTag="Fighting"
+                courseTitle="Duke Fighting Fundelmentals"
+              />
+              <CourseRow
+                courseImage="https://static.qobuz.com/images/covers/9a/8k/mrvlalpv78k9a_600.jpg"
+                courseRating="4.3"
+                courseTag="Survival"
+                courseTitle="Fremen Survival Skills"
+              />
+              <CourseRow
+                courseImage="https://cdn.vox-cdn.com/thumbor/PYx2QFLAW6XH4IBidJELZVyY880=/0x0:2880x1181/1200x800/filters:focal(1363x174:1823x634)/cdn.vox-cdn.com/uploads/chorus_image/image/70029000/Screen_Shot_2021_10_21_at_7.25.53_PM.0.png"
+                courseRating="4.6"
+                courseTag="Politics"
+                courseTitle="Bene Gesserit Rituals"
+              />
+            </CardContent>
           </Card>
           <Card className="h-72 sm:col-span-2" x-chunk="dashboard-05-chunk-1">
             <CardHeader className="pb-2">
@@ -175,56 +159,19 @@ export default async function Page() {
                 </Link>
               </CardTitle>
             </CardHeader>
-            <StatContainer statTitle="Created Courses" value="4" />
+            <CardContent className="p-0">
+              <div className="flex flex-col items-center justify-center space-y-1 py-3">
+                <h3>Your rank</h3>
+                <StatContainer statTitle="Overall Course Rating" value="2#" />
+              </div>
+              <div className=" flex justify-center gap-6 py-2 pt-4">
+                <StatContainer statTitle="Created Courses" value="4" />
+                <StatContainer statTitle="Enrolled Students" value="3500" />
+              </div>
+            </CardContent>
           </Card>
         </div>
-        {/* <Tabs defaultValue="week">
-              <div className="flex items-center">
-                <TabsList>
-                  <TabsTrigger value="week">Week</TabsTrigger>
-                  <TabsTrigger value="month">Month</TabsTrigger>
-                  <TabsTrigger value="year">Year</TabsTrigger>
-                </TabsList>
-                <div className="ml-auto flex items-center gap-2">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 gap-1 text-sm"
-                      >
-                        <ListFilter className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only">Filter</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuCheckboxItem checked>
-                        Fulfilled
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem>
-                        Declined
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem>
-                        Refunded
-                      </DropdownMenuCheckboxItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 gap-1 text-sm"
-                  >
-                    <File className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Export</span>
-                  </Button>
-                </div>
-              </div>
-              <TabsContent value="week">
 
-              </TabsContent>
-            </Tabs> */}
         <Card x-chunk="dashboard-05-chunk-3" className="overflow-x-scroll">
           <CardHeader className="px-7">
             <CardTitle>Your Students LeaderBoard</CardTitle>
@@ -392,186 +339,4 @@ export default async function Page() {
       </div>
     </main>
   );
-}
-
-{
-  /* <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Customer</TableHead>
-                      <TableHead className="hidden sm:table-cell">
-                        Type
-                      </TableHead>
-                      <TableHead className="hidden sm:table-cell">
-                        Status
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Date
-                      </TableHead>
-                      <TableHead className="text-right">Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow className="bg-accent">
-                      <TableCell>
-                        <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Sale
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Olivia Smith</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          olivia@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Refund
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="outline">
-                          Declined
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-24
-                      </TableCell>
-                      <TableCell className="text-right">$150.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Sale
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Noah Williams</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          noah@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Subscription
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-25
-                      </TableCell>
-                      <TableCell className="text-right">$350.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Emma Brown</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          emma@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Sale
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-26
-                      </TableCell>
-                      <TableCell className="text-right">$450.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Liam Johnson</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          liam@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Sale
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-23
-                      </TableCell>
-                      <TableCell className="text-right">$250.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Olivia Smith</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          olivia@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Refund
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="outline">
-                          Declined
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-24
-                      </TableCell>
-                      <TableCell className="text-right">$150.00</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="font-medium">Emma Brown</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          emma@example.com
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        Sale
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge className="text-xs" variant="secondary">
-                          Fulfilled
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        2023-06-26
-                      </TableCell>
-                      <TableCell className="text-right">$450.00</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table> */
 }

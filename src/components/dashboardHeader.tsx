@@ -1,6 +1,5 @@
 import {
   DropdownMenu,
-  // DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -29,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { logoutAction } from "@/actions/auth";
 
 const DashboardHeader = () => {
   return (
@@ -111,7 +111,7 @@ const DashboardHeader = () => {
         <Input
           type="search"
           placeholder="Search..."
-          className="h-12 w-full rounded-lg bg-background pl-3 md:w-[200px] lg:w-[320px]"
+          className="h-10 w-full rounded-lg bg-background pl-3 md:w-[200px] lg:w-[320px]"
         />
       </div>
       <DropdownMenu>
@@ -136,7 +136,11 @@ const DashboardHeader = () => {
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem>
+            <form action={logoutAction}>
+              <button type="submit">Logout</button>
+            </form>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
