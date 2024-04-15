@@ -17,7 +17,7 @@ export async function enroll(
   if (!user) redirect("/login");
 
   const courseId = formData.get("courseId")?.toString();
-  if (!courseId) return { error: "please provide a courseId" };
+  if (!courseId) return { error: "please provide a courseId", type: null };
   const isEnrolled = await db
     .select()
     .from(enrolledCoursesTable)
@@ -28,14 +28,15 @@ export async function enroll(
       ),
     );
 
-  if (isEnrolled[0]?.courseId) return { error: "coures is already enrolled" };
+  if (isEnrolled[0]?.courseId)
+    return { error: "coures is already enrolled", type: null };
 
   try {
     // const currentLesson=await db.select().from(lessonTable).where(eq(lessonTable.))
     await db.insert(enrolledCoursesTable).values({ courseId, userId: user.id });
     revalidatePath("/courses");
-    return { error: null };
+    return { error: null, type: null };
   } catch (err) {
-    return { error: "failed enrolling the course" };
+    return { error: "failed enrolling the course", type: null };
   }
 }

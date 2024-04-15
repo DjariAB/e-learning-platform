@@ -16,8 +16,8 @@ import {
 } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { and, eq } from "drizzle-orm";
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
+// import { generateId } from "lucia";
+// import { revalidatePath } from "next/cache";
 import { Form } from "@/lib/Form";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";

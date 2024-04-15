@@ -2,6 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
+import { ReactNode } from "react";
+import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 
 export interface ActionResult {
@@ -15,8 +18,8 @@ export function AuthForm({
   ButtonText,
 }: {
   action: (prevState: unknown, formData: FormData) => Promise<ActionResult>;
-  className: string;
-  ButtonText: string;
+  className?: string;
+  ButtonText?: string;
 }) {
   const [state, formAction] = useFormState(action, {
     error: null,
@@ -41,7 +44,45 @@ export function AuthForm({
         )}
       </div>
 
-      <Button className="w-full rounded-lg"> {ButtonText} </Button>
+      <SubmitButton className="w-full rounded-lg"> {ButtonText} </SubmitButton>
+    </form>
+  );
+}
+
+export function SubmitButton({
+  className,
+  children,
+}: {
+  children: ReactNode;
+  className: string;
+}) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending} className={className}>
+      {!pending ? children : <Loader2 className="animate-spin" />}
+    </Button>
+  );
+}
+
+export function Form({
+  action,
+  className,
+  children,
+}: {
+  action: (prevState: unknown, formData: FormData) => Promise<ActionResult>;
+  className?: string;
+  children: ReactNode;
+}) {
+  const [state, formAction] = useFormState(action, {
+    error: null,
+    type: null,
+  });
+  return (
+    <form action={formAction} className={className}>
+      {children}
+
+      {state.error}
     </form>
   );
 }

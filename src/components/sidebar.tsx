@@ -5,13 +5,11 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  ShoppingCart,
-  Users2,
-} from "lucide-react";
+  AcademicCapIcon,
+  PlusCircleIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/24/outline";
+import { Home, LineChart, Package2, Settings } from "lucide-react";
 import Link from "next/link";
 
 const SideBar = () => {
@@ -44,35 +42,12 @@ const SideBar = () => {
                 href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <ShoppingCart className="h-5 w-5" />
-                <span className="sr-only">Orders</span>
+                <Squares2X2Icon className="size-6" />
+
+                <span className="sr-only">Overview</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Orders</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Package className="h-5 w-5" />
-                <span className="sr-only">Products</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Products</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Users2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
+            <TooltipContent side="right">Overview</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -86,22 +61,50 @@ const SideBar = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Analytics</TooltipContent>
           </Tooltip>
-        </TooltipProvider>
-      </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
-        {/* <Tooltip>
+          <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Settings className="h-5 w-5" />
+                {/* <Package className="h-5 w-5" />
+                 */}
+                <AcademicCapIcon className="size-6" />
+                <span className="sr-only">My Courses</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">My Courses</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              >
+                {/* <Users2 className="h-5 w-5" /> */}
+                <PlusCircleIcon className="size-6" />
+
+                <span className="sr-only">New Course</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Overview</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              >
+                <Settings className="size-5" />
                 <span className="sr-only">Settings</span>
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">Settings</TooltipContent>
-          </Tooltip> */}
+          </Tooltip>
+        </TooltipProvider>
       </nav>
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4"></nav>
     </aside>
   );
 };
