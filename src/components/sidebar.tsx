@@ -1,110 +1,48 @@
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
-import {
   AcademicCapIcon,
   PlusCircleIcon,
+  PresentationChartBarIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
-import { Home, LineChart, Package2, Settings } from "lucide-react";
 import Link from "next/link";
 
 const SideBar = () => {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
-        <Link
-          href="#"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-        >
-          <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">Acme Inc</span>
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col bg-background px-2 pt-2 sm:flex">
+      <nav className="flex flex-col items-stretch gap-4 px-2 sm:py-4">
+        <Link className="self-center" href="/">
+          <img
+            className="w-40 "
+            src="/SVGs/logo text.svg"
+            alt="Platform logo"
+          />
         </Link>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Home className="h-5 w-5" />
-                <span className="sr-only">Dashboard</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Dashboard</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Squares2X2Icon className="size-6" />
+        <Link href="">
+          <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-3 text-xl font-normal transition duration-300 ease-in hover:bg-gray-200 ">
+            <Squares2X2Icon className="size-7  stroke-[1.5px]" />
 
-                <span className="sr-only">Overview</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Overview</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LineChart className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                {/* <Package className="h-5 w-5" />
-                 */}
-                <AcademicCapIcon className="size-6" />
-                <span className="sr-only">My Courses</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">My Courses</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                {/* <Users2 className="h-5 w-5" /> */}
-                <PlusCircleIcon className="size-6" />
-
-                <span className="sr-only">New Course</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Overview</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Settings className="size-5" />
-                <span className="sr-only">Settings</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+            <p className="text-lg font-normal">Overview</p>
+          </div>
+        </Link>
+        <Link href="">
+          <div className="flex items-center gap-3 rounded-2xl bg-white p-3 text-xl font-normal transition duration-300 ease-in hover:bg-gray-200 ">
+            <PresentationChartBarIcon className="size-7  stroke-[1.5px]" />{" "}
+            <p className="text-lg font-normal">Stats</p>
+          </div>
+        </Link>
+        <Link href="">
+          <div className="flex items-center gap-3 rounded-2xl bg-white p-3 text-xl font-normal transition duration-300 ease-in hover:bg-gray-200 ">
+            <AcademicCapIcon className="size-7  stroke-[1.5px]" />{" "}
+            <p className="text-lg font-normal">My Courses</p>
+          </div>
+        </Link>
+        <Link href="">
+          <div className="flex items-center gap-3 rounded-2xl bg-black p-3 text-xl font-normal text-white transition duration-300 ease-in hover:bg-gray-800 ">
+            <PlusCircleIcon className="size-7  stroke-[1.5px] text-white" />
+            <p className="text-lg font-normal">New Course</p>
+          </div>
+        </Link>
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4"></nav>
     </aside>
   );
 };

@@ -12,7 +12,7 @@ const CircularProgress = ({
 
   return (
     <>
-      <div className=" relative flex flex-col items-center">
+      <div className=" relative flex h-40 flex-col items-center ">
         <svg width={width} height={width} viewBox={`0 0 ${width} ${width}`}>
           <circle
             cx={width / 2}

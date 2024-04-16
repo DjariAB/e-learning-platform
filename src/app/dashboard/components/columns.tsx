@@ -21,7 +21,7 @@ export const columns: ColumnDef<Student>[] = [
       return (
         <div className="flex min-w-36 items-center gap-4">
           <img
-            className="size-8 overflow-hidden rounded-full object-cover"
+            className="size-8  overflow-hidden rounded-full object-cover"
             src={row.original.student.imgUrl}
             alt="Student avatar image"
           />
@@ -32,6 +32,9 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
+    cell({ row }) {
+      return row.original.score + " pts";
+    },
     accessorKey: "score",
     header: "Score",
   },

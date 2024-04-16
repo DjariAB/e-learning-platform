@@ -12,13 +12,13 @@ const CourseRow = ({
   courseRating: string;
 }) => {
   return (
-    <div className="flex w-full items-center gap-3">
+    <div className="flex w-full items-center gap-3  rounded-lg transition duration-300 ease-in hover:bg-gray-200">
       <img
         className="size-16 rounded-md object-cover"
         src={courseImage}
         alt="course Image"
       />
-      <div className="flex grow flex-col ">
+      <div className="flex grow flex-col pr-3 ">
         <p className="text-lg font-normal">{courseTitle}</p>
         <div className="text-md flex justify-between">
           <p className="text-sm font-light text-muted-foreground ">
