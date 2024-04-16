@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user } = await validateRequest();
-  if (!user) return redirect("/login");
+  if (!user || !user.isMentor) return redirect("/login");
   return (
     <div
       className={`max-h-screen w-full ${anekLatin.className} w-full tracking-wide`}

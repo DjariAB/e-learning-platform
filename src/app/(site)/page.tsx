@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import styles from "@/styles/main.module.css";
 import NavBar from "@/components/navbar";
+import Link from "next/link";
 const poppins = Poppins({
   weight: ["600"],
   subsets: ["latin"],
@@ -37,7 +38,12 @@ export default function HomePage() {
         <Button variant="default" className="bg-[#072E6A] ">
           Get Started
         </Button>
-        <Button variant="outlinehover">I&apos;m A Mentor</Button>
+        <Link
+          href="login/mentor"
+          className={`${buttonVariants({ variant: "outlinehover" })} `}
+        >
+          I&apos;m A Mentor
+        </Link>
       </div>
     </main>
   );

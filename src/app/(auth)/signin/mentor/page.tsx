@@ -6,12 +6,12 @@ import { Button, buttonVariants } from "@/components/ui/button";
 
 import { validateRequest } from "@/server/auth";
 import { AuthForm } from "@/lib/Form";
-import { signupAction } from "@/actions/auth";
+import { mentorSignupAction } from "@/actions/auth";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 const Signin = async () => {
   const { user } = await validateRequest();
-  if (user) return redirect("/courses");
+  if (user && user.isMentor) return redirect("/dashboard");
 
   return (
     <div className="flex h-screen">
@@ -34,7 +34,7 @@ const Signin = async () => {
             />
           </Link>
 
-          <Link href="login">
+          <Link href="login/mentor">
             <Button className="rounded-md px-6" variant="ghost">
               {" "}
               Login{" "}
@@ -47,7 +47,21 @@ const Signin = async () => {
             <p>Start your learning journey now!</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            <AuthForm action={signupAction} className="w-[488px] space-y-7" ButtonText="Create Account" />
+            {/* <Form className="w-[488px] space-y-7" action={signupAction}>
+              <Input name="username" placeholder="Enter your user name" />
+              <Input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+              />
+
+              <Button className="w-full rounded-lg">Create Account</Button>
+            </Form> */}
+            <AuthForm
+              action={mentorSignupAction}
+              ButtonText="Create Account"
+              className="w-[488px] space-y-7"
+            />
             <div className="flex items-center justify-center gap-3">
               <hr className="  h-1 grow" />
               <p className="text-md text-gray-500">Or Continue With</p>

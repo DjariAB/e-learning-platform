@@ -8,6 +8,7 @@ import Link from "next/link";
 import CourseRow from "./components/courseRow";
 import StatContainer from "./components/statConainter";
 import CircularProgress from "@/components/ui/circularProgressBar";
+import CircularProgress from "@/components/ui/circularProgressBar";
 
 async function getData(): Promise<Student[]> {
   // Fetch data from your API here.
@@ -21,7 +22,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Freemen Survival Skills",
       progress: "test",
-      rank: "#1",
+      rank: "# 1",
       score: 22,
     },
     {
@@ -33,7 +34,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Freemen Survival Skills",
       progress: "test",
-      rank: "#2",
+      rank: "# 2",
       score: 22,
     },
     {
@@ -45,7 +46,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Duncan Idaho",
       progress: "test",
-      rank: "#3",
+      rank: "# 3",
       score: 22,
     },
     {
@@ -57,7 +58,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Freemen Survival Skills",
       progress: "test",
-      rank: "#4",
+      rank: "# 4",
       score: 22,
     },
     {
@@ -69,7 +70,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Freemen Survival Skills",
       progress: "test",
-      rank: "#5",
+      rank: "# 5",
       score: 22,
     },
     {
@@ -80,7 +81,7 @@ async function getData(): Promise<Student[]> {
       },
       course: "Freemen Survival Skills",
       progress: "test",
-      rank: "#6",
+      rank: "# 6",
       score: 22,
     },
   ];
