@@ -19,6 +19,17 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { logoutAction } from "@/actions/auth";
+import MentorAvatar from "@/app/dashboard/components/mentorAvatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import UserButton from "./userButton";
 
 const DashboardHeader = () => {
@@ -39,7 +50,7 @@ const DashboardHeader = () => {
   ];
   const date = new Date();
   return (
-    <header className="sticky top-0 z-30 flex h-14 grow items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 grow items-center justify-between gap-4 border-b bg-background px-8 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -94,8 +105,9 @@ const DashboardHeader = () => {
           </nav>
         </SheetContent>
       </Sheet>
+      {/* <div className="hidden lg:flex lg:w-full lg:items-center lg:justify-between"> */}
       <Breadcrumb className="hidden md:flex">
-        <BreadcrumbList>
+        <BreadcrumbList className="text-md">
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link href="#">Dashboard</Link>
@@ -113,14 +125,34 @@ const DashboardHeader = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="relative ml-auto flex-1 md:grow-0">
-        {/* <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /> */}
-        <Input
-          type="search"
-          placeholder="Search..."
-          className="h-10 w-full rounded-lg bg-background pl-3 md:w-[200px] lg:w-[320px]"
-        />
-      </div>
+      {/* <div className="grow md:grow-0">
+          <p className="text-xl font-normal">
+            {weekdays[date.getDay()]}, {date.getDate()}{" "}
+            {months[date.getMonth()]} {date.getFullYear()}
+          </p>
+        </div> */}
+      {/* <DropdownMenu>
+          <DropdownMenuTrigger className="cursor-pointer" asChild>
+            <MentorAvatar
+              name="The Emperor"
+              email="emperorofuniverse@humanity.universe"
+              image="/images/Dune-Part-Two-Emperor.jpg"
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <form action={logoutAction}>
+                <button type="submit">Logout</button>
+              </form>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu> */}
+      {/* </div> */}
       <UserButton />
     </header>
   );

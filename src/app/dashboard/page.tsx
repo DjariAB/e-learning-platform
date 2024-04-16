@@ -90,14 +90,14 @@ async function getData(): Promise<Student[]> {
 export default async function Page() {
   const data = await getData();
   return (
-    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-      <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+    <main className="grid flex-1 items-start gap-4 p-4  sm:px-6 sm:py-0 md:gap-6 lg:grid-cols-3 xl:grid-cols-3">
+      <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-          <Card className="sm:col-span-2 " x-chunk="dashboard-05-chunk-0">
+          <Card className="pb-4 sm:col-span-2" x-chunk="dashboard-05-chunk-0">
             <CardHeader className="pb-3">
               <CardTitle>
                 <Link href={""} className="flex h-10 items-center gap-3 ">
-                  <p className="leading-7">My courses</p>{" "}
+                  <p className="text-xl leading-7">My courses</p>{" "}
                   <ChevronRight className="size-4" />
                 </Link>
               </CardTitle>
@@ -127,7 +127,7 @@ export default async function Page() {
             <CardHeader className="pb-2">
               <CardTitle>
                 <Link href={""} className="flex h-10 items-center gap-3 ">
-                  <p className="leading-7">My Stats</p>{" "}
+                  <p className="text-xl leading-7">My Stats</p>{" "}
                   <ChevronRight className="size-4" />
                 </Link>
               </CardTitle>
@@ -145,8 +145,11 @@ export default async function Page() {
           </Card>
         </div>
 
-        <Card x-chunk="dashboard-05-chunk-3" className="overflow-x-scroll">
-          <CardHeader className="pb-1 pt-4">
+        <Card
+          x-chunk="dashboard-05-chunk-3"
+          className="overflow-x-scroll md:overflow-hidden"
+        >
+          <CardHeader className="">
             <CardTitle>Your Students LeaderBoard</CardTitle>
             {/* <CardDescription>
                       Recent orders from your store.
@@ -158,8 +161,42 @@ export default async function Page() {
         </Card>
       </div>
       <div>
-        <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
-          <CircularProgress percentage={65} statTitle="Overall Completion" />
+        <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-1">
+          <CardHeader className="pb-2">
+            <CardTitle>
+              <Link href={""} className="flex h-10 items-center gap-3 ">
+                <p className="text-xl leading-7">Most Recent Course</p>{" "}
+                <ChevronRight className="size-4" />
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-hidden rounded-lg">
+              <Link href="">
+                <img
+                  src="/images/dune2-Poster.jpg"
+                  className="h-52 w-full overflow-hidden  object-cover transition-transform duration-300 ease-in hover:scale-110"
+                  alt=""
+                />
+              </Link>
+            </div>
+            <h2 className="pt-2 text-xl">
+              Universal War From Nothing to Emperor
+            </h2>
+
+            <div className="flex flex-col items-center justify-center gap-4 space-y-1 py-3">
+              <StatContainer
+                statTitle="Overall Rating (3M reviews)"
+                value="4.2"
+              />
+              <StatContainer statTitle="Enrolled Students" value="30B" />
+              <StatContainer statTitle="Students Points" value="1.43T" />
+              <CircularProgress
+                percentage={65}
+                statTitle="Overall Completion"
+              />
+            </div>
+          </CardContent>
         </Card>
       </div>
     </main>

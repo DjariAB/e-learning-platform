@@ -42,7 +42,7 @@ const MainNavBar = async () => {
           </Link>
           {/* <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
             <p className="text-xl font-semibold text-white">
-              {user.userName.toUpperCase().charAt(0)}
+              {user.userName.charAt(0).toUpperCase()}
             </p>
           </div> */}
           <UserButton />
