@@ -3,18 +3,16 @@ import Link from "next/link";
 import { Input } from "./ui/input";
 import Image from "next/image";
 import { validateRequest } from "@/server/auth";
+import UserButton from "./userButton";
 
 const MainNavBar = async () => {
   const { user } = await validateRequest();
   if (user)
     return (
       <div className="absolute w-full">
-        <div className="flex items-center justify-center gap-4 bg-transparent px-5 py-1 py-2 text-white ">
+        <div className="flex items-center justify-center gap-4 bg-transparent px-5 py-2 text-white ">
           {" "}
-          <Link
-            href="/"
-            // className="flex gap-2"
-          >
+          <Link href="/">
             <Image
               src="/SVGs/logo text.svg"
               alt="text logo"
@@ -22,7 +20,6 @@ const MainNavBar = async () => {
               width={170}
               height={43}
             />
-            {/* <p>Skillmaxxing</p> */}
           </Link>
           <div className="grow">
             <Input
@@ -31,14 +28,6 @@ const MainNavBar = async () => {
               className=" rounded-full border border-solid border-gray-950"
             />
           </div>
-          {/* <div className="flex grow gap-1 rounded-full border border-solid border-black px-2 py-1">
-          <img
-            src="/SVGs/search-icon.svg"
-            alt=""
-            className="h-8 rounded-full"
-          />
-          <input type="text" placeholder="Search for a course" />
-        </div> */}
           <Link href="" className="w-20 break-normal">
             my courses
           </Link>
@@ -51,11 +40,12 @@ const MainNavBar = async () => {
               className="h-8 "
             />
           </Link>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
+          {/* <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black">
             <p className="text-xl font-semibold text-white">
               {user.userName.toUpperCase().charAt(0)}
             </p>
-          </div>
+          </div> */}
+          <UserButton />
         </div>
       </div>
     );

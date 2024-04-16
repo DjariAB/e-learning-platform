@@ -12,6 +12,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 const Signin = async () => {
   const { user } = await validateRequest();
   if (user && user.isMentor) return redirect("/dashboard");
+  if (user && !user.isMentor) return redirect("/courses");
 
   return (
     <div className="flex h-screen">

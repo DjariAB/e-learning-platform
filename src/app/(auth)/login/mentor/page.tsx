@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 const Login = async () => {
   const { user } = await validateRequest();
   if (user && user.isMentor) return redirect("/dashboard");
+  if (user && !user.isMentor) return redirect("/courses");
 
   return (
     <div className="flex h-screen flex-row-reverse">

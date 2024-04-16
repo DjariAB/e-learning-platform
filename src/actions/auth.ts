@@ -196,7 +196,7 @@ export async function mentorSignupAction(
       type: "userName",
     };
   }
-  return redirect("/courses");
+  return redirect("/dashboard");
 }
 
 export async function mentorLoginAction(
