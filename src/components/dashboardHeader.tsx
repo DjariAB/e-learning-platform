@@ -104,9 +104,27 @@ const DashboardHeader = () => {
         </SheetContent>
       </Sheet>
       <div className="hidden lg:flex lg:w-full lg:items-center lg:justify-between">
-        <p className="text-3xl font-medium tracking-widest">Overview</p>
+        <Breadcrumb className="hidden md:flex">
+          <BreadcrumbList className="text-lg">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="#">Dashboard</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="#">Orders</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Recent Orders</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className="grow md:grow-0">
-          <p className="text-2xl font-normal">
+          <p className="text-xl font-normal">
             {weekdays[date.getDay()]}, {date.getDate()}{" "}
             {months[date.getMonth()]} {date.getFullYear()}
           </p>
