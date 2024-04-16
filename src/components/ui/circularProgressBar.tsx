@@ -5,14 +5,14 @@ const CircularProgress = ({
   percentage: number;
   statTitle: string;
 }) => {
-  const width = 130;
+  const width = 100;
   const radius = 40;
   const dashArray = radius * Math.PI * 2;
   const dashOffset = (dashArray * (100 - percentage)) / 100;
 
   return (
     <>
-      <div className=" relative flex h-40 flex-col items-center ">
+      <div className="h-32 relative flex w-full flex-col items-center">
         <svg width={width} height={width} viewBox={`0 0 ${width} ${width}`}>
           <circle
             cx={width / 2}
@@ -45,7 +45,7 @@ const CircularProgress = ({
             {percentage}%
           </text>
         </svg>
-        <p className="absolute top-[120px] text-gray-400">{statTitle}</p>
+        <p className="absolute top-[100px] text-gray-400">{statTitle}</p>
       </div>
     </>
   );

@@ -16,7 +16,7 @@ export default async function DashboardLayout({
   if (!user || !user.isMentor) return redirect("/login");
   return (
     <div
-      className={`max-h-screen w-full ${anekLatin.className} w-full tracking-wide`}
+      className={`max-h-screen w-full ${anekLatin.className} w-full overflow-x-hidden tracking-wide`}
     >
       <SideBar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">

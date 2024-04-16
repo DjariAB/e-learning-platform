@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { logoutAction } from "@/actions/auth";
+import MentorAvatar from "@/app/dashboard/components/mentorAvatar";
 
 const DashboardHeader = () => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -131,19 +132,13 @@ const DashboardHeader = () => {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="overflow-hidden rounded-full"
-            >
-              <Image
-                src="/SVGs/skillmaxxing-brain-logo.jpg"
-                width={36}
-                height={36}
-                alt="Avatar"
-                className="overflow-hidden rounded-full"
+            <button>
+              <MentorAvatar
+                name="The Emperor"
+                email="emperorofuniverse@humanity.universe"
+                image="/images/Dune-Part-Two-Emperor.jpg"
               />
-            </Button>
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
