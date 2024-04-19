@@ -63,31 +63,14 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
       multiple={false}
       onDrop={async (acceptedFiles) => {
         const progressInterval = startSimulatedProgress();
-
-        // handle file uploading
-
         await startUpload(acceptedFiles);
 
         // if (!res[0]) {
         //   console.log("something went wrong please try again ");
         //   return;
         // }
-
         // const key = fileResponse?.key;
-
-        // if (!key)
-        //   return toast({
-        //     title: "Something went wrong",
-        //     description: "Please try again later",
-        //     variant: "destructive",
-        //   });
-
-        // console.log(res[0].key);
         clearInterval(progressInterval);
-
-        // setUploadProgress(100);
-
-        // startPolling({ key });
       }}
       disabled={isUploading}
     >
