@@ -29,7 +29,6 @@ export const userTable = createTable("user", {
   password: varchar("password", { length: 255 }),
   github_id: varchar("github_id", { length: 255 }).unique(),
   isMentor: boolean("is_mentor").default(false),
-  
 });
 
 export const sessionTable = createTable("session", {
@@ -87,6 +86,17 @@ export const lessonTable = createTable("lesson", {
   title: varchar("lesson_title", { length: 255 }).notNull(),
   chapterId: varchar("chapter_id", { length: 196 })
     .references(() => chapterTable.id)
+    .notNull(),
+});
+export const fileTable = createTable("file", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  name: varchar("lesson_title", { length: 255 }).notNull(),
+  url: varchar("url", { length: 255 }).notNull(),
+  lessonId: varchar("lesson_id", { length: 196 })
+    .references(() => lessonTable.id)
+    .notNull(),
+  userId: varchar("user_id", { length: 196 })
+    .references(() => userTable.id)
     .notNull(),
 });
 

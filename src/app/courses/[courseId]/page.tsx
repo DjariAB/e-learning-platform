@@ -21,6 +21,8 @@ import { and, eq } from "drizzle-orm";
 import { Form } from "@/lib/Form";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
+import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 
 export default async function CoursePage({
   params,
@@ -48,6 +50,8 @@ export default async function CoursePage({
       ),
     );
   console.log(isEnrolled);
+
+  const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
 
   return (
     <>
@@ -128,6 +132,9 @@ export default async function CoursePage({
           <br />
 
           <div>
+            <form action={bindedChapteraciton}>
+              <button type="submit"> add chapter</button>
+            </form>
             <h1 className=" pb-2 font-bold">Chapters</h1>
             <div className="p-4 pl-8 pr-24">
               <Accordion type="single" collapsible className="w-full">
@@ -159,22 +166,31 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
 
   return (
     <AccordionItem key={chapter.id} value={chapter.id}>
-      <AccordionTrigger>{chapter.name}</AccordionTrigger>
+      <AccordionTrigger>{chapter.id}</AccordionTrigger>
 
       {lessons.map((lesson) => (
-        <AccordionContent key={lesson.id}>{lesson.title}</AccordionContent>
+        <AccordionContent key={lesson.id}>{lesson.id}</AccordionContent>
       ))}
     </AccordionItem>
   );
 }
 
-// async function chapteraciton(courseId: string) {
-//   "use server";
+async function chapteraciton(courseId: string) {
+  "use server";
 
-//   const id = generateId(7);
-//   await db
-//     .insert(lessonTable)
-//     .values({ chapterId: "p7a6hcj", title: "testing", id });
-//   const path = `/courses/${courseId}`;
-//   revalidatePath(path);
-// }
+  const id = generateId(7);
+  await db
+    .insert(chapterTable)
+    .values({ courseId: courseId, name: "first chapter", id });
+  const path = `/courses/${courseId}`;
+  revalidatePath(path);
+}
+
+async function lessonAction() {
+  "use server";
+
+  const id = generateId(7);
+  await db
+    .insert(lessonTable)
+    .values({ chapterId: "write it your self ", title: "first lesson", id });
+}

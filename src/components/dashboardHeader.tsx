@@ -114,7 +114,7 @@ const DashboardHeader = () => {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>
+          {/* <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link href="#">Orders</Link>
             </BreadcrumbLink>
@@ -122,7 +122,7 @@ const DashboardHeader = () => {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-          </BreadcrumbItem>
+          </BreadcrumbItem> */}
         </BreadcrumbList>
       </Breadcrumb>
       {/* <div className="grow md:grow-0">
