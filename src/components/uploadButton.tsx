@@ -8,6 +8,7 @@ import Dropzone from "react-dropzone";
 import { Cloud, File, Loader2 } from "lucide-react";
 import { Progress } from "./ui/progress";
 import { useUploadThing } from "@/lib/uploadThing";
+import { revalidatePath } from "next/cache";
 // import { useToast } from "./ui/use-toast";
 // import { useRouter } from "next/navigation";
 // import { db } from "@/server/db";
@@ -18,13 +19,14 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   // const { toast } = useToast();
-  const { startUpload } = useUploadThing("imageUploader", {
+  const { startUpload } = useUploadThing("MdFileUploader", {
     headers: { lessonId },
     onUploadBegin: () => {
       setIsUploading(true);
     },
     onClientUploadComplete: () => {
       setIsUploading(false);
+      revalidatePath(`/dashboard/${lessonId}`);
     },
     onUploadProgress(p) {
       if (p === 100) setUploadProgress(100);
@@ -33,7 +35,7 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
       setIsError(true);
     },
   });
-  // const {} = await uploadFiles("imageUploader");
+  // const {} = await uploadFiles("MdFileUploader");
 
   // const { mutate: startPolling } = trpc.getFile.useMutation({
   //   onSuccess: (file) => {
