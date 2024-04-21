@@ -47,7 +47,7 @@ export const courseTable = createTable(
   {
     id: varchar("id", { length: 196 }).primaryKey(),
     title: varchar("name", { length: 255 }).notNull(),
-    imageUrl: varchar("image_url", { length: 511 }).notNull(),
+    imageUrl: varchar("image_url", { length: 511 }),
     educatorId: varchar("educator_id", { length: 255 })
       .references(() => userTable.id)
       .notNull(),

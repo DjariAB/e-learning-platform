@@ -2,9 +2,12 @@
 import { type ActionResult } from "@/lib/Form";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { enrolledCoursesTable, lessonTable } from "@/server/db/schema";
+import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
+import { generateId } from "lucia";
+import { LucideEllipsisVertical } from "lucide-react";
 import { revalidatePath } from "next/cache";
+import { Pathway_Extreme } from "next/font/google";
 import { redirect } from "next/navigation";
 
 export async function enroll(
@@ -40,3 +43,45 @@ export async function enroll(
     return { error: "failed enrolling the course", type: null };
   }
 }
+
+export async function addCourse(
+  _: unknown,
+  formData: FormData,
+  //  courseId: string
+): Promise<addCourseActionResult> {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login/mentor");
+
+  const title = formData.get("title")?.toString();
+  const category = formData.get("category")?.toString();
+  const level = formData.get("level")?.toString() as levelenum;
+  type levelenum = "beginner" | "intermediate" | "advanced" | undefined;
+
+  if (!title) return { error: "please provide a Title", type: "title" };
+  if (!category) return { error: "please select a category", type: "category" };
+  if (!level) return { error: "please select a level", type: "level" };
+
+  // const currentLesson=await db.select().from(lessonTable).where(eq(lessonTable.))
+
+  const id = generateId(7);
+  const course = await db.insert(courseTable).values({
+    level: level,
+    title,
+    educatorId: user.id,
+    imageUrl: "",
+    id,
+  });
+  if (!course)
+    return {
+      error: "failed to create the course please try again",
+      type: "failed",
+    };
+
+  redirect(`/dashboard/${id}`);
+}
+
+type addCourseActionResult = {
+  error: string | null;
+  type: "title" | "Description" | "category" | "level" | "failed" | null;
+};

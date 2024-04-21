@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,12 +22,19 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Anek_Latin } from "next/font/google";
+import { useFormState } from "react-dom";
+import { addCourse } from "@/actions/helpers";
+import { SubmitButton } from "@/lib/Form";
 
 const anekLatin = Anek_Latin({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600"],
 });
 export function AddCourseDialog() {
+  const [state, formAction] = useFormState(addCourse, {
+    error: null,
+    type: null,
+  });
   return (
     <Dialog>
       <DialogTrigger className={anekLatin.className} asChild>
@@ -41,42 +50,61 @@ export function AddCourseDialog() {
             Fill your course info in here. Click create when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <form action={test} className="grid gap-3 py-1">
+        <form action={formAction} className="grid gap-3 py-1">
           <div className="flex flex-col gap-2 ">
-            <label htmlFor="Title" className="">
+            <label htmlFor="title" className="">
               Course Title
             </label>
 
-            <Input id="Title" name="Title" className="col-span-3" />
+            <Input id="title" name="title" className="col-span-3" />
+            {state.type === "title" && (
+              <p className="text-md pl-2 text-start text-red-500">
+                {state.error}
+              </p>
+            )}
           </div>
-          <div className="flex gap-4">
-            <Select name="category">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Categories</SelectLabel>
-                  <SelectItem value="Web dev">Web dev</SelectItem>
-                  <SelectItem value="Mobile dev">Mobile dev</SelectItem>
-                  <SelectItem value="desktop">desktop</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Select name="level">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a Level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Levels</SelectLabel>
+          <div className="flex gap-3">
+            <div className="grow">
+              <Select name="category">
+                <SelectTrigger className="  w-full sm:w-[180px]">
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Categories</SelectLabel>
+                    <SelectItem value="Web dev">Web dev</SelectItem>
+                    <SelectItem value="Mobile dev">Mobile dev</SelectItem>
+                    <SelectItem value="desktop">desktop</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {state.type === "category" && (
+                <p className="text-md pl-2 text-start text-red-500">
+                  {state.error}
+                </p>
+              )}
+            </div>
+            <div className="grow">
+              <Select name="level">
+                <SelectTrigger className=" w-full sm:w-[180px]">
+                  <SelectValue placeholder="Select a Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Levels</SelectLabel>
 
-                  <SelectItem value="beginner">beginner</SelectItem>
-                  <SelectItem value="intermediate">intermediate</SelectItem>
-                  <SelectItem value="advanced">advanced</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                    <SelectItem value="beginner">beginner</SelectItem>
+                    <SelectItem value="intermediate">intermediate</SelectItem>
+                    <SelectItem value="advanced">advanced</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {state.type === "level" && (
+                <p className="text-md pl-2 text-start text-red-500">
+                  {state.error}
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="Description"> Description</label>
@@ -86,27 +114,19 @@ export function AddCourseDialog() {
               rows={5}
               className="text-md rounded-lg border border-input bg-transparent px-3 py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             />
+            {state.type === "failed" && (
+              <p className="text-md pl-2 text-start text-red-500">
+                {state.error}
+              </p>
+            )}
           </div>
           <DialogFooter>
-            <Button className="rounded-xl" type="submit">
+            <SubmitButton className="rounded-xl text-xl">
               Create Now
-            </Button>
+            </SubmitButton>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  );
-}
-
-async function test(formdata: FormData) {
-  "use server";
-
-  const category = formdata.get("category")?.toString();
-  const title = formdata.get("Title")?.toString();
-  const level = formdata.get("level")?.toString();
-  const desc = formdata.get("Description")?.toString();
-
-  console.log(
-    `this is your Title ${title} your category ${category} and this is your level ${level} and this is the desc ${desc}`,
   );
 }
