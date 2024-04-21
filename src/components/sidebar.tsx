@@ -5,6 +5,7 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { AddCourseDialog } from "./addCourseDialog";
 
 const SideBar = () => {
   return (
@@ -36,12 +37,11 @@ const SideBar = () => {
             <p className="text-lg font-normal">My Courses</p>
           </div>
         </Link>
-        <Link href="">
-          <div className="flex items-center gap-3 rounded-2xl bg-black p-3 text-xl font-normal text-white transition duration-300 ease-in hover:bg-gray-800 ">
-            <PlusCircleIcon className="size-7  stroke-[1.5px] text-white" />
-            <p className="text-lg font-normal">New Course</p>
-          </div>
-        </Link>
+       
+           
+            {/* <p className="text-lg font-normal">New Course</p> */}
+            <AddCourseDialog />
+       
       </nav>
     </aside>
   );

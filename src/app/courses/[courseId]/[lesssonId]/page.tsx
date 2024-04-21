@@ -1,20 +1,24 @@
-import NavBar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { marked } from "marked";
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
-  ArrowRightEndOnRectangleIcon,
+  // ArrowRightEndOnRectangleIcon,
   FlagIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
 
-export default function LessonPage({
+export default async function LessonPage({
   params,
 }: {
   params: { lessonId: string };
 }) {
+  const res = await fetch(
+    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/505e25c8-9b1f-49e5-b0c4-773ba1066999-hvs53o.md",
+  );
+  const data = await res.text();
   return (
     <div className="pt-10">
       {/* <NavBar /> */}
@@ -52,6 +56,8 @@ export default function LessonPage({
               molestias rem modi recusandae in delectus! Totam, temporibus
               incidunt?
             </p>
+
+            <div dangerouslySetInnerHTML={{ __html: marked(data) }} />
 
             <div className="flex flex-col gap-8">
               <hr />

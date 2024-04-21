@@ -15,7 +15,11 @@ export default async function CoursePage({
   return (
     <div>
       {files.map((file) => (
-        <div key={file.id}> {file.name} </div>
+        <div key={file.id}>
+          {" "}
+          {/* {file.url} */}
+          <h1>{file.name}</h1>
+        </div>
       ))}
       <UploadDropzone lessonId={params.lessonId} />
     </div>
