@@ -4,7 +4,11 @@ import HeroSec from "@/components/heroSection";
 import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
+import {
+  courseTable,
+  enrolledCoursesTable,
+  userTable,
+} from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
@@ -18,9 +22,13 @@ const Courses = async () => {
     .select()
     .from(enrolledCoursesTable)
     .where(eq(enrolledCoursesTable.userId, user.id))
-    .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id));
+    .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
+    .leftJoin(userTable, eq(enrolledCoursesTable.userId, userTable.id));
 
-  const courses = await db.select().from(courseTable);
+  const courses = await db
+    .select()
+    .from(courseTable)
+    .leftJoin(userTable, eq(courseTable.educatorId, userTable.id));
 
   return (
     <div className="px-3 pt-16">
@@ -32,7 +40,9 @@ const Courses = async () => {
           {enrolledcourses.length ? (
             enrolledcourses.map((enrolled) => (
               <EnrolledCourseCard
-                educatorName={enrolled.courses.educatorId}
+                educatorName={
+                  enrolled.user ? enrolled.user.userName : "unknown"
+                }
                 title={enrolled.courses.title}
                 imageUrl={enrolled.courses.imageUrl}
                 level={enrolled.courses.level}
@@ -50,12 +60,12 @@ const Courses = async () => {
       <div className="flex  gap-3 overflow-x-auto">
         {courses.map((course) => (
           <CourseCard
-            educatorName={course.educatorId}
-            title={course.title}
-            imageUrl={course.imageUrl}
-            level={course.level}
-            courseId={course.id}
-            key={course.id}
+            educatorName={course.user ? course.user.userName : "unknown "}
+            title={course.courses.title}
+            imageUrl={course.courses.imageUrl}
+            level={course.courses.level}
+            courseId={course.courses.id}
+            key={course.courses.id}
           />
         ))}
       </div>

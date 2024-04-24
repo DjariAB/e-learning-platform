@@ -19,7 +19,7 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   // const { toast } = useToast();
-  const { startUpload } = useUploadThing("MdFileUploader", {
+  const { startUpload } = useUploadThing("imageUploader", {
     headers: { lessonId },
     onUploadBegin: () => {
       setIsUploading(true);
@@ -35,7 +35,7 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
       setIsError(true);
     },
   });
-  // const {} = await uploadFiles("MdFileUploader");
+  // const {} = await uploadFiles("imageUploader");
 
   // const { mutate: startPolling } = trpc.getFile.useMutation({
   //   onSuccess: (file) => {

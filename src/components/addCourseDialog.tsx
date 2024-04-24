@@ -57,7 +57,7 @@ export function AddCourseDialog() {
             </label>
 
             <Input id="title" name="title" className="col-span-3" />
-            {state.type === "title" && (
+            {state && state.type === "title" && (
               <p className="text-md pl-2 text-start text-red-500">
                 {state.error}
               </p>
@@ -78,7 +78,7 @@ export function AddCourseDialog() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {state.type === "category" && (
+              {state && state.type === "category" && (
                 <p className="text-md pl-2 text-start text-red-500">
                   {state.error}
                 </p>
@@ -99,7 +99,7 @@ export function AddCourseDialog() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {state.type === "level" && (
+              {state && state.type === "level" && (
                 <p className="text-md pl-2 text-start text-red-500">
                   {state.error}
                 </p>
@@ -114,7 +114,7 @@ export function AddCourseDialog() {
               rows={5}
               className="text-md rounded-lg border border-input bg-transparent px-3 py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             />
-            {state.type === "failed" && (
+            {state && state.type === "failed" && (
               <p className="text-md pl-2 text-start text-red-500">
                 {state.error}
               </p>

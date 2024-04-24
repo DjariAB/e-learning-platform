@@ -17,7 +17,7 @@ const f = createUploadthing();
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
-  imageUploader: f(["image", "text/markdown"])
+  imageUploader: f(["image", "text/markdown", "text"])
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
@@ -26,14 +26,14 @@ export const ourFileRouter = {
       // If you throw, the user will not be able to upload
       const { user } = await validateRequest();
       const lessonId = req.headers.get("lessonId");
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!user) throw new UploadThingError("no user");
       if (!lessonId) throw new UploadThingError("no lesson");
       const lesson = await db
         .select()
         .from(lessonTable)
         .where(eq(lessonTable.id, lessonId));
 
-      if (!lesson[0]?.id) throw new UploadThingError("Unauthorized");
+      if (!lesson[0]?.id) throw new UploadThingError("there is no lesson ");
 
       const isOwner = await db
         .select()

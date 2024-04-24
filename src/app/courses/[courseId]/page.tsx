@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { validateRequest } from "@/server/auth";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export default async function CoursePage({
   params,
@@ -34,6 +35,7 @@ export default async function CoursePage({
     .from(courseTable)
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
+  if (!course) redirect("/courses");
   const { user } = await validateRequest();
 
   const chapters = await db
@@ -60,7 +62,7 @@ export default async function CoursePage({
 
         <div className="flex items-center gap-16 px-32 py-12 ">
           <img
-            src={course?.imageUrl}
+            src={course.imageUrl ?? ""}
             alt="Course image"
             className="size-[280px] rounded-2xl object-cover"
           />
@@ -74,7 +76,7 @@ export default async function CoursePage({
             </p>
             <div>
               <CourseLevel
-                level={course!.level.toString()}
+                level={course.level.toString()}
                 additionalStyle="text-black"
               />
             </div>
@@ -132,7 +134,7 @@ export default async function CoursePage({
           <br />
 
           <div>
-            <form action={bindedChapteraciton}>
+            <form action={lessonAction}>
               <button type="submit"> add chapter</button>
             </form>
             <h1 className=" pb-2 font-bold">Chapters</h1>
@@ -192,5 +194,5 @@ async function lessonAction() {
   const id = generateId(7);
   await db
     .insert(lessonTable)
-    .values({ chapterId: "write it your self ", title: "first lesson", id });
+    .values({ chapterId: "u6eprc7", title: "first lesson", id });
 }

@@ -17,7 +17,7 @@ export default async function CoursePage({
       {files.map((file) => (
         <div key={file.id}>
           {" "}
-          {/* {file.url} */}
+          {file.url}
           <h1>{file.name}</h1>
         </div>
       ))}

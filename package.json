@@ -42,6 +42,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "sharp": "^0.33.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.9.0",
@@ -68,5 +69,5 @@
   "ct3aMetadata": {
     "initVersion": "7.28.0"
   },
-  "packageManager": "pnpm@8.15.5"
+  "packageManager": "pnpm@9.0.5"
 }

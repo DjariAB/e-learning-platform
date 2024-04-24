@@ -1,12 +1,4 @@
-import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  ShoppingCart,
-  Users2,
-} from "lucide-react";
+import { Package2, PanelLeft } from "lucide-react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -18,37 +10,32 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import { logoutAction } from "@/actions/auth";
-import MentorAvatar from "@/app/dashboard/components/mentorAvatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+
 import UserButton from "./userButton";
+import {
+  AcademicCapIcon,
+  PresentationChartBarIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/24/outline";
 
 const DashboardHeader = () => {
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+  const Paths = [
+    {
+      name: "Overview",
+      url: "/dashboard",
+      icon: <Squares2X2Icon className="size-7" />,
+    },
+    {
+      name: "Stats",
+      url: "/dashboard/stats",
+      icon: <PresentationChartBarIcon className="size-7" />,
+    },
+    {
+      name: "My Courses",
+      url: "/dashboard/courses",
+      icon: <AcademicCapIcon className="size-7" />,
+    },
   ];
-  const date = new Date();
   return (
     <header className="sticky top-0 z-30 flex h-14 grow items-center justify-between gap-4 border-b bg-background px-8 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -62,46 +49,23 @@ const DashboardHeader = () => {
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+              className="group mb-3 flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Home className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              Orders
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Package className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Users2 className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
-              Settings
-            </Link>
+            {Paths.map((path) => (
+              <Link
+                key={path.url}
+                href={path.url}
+                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              >
+                {/* <Home className="h-5 w-5" /> */}
+                {/* <Squares2X2Icon className="size-6  stroke-[1.5px]" /> */}
+                {path.icon}
+                {path.name}
+              </Link>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

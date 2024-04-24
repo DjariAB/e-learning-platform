@@ -16,7 +16,7 @@ export default async function LessonPage({
   params: { lessonId: string };
 }) {
   const res = await fetch(
-    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/505e25c8-9b1f-49e5-b0c4-773ba1066999-hvs53o.md",
+    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/37537334-7e0c-447f-8810-1433ce5343af-2bb5.md",
   );
   const data = await res.text();
   return (
