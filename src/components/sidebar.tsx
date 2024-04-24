@@ -6,7 +6,6 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { AddCourseDialog } from "./addCourseDialog";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -60,8 +59,6 @@ const SideBar = () => {
             </div>
           </Link>
         ))}
-
-        <AddCourseDialog />
       </nav>
     </aside>
   );

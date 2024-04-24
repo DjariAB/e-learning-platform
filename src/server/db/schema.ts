@@ -53,7 +53,6 @@ export const courseTable = createTable(
       .notNull(),
     level: varchar("level", {
       length: 255,
-      enum: ["beginner", "intermediate", "advanced"],
     }).notNull(),
 
     createdAt: timestamp("created_at")

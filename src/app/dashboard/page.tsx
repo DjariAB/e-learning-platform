@@ -8,6 +8,7 @@ import Link from "next/link";
 import CourseRow from "./components/courseRow";
 import StatContainer from "./components/statConainter";
 import CircularProgress from "@/components/ui/circularProgressBar";
+import { AddCourseDialog } from "@/components/addCourseDialog";
 // import CircularProgress from "@/components/ui/circularProgressBar";
 
 async function getData(): Promise<Student[]> {
@@ -90,18 +91,18 @@ async function getData(): Promise<Student[]> {
 export default async function Page() {
   const data = await getData();
 
-
   return (
     <main className="grid flex-1 items-start gap-4 p-4  sm:px-6 sm:py-0 md:gap-6 lg:grid-cols-3 xl:grid-cols-3">
       <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
           <Card className="pb-4 sm:col-span-2" x-chunk="dashboard-05-chunk-0">
             <CardHeader className="pb-3">
-              <CardTitle>
+              <CardTitle className="flex items-center justify-between">
                 <Link href={""} className="flex h-10 items-center gap-3 ">
                   <p className="text-xl leading-7">My courses</p>{" "}
                   <ChevronRight className="size-4" />
-                </Link>
+                </Link>{" "}
+                <AddCourseDialog />
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1 p-0">

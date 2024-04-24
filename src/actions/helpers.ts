@@ -5,9 +5,7 @@ import { db } from "@/server/db";
 import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { generateId } from "lucia";
-import { LucideEllipsisVertical } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { Pathway_Extreme } from "next/font/google";
 import { redirect } from "next/navigation";
 
 export async function enroll(
@@ -55,33 +53,49 @@ export async function addCourse(
 
   const title = formData.get("title")?.toString();
   const category = formData.get("category")?.toString();
-  const level = formData.get("level")?.toString() as levelenum;
-  type levelenum = "beginner" | "intermediate" | "advanced" | undefined;
+  const level = formData.get("level")?.toString();
 
-  if (!title) return { error: "please provide a Title", type: "title" };
-  if (!category) return { error: "please select a category", type: "category" };
-  if (!level) return { error: "please select a level", type: "level" };
+  const error: errorType = {};
+  const type: inputReturnTYpe = {};
 
-  // const currentLesson=await db.select().from(lessonTable).where(eq(lessonTable.))
+  if (!title) {
+    error.title = "Please provide a Title";
+    type.title = true;
+  }
+  if (!level) {
+    error.level = "Please Select a level";
+    type.level = true;
+  }
+  if (!category) {
+    error.category = "Please Select a category";
+    type.category = true;
+  }
+
+  if (error || !title || !category || !level) return { error, type };
 
   const id = generateId(7);
   const course = await db.insert(courseTable).values({
-    level: level,
+    level,
     title,
     educatorId: user.id,
-    imageUrl: "",
+    imageUrl:
+      "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
     id,
   });
   if (!course)
     return {
-      error: "failed to create the course please try again",
-      type: "failed",
+      error: { failed: "failed to create the course please try again" },
+      type: { failed: true },
     };
 
   redirect(`/dashboard/${id}`);
 }
 
-type addCourseActionResult = {
-  error: string | null;
-  type: "title" | "Description" | "category" | "level" | "failed" | null;
+type addCourseActionResult<> = {
+  error: errorType | null;
+  type: inputReturnTYpe | null;
 };
+
+type inputType = "title" | "Description" | "category" | "level" | "failed";
+type errorType = { [key in keyof inputReturnTYpe]: string };
+type inputReturnTYpe = Partial<Record<inputType, boolean>>;

@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+// import { PlusIcon } from "@heroicons/react/24/outline";
 import {
   Select,
   SelectContent,
@@ -25,6 +24,7 @@ import { Anek_Latin } from "next/font/google";
 import { useFormState } from "react-dom";
 import { addCourse } from "@/actions/helpers";
 import { SubmitButton } from "@/lib/Form";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const anekLatin = Anek_Latin({
   subsets: ["latin"],
@@ -37,10 +37,15 @@ export function AddCourseDialog() {
   });
   return (
     <Dialog>
-      <DialogTrigger className={anekLatin.className} asChild>
-        <div className="flex items-center gap-3 rounded-2xl bg-black p-3 text-xl font-normal text-white transition duration-300 ease-in hover:bg-gray-800 ">
-          <PlusCircleIcon className="size-7  stroke-[1.5px] text-white" />
-          <button>New Course</button>
+      <DialogTrigger
+        className={`  ${anekLatin.className} flex  cursor-pointer items-center gap-3  rounded-2xl bg-white text-xl  font-normal text-black`}
+        asChild
+      >
+        <div>
+          {/* <PlusCircleIcon className="size-7  stroke-[1.5px] " /> */}
+          {/* <PlusIcon className="size-6" /> */}
+          <PlusIcon className="size-6" />
+          {/* <button>New Course</button> */}
         </div>
       </DialogTrigger>
       <DialogContent className={`sm:max-w-[425px] ${anekLatin.className}`}>
@@ -52,14 +57,17 @@ export function AddCourseDialog() {
         </DialogHeader>
         <form action={formAction} className="grid gap-3 py-1">
           <div className="flex flex-col gap-2 ">
-            <label htmlFor="title" className="">
+            <label
+              htmlFor="title"
+              className={`${state && state.type?.title && "text-red-500"}`}
+            >
               Course Title
             </label>
 
             <Input id="title" name="title" className="col-span-3" />
-            {state && state.type === "title" && (
+            {state && state.type?.title && (
               <p className="text-md pl-2 text-start text-red-500">
-                {state.error}
+                {state.error?.title}
               </p>
             )}
           </div>
@@ -78,9 +86,9 @@ export function AddCourseDialog() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {state && state.type === "category" && (
-                <p className="text-md pl-2 text-start text-red-500">
-                  {state.error}
+              {state && state.type?.category && (
+                <p className="text-md pl-2 pt-1.5 text-start text-red-500">
+                  {state.error?.category}
                 </p>
               )}
             </div>
@@ -99,9 +107,9 @@ export function AddCourseDialog() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {state && state.type === "level" && (
-                <p className="text-md pl-2 text-start text-red-500">
-                  {state.error}
+              {state && state.type?.level && (
+                <p className="text-md  pl-2 pt-1.5 text-start text-red-500">
+                  {state.error?.level}
                 </p>
               )}
             </div>
@@ -114,9 +122,9 @@ export function AddCourseDialog() {
               rows={5}
               className="text-md rounded-lg border border-input bg-transparent px-3 py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             />
-            {state && state.type === "failed" && (
+            {state && state.type?.failed && (
               <p className="text-md pl-2 text-start text-red-500">
-                {state.error}
+                {state.error?.failed}
               </p>
             )}
           </div>
