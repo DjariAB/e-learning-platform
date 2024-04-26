@@ -14,9 +14,10 @@ import { UploadDropzone } from "@/components/uploadButton";
 import { type courseTable } from "@/server/db/schema";
 import { type InferSelectModel } from "drizzle-orm";
 import InputComp from "./InputComp";
-import { useState } from "react";
-import { useFormState } from "react-dom";
+import { ReactNode, useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers";
+import { Loader2 } from "lucide-react";
 type toEditCourseProps = InferSelectModel<typeof courseTable>;
 function EditCourseForm({ course }: { course: toEditCourseProps }) {
   const [courseInfo, setcourseInfo] = useState(course);
@@ -26,8 +27,19 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
   });
   return (
     <>
-      <div className="mx-auto flex w-3/4 flex-col gap-2 pt-8">
+      <form
+        action={formAction}
+        className="mx-auto flex w-3/4 flex-col gap-2 pt-8"
+      >
         {" "}
+        <input
+          type="hidden"
+          name="courseId"
+          value={courseInfo.id}
+          onChange={() => {
+            return;
+          }}
+        />
         <div className="flex items-center justify-between px-4">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-medium leading-3 ">Edit Course</h1>
@@ -36,9 +48,9 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
             </p>
           </div>
           <div className="space-x-1">
-            <Button className="rounded-sm bg-mainblue px-4 py-2 font-normal hover:bg-blue-900">
+            <SubmitButton className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
               Save
-            </Button>
+            </SubmitButton>
             <Button className="rounded-sm px-4 py-2 font-normal" disabled>
               Edit Content
             </Button>
@@ -47,7 +59,7 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
         <Card>
           <CardContent className="flex gap-4 py-4">
             {/* <div > */}
-            <form action="" className="flex w-2/3 flex-col gap-2">
+            <div className="flex w-2/3 flex-col gap-2">
               <InputComp
                 value={courseInfo.title}
                 label="Course title"
@@ -55,7 +67,9 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
                 onChange={(e) =>
                   setcourseInfo({ ...courseInfo, title: e.target.value })
                 }
+                formState={formState}
               />
+
               <div className="flex gap-3">
                 <div className="flex flex-col gap-2 ">
                   <label htmlFor="category" className="font-medium">
@@ -79,7 +93,13 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
                   <label htmlFor="category" className="font-medium">
                     Level
                   </label>
-                  <Select name="level">
+                  <Select
+                    name="level"
+                    value={courseInfo.level}
+                    onValueChange={(e) =>
+                      setcourseInfo({ ...courseInfo, level: e })
+                    }
+                  >
                     <SelectTrigger className=" w-full sm:w-[180px]">
                       <SelectValue placeholder="Select a Level" />
                     </SelectTrigger>
@@ -98,27 +118,42 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
                 </div>
               </div>
               <InputComp
-                value={""}
+                formState={formState}
+                value={courseInfo.briefDescription}
                 label="Brief description"
-                name="brief_des"
+                name="Description"
                 isTextArea
                 rows={3}
+                onChange={(e) =>
+                  setcourseInfo({ ...courseInfo, briefDescription: e.target.value })
+                }
               />
               <InputComp
-                value={""}
+                formState={formState}
+                value={courseInfo.mainDescription}
                 label="Main description"
-                name="main_des"
+                name="mainDescription"
                 isTextArea
                 rows={5}
+                onChange={(e) =>
+                  setcourseInfo({
+                    ...courseInfo,
+                    mainDescription: e.target.value,
+                  })
+                }
               />
               <InputComp
-                value={""}
+                formState={formState}
+                value={courseInfo.courseGoals}
                 label="Course goals"
-                name="goals"
+                name="courseGoals"
                 isTextArea
                 rows={5}
+                onChange={(e) =>
+                  setcourseInfo({ ...courseInfo, courseGoals: e.target.value })
+                }
               />
-            </form>
+            </div>
 
             {/* </div> */}
             <div className="grow">
@@ -127,8 +162,23 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </form>
     </>
   );
 }
 export default EditCourseForm;
+function SubmitButton({
+  className,
+  children,
+}: {
+  children: ReactNode;
+  className: string;
+}) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending} className={className}>
+      {!pending ? children : <Loader2 className="size-3 animate-spin" />}
+    </Button>
+  );
+}

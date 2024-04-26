@@ -46,7 +46,7 @@ export async function addCourse(
   _: unknown,
   formData: FormData,
   //  courseId: string
-): Promise<addCourseActionResult> {
+): Promise<CourseActionResult> {
   const { user } = await validateRequest();
 
   if (!user) redirect("/login/mentor");
@@ -54,6 +54,7 @@ export async function addCourse(
   const title = formData.get("title")?.toString();
   const category = formData.get("category")?.toString();
   const level = formData.get("level")?.toString();
+  const briefDescription = formData.get("description")?.toString();
 
   const error: errorType = {};
   const type: inputReturnTYpe = {};
@@ -62,6 +63,7 @@ export async function addCourse(
     error.title = "Please provide a Title";
     type.title = true;
   }
+
   if (!level) {
     error.level = "Please Select a level";
     type.level = true;
@@ -71,7 +73,8 @@ export async function addCourse(
     type.category = true;
   }
 
-  if (error || !title || !category || !level) return { error, type };
+  if (error || !title || !category || !level || !briefDescription)
+    return { error, type };
 
   const id = generateId(7);
   const course = await db.insert(courseTable).values({
@@ -81,6 +84,9 @@ export async function addCourse(
     imageUrl:
       "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
     id,
+    briefDescription: briefDescription,
+    mainDescription: "",
+    courseGoals: "",
   });
   if (!course)
     return {
@@ -90,26 +96,33 @@ export async function addCourse(
 
   redirect(`/dashboard/${id}`);
 }
-
 export async function editCourseInfo(
   _: unknown,
   formData: FormData,
-): Promise<editCourseInfoActionResult> {
+  //  courseId: string
+): Promise<editCourseActionResult> {
   const { user } = await validateRequest();
 
   if (!user) redirect("/login/mentor");
+  const courseId = formData.get("courseId")?.toString();
 
   const title = formData.get("title")?.toString();
   const category = formData.get("category")?.toString();
   const level = formData.get("level")?.toString();
+  const briefDescription = formData.get("Description")?.toString();
+  const mainDescription = formData.get("mainDescription")?.toString();
+  const courseGoals = formData.get("courseGoals")?.toString();
 
-  const error: errorType = {};
-  const type: inputReturnTYpe = {};
-
+  const error: editErrorType = {};
+  const type: editInputReturnTYpe = {};
+  if (!courseId) {
+    return redirect("/dashboard/mycourses");
+  }
   if (!title) {
     error.title = "Please provide a Title";
     type.title = true;
   }
+
   if (!level) {
     error.level = "Please Select a level";
     type.level = true;
@@ -118,18 +131,45 @@ export async function editCourseInfo(
     error.category = "Please Select a category";
     type.category = true;
   }
+  if (!briefDescription) {
+    error.Description = "Please provide a brief description";
+    type.Description = true;
+  }
+  if (!mainDescription) {
+    error.mainDescription = "Please provide a main description";
+    type.mainDescription = true;
+  }
+  if (!courseGoals) {
+    error.courseGoals = "Please add course goals";
+    type.courseGoals = true;
+  }
 
-  if (error || !title || !category || !level) return { error, type };
+  if (
+    error ||
+    !title ||
+    !category ||
+    !level ||
+    !briefDescription ||
+    !mainDescription ||
+    !courseGoals
+  )
+    return { error, type };
 
   const id = generateId(7);
-  const course = await db.insert(courseTable).values({
-    level,
-    title,
-    educatorId: user.id,
-    imageUrl:
-      "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
-    id,
-  });
+  const course = await db
+    .update(courseTable)
+    .set({
+      level,
+      title,
+      educatorId: user.id,
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
+      id,
+      briefDescription,
+      mainDescription,
+      courseGoals,
+    })
+    .where(eq(courseTable.id, courseId));
   if (!course)
     return {
       error: { failed: "failed to create the course please try again" },
@@ -138,16 +178,18 @@ export async function editCourseInfo(
 
   redirect(`/dashboard/${id}`);
 }
-type addCourseActionResult<> = {
+
+type CourseActionResult<> = {
   error: errorType | null;
   type: inputReturnTYpe | null;
 };
-type editCourseInfoActionResult<> = {
-  error: errorType | null;
-  type: inputReturnTYpe | null;
+export type editCourseActionResult<> = {
+  error: editErrorType | null;
+  type: editInputReturnTYpe | null;
 };
-
-
 type inputType = "title" | "Description" | "category" | "level" | "failed";
+export type editInputType = inputType | "mainDescription" | "courseGoals";
 type errorType = { [key in keyof inputReturnTYpe]: string };
+type editErrorType = { [key in keyof editInputReturnTYpe]: string };
 type inputReturnTYpe = Partial<Record<inputType, boolean>>;
+type editInputReturnTYpe = Partial<Record<editInputType, boolean>>;

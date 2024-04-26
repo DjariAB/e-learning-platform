@@ -60,6 +60,15 @@ export const courseTable = createTable(
     level: varchar("level", {
       length: 255,
     }).notNull(),
+    briefDescription : varchar("brief_description", {
+      length: 1000,
+    }).notNull(),
+    mainDescription : varchar("main_description", {
+      length: 5000,
+    }).notNull(),
+    courseGoals :  varchar("course_goals", {
+      length: 5000,
+    }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

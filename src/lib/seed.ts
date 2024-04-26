@@ -40,6 +40,9 @@ export async function Seed() {
       imageUrl: course.imageUrl,
       level: course.level,
       title: course.title,
+      briefDescription : "",
+      mainDescription : "",
+      courseGoals : "",
     });
   }
 
