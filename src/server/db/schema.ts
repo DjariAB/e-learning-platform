@@ -29,6 +29,12 @@ export const userTable = createTable("user", {
   password: varchar("password", { length: 255 }),
   github_id: varchar("github_id", { length: 255 }).unique(),
   isMentor: boolean("is_mentor").default(false),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const sessionTable = createTable("session", {
@@ -54,7 +60,6 @@ export const courseTable = createTable(
     level: varchar("level", {
       length: 255,
     }).notNull(),
-
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -62,23 +67,22 @@ export const courseTable = createTable(
       .onUpdateNow()
       .default(sql`CURRENT_TIMESTAMP`),
   },
-
   (example) => ({
     nameIndex: index("name_idx").on(example.title),
   }),
 );
-export const educatorTable = createTable("educator", {
-  id: varchar("id", { length: 196 }).primaryKey(),
-  name: varchar("educator_name", { length: 255 }).notNull(),
-  userName: varchar("user_name", { length: 255 }).notNull(),
-  description: varchar("description", { length: 1000 }).notNull(),
-});
 export const chapterTable = createTable("chapter", {
   id: varchar("id", { length: 196 }).primaryKey(),
   courseId: varchar("course_id", { length: 196 })
     .references(() => courseTable.id)
     .notNull(),
   name: varchar("chapter_name", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 export const lessonTable = createTable("lesson", {
   id: varchar("id", { length: 196 }).primaryKey(),
@@ -86,6 +90,12 @@ export const lessonTable = createTable("lesson", {
   chapterId: varchar("chapter_id", { length: 196 })
     .references(() => chapterTable.id)
     .notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 export const fileTable = createTable("file", {
   id: varchar("id", { length: 196 }).primaryKey(),
@@ -97,6 +107,12 @@ export const fileTable = createTable("file", {
   userId: varchar("user_id", { length: 196 })
     .references(() => userTable.id)
     .notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const questionTable = createTable("question", {
@@ -109,6 +125,12 @@ export const questionTable = createTable("question", {
   choice2: varchar("choice_2", { length: 255 }).notNull(),
   choice3: varchar("choice_3", { length: 255 }).notNull(),
   correctAnswer: varchar("correct_choice", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 export const enrolledCoursesTable = createTable(
   "enrolled_Courses",
@@ -119,6 +141,12 @@ export const enrolledCoursesTable = createTable(
     userId: varchar("user_id", { length: 255 }).references(() => userTable.id),
     progress: int("user_progress").$default(() => 0),
     currentLessonId: varchar("current_lesson_id", { length: 196 }),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt")
+      .onUpdateNow()
+      .default(sql`CURRENT_TIMESTAMP`),
   },
   (table) => {
     return {

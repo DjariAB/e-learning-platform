@@ -15,7 +15,6 @@ import {
   lessonTable,
 } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
-import { and, eq } from "drizzle-orm";
 // import { generateId } from "lucia";
 // import { revalidatePath } from "next/cache";
 import { Form } from "@/lib/Form";
@@ -24,6 +23,7 @@ import { validateRequest } from "@/server/auth";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 export default async function CoursePage({
   params,
@@ -34,14 +34,17 @@ export default async function CoursePage({
     .select()
     .from(courseTable)
     .where(eq(courseTable.id, params.courseId));
+
   const course = courses[0];
   if (!course) redirect("/courses");
+
   const { user } = await validateRequest();
 
   const chapters = await db
     .select()
     .from(chapterTable)
-    .where(eq(chapterTable.courseId, params.courseId));
+    .where(eq(chapterTable.courseId, params.courseId))
+    .orderBy(desc(chapterTable.createdAt));
   const isEnrolled = await db
     .select()
     .from(enrolledCoursesTable)
@@ -134,7 +137,7 @@ export default async function CoursePage({
           <br />
 
           <div>
-            <form action={lessonAction}>
+            <form action={bindedChapteraciton}>
               <button type="submit"> add chapter</button>
             </form>
             <h1 className=" pb-2 font-bold">Chapters</h1>
@@ -155,12 +158,16 @@ export default async function CoursePage({
 }
 
 type CHapterAccordionItemPorps = {
-  chapter: {
-    id: string;
-    name: string;
-  };
+  id: string;
+  name: string;
+  courseId: string;
 };
-async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
+
+async function CHapterAccordionItem({
+  chapter,
+}: {
+  chapter: CHapterAccordionItemPorps;
+}) {
   const lessons = await db
     .select()
     .from(lessonTable)
@@ -168,10 +175,10 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
 
   return (
     <AccordionItem key={chapter.id} value={chapter.id}>
-      <AccordionTrigger>{chapter.id}</AccordionTrigger>
+      <AccordionTrigger>{chapter.name}</AccordionTrigger>
 
       {lessons.map((lesson) => (
-        <AccordionContent key={lesson.id}>{lesson.id}</AccordionContent>
+        <AccordionContent key={lesson.id}>{lesson.title}</AccordionContent>
       ))}
     </AccordionItem>
   );
