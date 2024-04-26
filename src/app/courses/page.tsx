@@ -2,6 +2,7 @@ import { logoutAction } from "@/actions/auth";
 import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
 import { Button } from "@/components/ui/button";
+import { Seed } from "@/lib/seed";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import {
@@ -70,10 +71,10 @@ const Courses = async () => {
         ))}
       </div>
       <div className=" flex flex-col gap-3">
-        <form action={AddCourse}>
+        <form action={Seed}>
           <Button className="bg-[#072E6A]" type="submit">
             {" "}
-            add a course
+            add courses
           </Button>
         </form>
         <form action={deleteCourse}>
