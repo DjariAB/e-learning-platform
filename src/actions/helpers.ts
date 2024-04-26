@@ -84,6 +84,7 @@ export async function addCourse(
     imageUrl:
       "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
     id,
+    category,
     briefDescription: briefDescription,
     mainDescription: "",
     courseGoals: "",

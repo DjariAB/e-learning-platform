@@ -40,6 +40,7 @@ export async function Seed() {
       imageUrl: course.imageUrl,
       level: course.level,
       title: course.title,
+      category : "web dev",
       briefDescription : "",
       mainDescription : "",
       courseGoals : "",

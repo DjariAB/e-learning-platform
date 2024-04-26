@@ -60,6 +60,9 @@ export const courseTable = createTable(
     level: varchar("level", {
       length: 255,
     }).notNull(),
+    category : varchar("category", {
+      length: 255,
+    }).notNull(),
     briefDescription : varchar("brief_description", {
       length: 1000,
     }).notNull(),
