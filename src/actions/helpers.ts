@@ -91,10 +91,62 @@ export async function addCourse(
   redirect(`/dashboard/${id}`);
 }
 
+export async function editCourseInfo(
+  _: unknown,
+  formData: FormData,
+): Promise<editCourseInfoActionResult> {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login/mentor");
+
+  const title = formData.get("title")?.toString();
+  const category = formData.get("category")?.toString();
+  const level = formData.get("level")?.toString();
+
+  const error: errorType = {};
+  const type: inputReturnTYpe = {};
+
+  if (!title) {
+    error.title = "Please provide a Title";
+    type.title = true;
+  }
+  if (!level) {
+    error.level = "Please Select a level";
+    type.level = true;
+  }
+  if (!category) {
+    error.category = "Please Select a category";
+    type.category = true;
+  }
+
+  if (error || !title || !category || !level) return { error, type };
+
+  const id = generateId(7);
+  const course = await db.insert(courseTable).values({
+    level,
+    title,
+    educatorId: user.id,
+    imageUrl:
+      "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
+    id,
+  });
+  if (!course)
+    return {
+      error: { failed: "failed to create the course please try again" },
+      type: { failed: true },
+    };
+
+  redirect(`/dashboard/${id}`);
+}
 type addCourseActionResult<> = {
   error: errorType | null;
   type: inputReturnTYpe | null;
 };
+type editCourseInfoActionResult<> = {
+  error: errorType | null;
+  type: inputReturnTYpe | null;
+};
+
 
 type inputType = "title" | "Description" | "category" | "level" | "failed";
 type errorType = { [key in keyof inputReturnTYpe]: string };
