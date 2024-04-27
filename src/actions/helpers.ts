@@ -144,9 +144,7 @@ export async function editCourseInfo(
     error.courseGoals = "Please add course goals";
     type.courseGoals = true;
   }
-
   if (
-    error ||
     !title ||
     !category ||
     !level ||
@@ -156,28 +154,45 @@ export async function editCourseInfo(
   )
     return { error, type };
 
-  const id = generateId(7);
-  const course = await db
-    .update(courseTable)
-    .set({
-      level,
-      title,
-      educatorId: user.id,
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
-      id,
-      briefDescription,
-      mainDescription,
-      courseGoals,
-    })
-    .where(eq(courseTable.id, courseId));
-  if (!course)
-    return {
-      error: { failed: "failed to create the course please try again" },
-      type: { failed: true },
-    };
+  try {
+    const course = await db
+      .update(courseTable)
+      .set({
+        level,
+        title,
+        briefDescription,
+        mainDescription,
+        courseGoals,
+        category,
+      })
+      .where(eq(courseTable.id, courseId));
 
-  redirect(`/dashboard/${id}`);
+    console.log("you are here this should work ");
+  } catch (err) {
+    console.log("this is the error ");
+    console.log(err);
+  } finally {
+    console.log("you are getting here fi finaly ");
+  }
+  // const course = await db
+  //   .update(courseTable)
+  //   .set({
+  //     level,
+  //     title,
+  //     educatorId: user.id,
+  //     imageUrl:
+  //       "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
+  //     id,
+  //     briefDescription,
+  //     mainDescription,
+  //     courseGoals,
+  //   })
+  //   .where(eq(courseTable.id, courseId));
+
+  return {
+    error: { failed: "failed to create the course please try again" },
+    type: { failed: true },
+  };
 }
 
 type CourseActionResult<> = {

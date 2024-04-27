@@ -26,9 +26,9 @@ const SideBar = () => {
     },
     {
       name: "My Courses",
-      url: "/dashboard/courses",
+      url: "/dashboard/mycourses",
       icon: <AcademicCapIcon className="size-7  stroke-[1.5px]" />,
-      isActive: pathName === "/dashboard/courses",
+      isActive: pathName === "/dashboard/mycourses",
     },
   ];
 

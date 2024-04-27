@@ -75,7 +75,13 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
                   <label htmlFor="category" className="font-medium">
                     Category
                   </label>
-                  <Select name="category">
+                  <Select
+                    name="category"
+                    value={courseInfo.category}
+                    onValueChange={(e) =>
+                      setcourseInfo({ ...courseInfo, category: e })
+                    }
+                  >
                     <SelectTrigger className="  w-full sm:w-[180px]">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
@@ -125,7 +131,10 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
                 isTextArea
                 rows={3}
                 onChange={(e) =>
-                  setcourseInfo({ ...courseInfo, briefDescription: e.target.value })
+                  setcourseInfo({
+                    ...courseInfo,
+                    briefDescription: e.target.value,
+                  })
                 }
               />
               <InputComp
