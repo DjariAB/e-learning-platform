@@ -33,10 +33,17 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
   const [courseInfo, setcourseInfo] = useState(course);
   const [formState, formAction] = useFormState(editCourseInfo, {
     error: null,
-    type: null,
+    type: {},
   });
   return (
     <>
+      {formState.type?.success && (
+        <p className="text-center text-green-500">
+          {" "}
+          successfully changed the course info{" "}
+        </p>
+      )}
+
       <form
         action={formAction}
         className="mx-auto flex w-3/4 flex-col gap-2 pt-8"

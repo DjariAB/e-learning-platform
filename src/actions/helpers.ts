@@ -54,7 +54,7 @@ export async function addCourse(
   const title = formData.get("title")?.toString();
   const category = formData.get("category")?.toString();
   const level = formData.get("level")?.toString();
-  const briefDescription = formData.get("description")?.toString();
+  const briefDescription = formData.get("Description")?.toString();
 
   const error: errorType = {};
   const type: inputReturnTYpe = {};
@@ -72,9 +72,11 @@ export async function addCourse(
     error.category = "Please Select a category";
     type.category = true;
   }
-
-  if (error || !title || !category || !level || !briefDescription)
+  console.log("you in line 75");
+  console.log(error);
+  if (!title || !category || !level || !briefDescription)
     return { error, type };
+  console.log("you not  here ");
 
   const id = generateId(7);
   const course = await db.insert(courseTable).values({
@@ -95,7 +97,7 @@ export async function addCourse(
       type: { failed: true },
     };
 
-  redirect(`/dashboard/${id}`);
+  redirect(`/dashboard/mycourses/${id}/edit`);
 }
 export async function editCourseInfo(
   _: unknown,
@@ -155,7 +157,7 @@ export async function editCourseInfo(
     return { error, type };
 
   try {
-    const course = await db
+    await db
       .update(courseTable)
       .set({
         level,
@@ -166,32 +168,16 @@ export async function editCourseInfo(
         category,
       })
       .where(eq(courseTable.id, courseId));
-
-    console.log("you are here this should work ");
   } catch (err) {
-    console.log("this is the error ");
-    console.log(err);
-  } finally {
-    console.log("you are getting here fi finaly ");
+    return {
+      error: { failed: "failed to create the course please try again" },
+      type: { failed: true },
+    };
   }
-  // const course = await db
-  //   .update(courseTable)
-  //   .set({
-  //     level,
-  //     title,
-  //     educatorId: user.id,
-  //     imageUrl:
-  //       "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
-  //     id,
-  //     briefDescription,
-  //     mainDescription,
-  //     courseGoals,
-  //   })
-  //   .where(eq(courseTable.id, courseId));
-
+  console.log("this should be working ");
   return {
-    error: { failed: "failed to create the course please try again" },
-    type: { failed: true },
+    error: { success: "Changes have been added successfully" },
+    type: { success: true },
   };
 }
 
@@ -203,7 +189,13 @@ export type editCourseActionResult<> = {
   error: editErrorType | null;
   type: editInputReturnTYpe | null;
 };
-type inputType = "title" | "Description" | "category" | "level" | "failed";
+type inputType =
+  | "title"
+  | "Description"
+  | "category"
+  | "level"
+  | "failed"
+  | "success";
 export type editInputType = inputType | "mainDescription" | "courseGoals";
 type errorType = { [key in keyof inputReturnTYpe]: string };
 type editErrorType = { [key in keyof editInputReturnTYpe]: string };

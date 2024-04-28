@@ -10,6 +10,7 @@ import {
 import { db } from "@/server/db";
 import {
   chapterTable,
+  commentsTable,
   courseTable,
   enrolledCoursesTable,
   lessonTable,
@@ -23,7 +24,8 @@ import { validateRequest } from "@/server/auth";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
+import { Input } from "@/components/ui/input";
 
 export default async function CoursePage({
   params,
@@ -34,6 +36,10 @@ export default async function CoursePage({
     .select()
     .from(courseTable)
     .where(eq(courseTable.id, params.courseId));
+  const comments = await db
+    .select()
+    .from(commentsTable)
+    .where(eq(commentsTable.courseId, params.courseId));
 
   const course = courses[0];
   if (!course) redirect("/courses");
@@ -57,6 +63,7 @@ export default async function CoursePage({
   console.log(isEnrolled);
 
   const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
+  const bindedCommentsaciton = commentsAction.bind(null, params.courseId);
 
   return (
     <>
@@ -148,7 +155,22 @@ export default async function CoursePage({
                 ))}
               </Accordion>
             </div>
-            <p> {params.courseId} </p>
+          </div>
+
+          <div>
+            <form className="flex gap-3" action={bindedCommentsaciton}>
+              <Input type="text" name="body" />
+              <button type="submit"> add a comment </button>
+            </form>
+            <ul>
+              {comments.length ? (
+                comments.map((comment) => (
+                  <li key={comment.id}>{comment.body}</li>
+                ))
+              ) : (
+                <p>there are no courses for now </p>
+              )}
+            </ul>
           </div>
         </div>
         <div>Scroll tracker</div>
@@ -191,6 +213,24 @@ async function chapteraciton(courseId: string) {
   await db
     .insert(chapterTable)
     .values({ courseId: courseId, name: "first chapter", id });
+  const path = `/courses/${courseId}`;
+  revalidatePath(path);
+}
+
+async function commentsAction(courseId: string, formData: FormData) {
+  "use server";
+
+  const { user } = await validateRequest();
+  const body = formData.get("body")?.toString();
+  if (!user || !body) return;
+  const id = generateId(7);
+  await db.insert(commentsTable).values({
+    courseId,
+    body,
+    id,
+    userId: user.id,
+    userName: user.userName,
+  });
   const path = `/courses/${courseId}`;
   revalidatePath(path);
 }
