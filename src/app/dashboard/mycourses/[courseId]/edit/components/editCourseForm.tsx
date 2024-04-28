@@ -17,7 +17,7 @@ import {
   chapterTable,
 } from "@/server/db/schema";
 import { type InferSelectModel } from "drizzle-orm";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useState, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers";
 import { Loader2, UndoIcon } from "lucide-react";
@@ -93,20 +93,35 @@ type toEditCourseProps = InferSelectModel<typeof courseTable>;
 // }
 function EditCourseForm({ course }: { course: toEditCourseProps }) {
   const [courseInfo, setcourseInfo] = useState(course);
+  const [changed, setChanged] = useState(false);
+
   const [formState, formAction] = useFormState(editCourseInfo, {
     error: null,
     type: {},
   });
+
+  useEffect(() => {
+    if (formState.type?.success) {
+      setChanged(false);
+    }
+  }, [formState.type?.success]);
+
   return (
     <>
       {formState.type?.success && (
-        <p className="text-center text-green-500">
+        <p
+          className="text-center text-green-500"
+          onLoad={() => {
+            setChanged(false);
+          }}
+        >
           {" "}
           successfully changed the course info{" "}
         </p>
       )}
 
       <form
+        onChange={() => setChanged(true)}
         action={formAction}
         className="mx-auto flex w-3/4 flex-col gap-2 pt-8"
       >
@@ -130,7 +145,10 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
             <SubmitButton className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
               Save
             </SubmitButton>
-            <Button className="rounded-sm px-4 py-2 font-normal" disabled>
+            <Button
+              className="rounded-sm px-4 py-2 font-normal"
+              disabled={changed}
+            >
               Edit Content
             </Button>
           </div>
