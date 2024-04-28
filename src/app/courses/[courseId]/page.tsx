@@ -185,7 +185,7 @@ type CHapterAccordionItemPorps = {
   courseId: string;
 };
 
-async function CHapterAccordionItem({
+async  function CHapterAccordionItem({
   chapter,
 }: {
   chapter: CHapterAccordionItemPorps;

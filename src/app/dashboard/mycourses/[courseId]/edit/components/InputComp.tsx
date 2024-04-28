@@ -1,4 +1,4 @@
-import {  editCourseActionResult, editInputType } from "@/actions/helpers";
+import { editCourseActionResult, editInputType } from "@/actions/helpers";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ChangeEvent } from "react";
@@ -10,23 +10,28 @@ function InputComp({
   value,
   name,
   onChange,
-
   formState,
 }: {
   label: string;
   isTextArea?: boolean;
   rows?: number;
   value: string;
-  name: editInputType;
-  onChange?: ((v: ChangeEvent<HTMLInputElement>) => void);
-  formState: editCourseActionResult;
+  name: string;
+  onChange?: (v: ChangeEvent<HTMLInputElement>) => void;
+  formState?: editCourseActionResult;
 }) {
-  const error = formState.error ? formState.error[name] : "";
+  let error = "";
+  if (formState) error = formState.error ? formState.error[name] : "";
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={name} className="font-medium">
-        {label}
-      </label>
+      {label ? (
+        <label htmlFor={name} className="font-medium">
+          {label}
+        </label>
+      ) : (
+        ""
+      )}
+
       {isTextArea ? (
         <textarea
           value={value}
