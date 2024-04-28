@@ -14,11 +14,21 @@ import { UploadDropzone } from "@/components/uploadButton";
 import { type courseTable } from "@/server/db/schema";
 import { type InferSelectModel } from "drizzle-orm";
 import InputComp from "./InputComp";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers";
 import { Loader2 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 type toEditCourseProps = InferSelectModel<typeof courseTable>;
+// function EditCoursePage({ course }: { course: toEditCourseProps }) {
+//   return ()
+
+// }
 function EditCourseForm({ course }: { course: toEditCourseProps }) {
   const [courseInfo, setcourseInfo] = useState(course);
   const [formState, formAction] = useFormState(editCourseInfo, {
@@ -176,6 +186,71 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
   );
 }
 export default EditCourseForm;
+export function EditCourseContentForm({
+  course,
+}: {
+  course: toEditCourseProps;
+}) {
+  const [courseInfo, setcourseInfo] = useState(course);
+  const [formState, formAction] = useFormState(editCourseInfo, {
+    error: null,
+    type: null,
+  });
+  return (
+    <>
+      <form
+        action={formAction}
+        className="mx-auto flex w-3/4 flex-col gap-2 pt-8"
+      >
+        {" "}
+        <input
+          type="hidden"
+          name="courseId"
+          value={courseInfo.id}
+          onChange={() => {
+            return;
+          }}
+        />
+        <div className="flex items-center justify-between px-4">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-medium leading-3 ">Edit Course</h1>
+            <p className="text-sm font-light text-gray-600">
+              Customize your course and add content
+            </p>
+          </div>
+          <div className="space-x-1">
+            <SubmitButton className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
+              Save
+            </SubmitButton>
+            <Button className="rounded-sm px-4 py-2 font-normal" disabled>
+              Edit Course Info
+            </Button>
+          </div>
+        </div>
+        <Card>
+          <CardContent className="flex gap-4 py-4">
+            <div className="w-1/2">
+              <Card>
+                <CardContent>
+                  <Accordion type="single" collapsible>
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                      <AccordionContent>
+                        Yes. It adheres to the WAI-ARIA design pattern.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="grow"></div>
+          </CardContent>
+        </Card>
+      </form>
+    </>
+  );
+}
+
 function SubmitButton({
   className,
   children,
