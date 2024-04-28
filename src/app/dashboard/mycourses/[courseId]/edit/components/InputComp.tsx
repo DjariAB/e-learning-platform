@@ -18,7 +18,7 @@ function InputComp({
   rows?: number;
   value: string;
   name: editInputType;
-  onChange?: ((v: ChangeEvent<HTMLInputElement>) => voi);
+  onChange?: ((v: ChangeEvent<HTMLInputElement>) => void);
   formState: editCourseActionResult;
 }) {
   const error = formState.error ? formState.error[name] : "";

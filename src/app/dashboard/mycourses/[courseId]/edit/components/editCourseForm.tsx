@@ -14,7 +14,7 @@ import { UploadDropzone } from "@/components/uploadButton";
 import { type courseTable } from "@/server/db/schema";
 import { type InferSelectModel } from "drizzle-orm";
 import InputComp from "./InputComp";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers";
 import { Loader2 } from "lucide-react";
@@ -23,10 +23,17 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
   const [courseInfo, setcourseInfo] = useState(course);
   const [formState, formAction] = useFormState(editCourseInfo, {
     error: null,
-    type: null,
+    type: {},
   });
   return (
     <>
+      {formState.type?.success && (
+        <p className="text-center text-green-500">
+          {" "}
+          successfully changed the course info{" "}
+        </p>
+      )}
+
       <form
         action={formAction}
         className="mx-auto flex w-3/4 flex-col gap-2 pt-8"

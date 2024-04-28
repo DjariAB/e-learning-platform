@@ -60,16 +60,16 @@ export const courseTable = createTable(
     level: varchar("level", {
       length: 255,
     }).notNull(),
-    category : varchar("category", {
+    category: varchar("category", {
       length: 255,
     }).notNull(),
-    briefDescription : varchar("brief_description", {
+    briefDescription: varchar("brief_description", {
       length: 1000,
     }).notNull(),
-    mainDescription : varchar("main_description", {
+    mainDescription: varchar("main_description", {
       length: 5000,
     }).notNull(),
-    courseGoals :  varchar("course_goals", {
+    courseGoals: varchar("course_goals", {
       length: 5000,
     }).notNull(),
     createdAt: timestamp("created_at")
@@ -96,6 +96,7 @@ export const chapterTable = createTable("chapter", {
     .onUpdateNow()
     .default(sql`CURRENT_TIMESTAMP`),
 });
+
 export const lessonTable = createTable("lesson", {
   id: varchar("id", { length: 196 }).primaryKey(),
   title: varchar("lesson_title", { length: 255 }).notNull(),
@@ -166,3 +167,21 @@ export const enrolledCoursesTable = createTable(
     };
   },
 );
+
+export const commentsTable = createTable("comments", {
+  id: varchar("id", { length: 196 }).primaryKey(),
+  courseId: varchar("course_id", { length: 196 })
+    .references(() => courseTable.id)
+    .notNull(),
+  userId: varchar("user_id", { length: 196 })
+    .references(() => userTable.id)
+    .notNull(),
+  userName: varchar("user_name", { length: 255 }).notNull(),
+  body: varchar("body", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt")
+    .onUpdateNow()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
