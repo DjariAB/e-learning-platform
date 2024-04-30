@@ -11,16 +11,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UploadDropzone } from "@/components/uploadButton";
+
 import {
-  lessonTable,
-  type courseTable,
-  chapterTable,
-} from "@/server/db/schema";
-import { type InferSelectModel } from "drizzle-orm";
-import { type ReactNode, useState, useEffect } from "react";
+  type ReactNode,
+  useState,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+  type MouseEventHandler,
+} from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers";
-import { Loader2, UndoIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -29,69 +31,20 @@ import {
 } from "@/components/ui/accordion";
 import InputComp from "./InputComp";
 import { Input } from "@/components/ui/input";
-type lessonType = {
-  id: string;
-  title: string;
-  chapterId: string;
-};
-type chapterType = {
-  id: string;
-  name: string;
-  courseId: string;
-};
-const lessons = [
-  {
-    id: "lesson1",
-    title: "Introduction to JavaScript",
-    chapterId: "chapter1",
-  },
-  { id: "lesson2", title: "Variables and Data Types", chapterId: "chapter1" },
-  { id: "lesson3", title: "Functions and Scope", chapterId: "chapter2" },
+import {
+  type chapterType,
+  type lessonType,
+  type toEditCourseProps,
+} from "./editWrapper";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-  { id: "lesson4", title: "Arrays and Loops", chapterId: "chapter2" },
-  { id: "lesson5", title: "Objects and Classes", chapterId: "chapter3" },
-  { id: "lesson6", title: "Asynchronous JavaScript", chapterId: "chapter3" },
-
-  { id: "lesson7", title: "DOM Manipulation", chapterId: "chapter4" },
-  { id: "lesson8", title: "Event Handling", chapterId: "chapter4" },
-  { id: "lesson9", title: "AJAX and Fetch", chapterId: "chapter5" },
-
-  { id: "lesson10", title: "Error Handling", chapterId: "chapter5" },
-  { id: "lesson11", title: "Modules and Bundlers", chapterId: "chapter6" },
-  { id: "lesson12", title: "Introduction to React", chapterId: "chapter6" },
-];
-
-const chapters = [
-  { id: "chapter1", name: "Basic Concepts", courseId: "WebdevCrashCourse" },
-  {
-    id: "chapter2",
-    name: "Intermediate JavaScript",
-    courseId: "WebdevCrashCourse",
-  },
-  {
-    id: "chapter3",
-    name: "Advanced JavaScript",
-    courseId: "WebdevCrashCourse",
-  },
-  { id: "chapter4", name: "DOM Manipulation", courseId: "WebdevCrashCourse" },
-  {
-    id: "chapter5",
-    name: "Asynchronous Programming",
-    courseId: "WebdevCrashCourse",
-  },
-  {
-    id: "chapter6",
-    name: "Frontend Frameworks",
-    courseId: "WebdevCrashCourse",
-  },
-];
-
-type toEditCourseProps = InferSelectModel<typeof courseTable>;
-// function EditCoursePage({ course }: { course: toEditCourseProps }) {
-//   return ()
-
-// }
-function EditCourseForm({ course }: { course: toEditCourseProps }) {
+function EditCourseForm({
+  course,
+  setIsEditingInfo,
+}: {
+  course: toEditCourseProps;
+  setIsEditingInfo: Dispatch<SetStateAction<boolean>>;
+}) {
   const [courseInfo, setcourseInfo] = useState(course);
   const [changed, setChanged] = useState(false);
 
@@ -123,7 +76,7 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
       <form
         onChange={() => setChanged(true)}
         action={formAction}
-        className="mx-auto flex w-3/4 flex-col gap-2 pt-8"
+        className="mx-auto flex w-3/4 flex-col gap-2  pt-8"
       >
         {" "}
         <input
@@ -142,12 +95,16 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
             </p>
           </div>
           <div className="space-x-1">
-            <SubmitButton className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
+            <SubmitButton
+              className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 "
+              disabled={changed}
+            >
               Save
             </SubmitButton>
             <Button
               className="rounded-sm px-4 py-2 font-normal"
               disabled={changed}
+              onClick={() => setIsEditingInfo(false)}
             >
               Edit Content
             </Button>
@@ -273,10 +230,39 @@ function EditCourseForm({ course }: { course: toEditCourseProps }) {
   );
 }
 export default EditCourseForm;
-export function EditCourseContentForm() {
+export function EditCourseContentForm({
+  setIsEditingInfo,
+  chapters,
+  lessons,
+}: {
+  setIsEditingInfo: Dispatch<SetStateAction<boolean>>;
+  chapters: Array<chapterType>;
+  lessons: Array<lessonType>;
+}) {
+  const [formState, formAction] = useFormState(editCourseInfo, {
+    error: null,
+    type: {},
+  });
+  const [changed, setChanged] = useState(false);
+  useEffect(() => {
+    if (formState.type?.success) {
+      setChanged(false);
+    }
+  }, [formState.type?.success]);
+
+  const [selectedItems, setSelectedItems] = useState({
+    chapter: "",
+    lesson: "",
+  });
+
+  const toEditLesson = lessons.find((less) => less.id === selectedItems.lesson);
   return (
     <>
-      <form action="" className="mx-auto flex flex-col  gap-2 pt-8 lg:w-3/4">
+      <form
+        action=""
+        className="mx-auto flex  flex-col gap-2 pt-8 lg:w-3/4"
+        onChange={() => setChanged(true)}
+      >
         {" "}
         {/* <input
           type="hidden"
@@ -294,10 +280,17 @@ export function EditCourseContentForm() {
             </p>
           </div>
           <div className="space-x-1">
-            <SubmitButton className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
+            <SubmitButton
+              className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 "
+              disabled={changed}
+            >
               Save
             </SubmitButton>
-            <Button className="rounded-sm px-4 py-2 font-normal" disabled>
+            <Button
+              className="rounded-sm px-4 py-2 font-normal"
+              disabled={changed}
+              onClick={() => setIsEditingInfo(true)}
+            >
               Edit Course Info
             </Button>
           </div>
@@ -306,43 +299,50 @@ export function EditCourseContentForm() {
           <CardContent className="flex flex-row  gap-4 py-4">
             <div className="w-1/2">
               <h3 className="pb-2 pl-3 font-medium">Course Content</h3>
-              <Card>
-                <CardContent>
-                  <Accordion type="single" collapsible>
-                    {chapters.map((chap) => (
-                      <ChapterAccItem
-                        chapter={chap}
-                        lessonsArray={lessons}
-                        key={chap.id}
-                      />
-                    ))}
-                    <Input placeholder="Add a new chapter here" />
-                  </Accordion>
-                </CardContent>
-              </Card>
+              <ScrollArea className="h-[430px] rounded-lg border px-4">
+                <Accordion type="single" collapsible>
+                  {chapters.map((chap) => (
+                    <ChapterAccItem
+                      selectedItems={selectedItems}
+                      setSelectedItems={setSelectedItems}
+                      isSelectedChap={chap.id === selectedItems.chapter}
+                      chapter={chap}
+                      lessonsArray={lessons}
+                      key={chap.id}
+                    />
+                  ))}
+                </Accordion>
+              </ScrollArea>
+              <Input
+                className="mt-4 h-14"
+                placeholder="Add a new chapter here"
+              />
             </div>
             <div className="flex w-1/2 flex-col self-stretch">
               <h3 className="pb-2 pl-3 font-medium">Editing space</h3>
 
               <Card className="flex grow  pt-4">
                 <CardContent className="flex h-full w-full shrink flex-col gap-2">
-                  {
-                    // <img
-                    //   className="m-auto  w-1/2"
-                    //   src="/../../../../../../../images/editing_space.jpg"
-                    // />
-                  }
-                  <div className="w-full">
-                    <InputComp
-                      label="Course title"
-                      value="Introduction to React"
-                      name="courseTitle"
+                  {toEditLesson ? (
+                    <>
+                      <div className="w-full">
+                        <InputComp
+                          label="Course title"
+                          value={toEditLesson.title}
+                          name="courseTitle"
+                        />
+                      </div>
+                      <div className="grow">
+                        <p className="font-medium">Lesson file</p>
+                        <UploadDropzone lessonId="" />
+                      </div>
+                    </>
+                  ) : (
+                    <img
+                      className="m-auto  w-1/2"
+                      src="/../../../../../../../images/editing_space.jpg"
                     />
-                  </div>
-                  <div className="grow">
-                    <p className="font-medium">Lesson file</p>
-                    <UploadDropzone lessonId="" />
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -356,14 +356,16 @@ export function EditCourseContentForm() {
 function SubmitButton({
   className,
   children,
+  disabled,
 }: {
   children: ReactNode;
   className: string;
+  disabled?: boolean;
 }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" disabled={pending} className={className}>
+    <Button type="submit" disabled={pending || !disabled} className={className}>
       {!pending ? children : <Loader2 className="size-3 animate-spin" />}
     </Button>
   );
@@ -372,30 +374,77 @@ function SubmitButton({
 function ChapterAccItem({
   chapter,
   lessonsArray,
+  setSelectedItems,
+  selectedItems,
+  isSelectedChap,
 }: {
   chapter: chapterType;
-  lessonsArray: lessonType[];
+  lessonsArray: Array<lessonType>;
+  setSelectedItems: Dispatch<
+    SetStateAction<{ chapter: string; lesson: string }>
+  >;
+  selectedItems: { chapter: string; lesson: string };
+
+  isSelectedChap: boolean;
 }) {
   const chapterLessons = lessonsArray.filter(
     (lesson) => lesson.chapterId === chapter.id,
   );
   return (
     <AccordionItem value={chapter.id}>
-      <AccordionTrigger className="text-lg font-medium">
+      <AccordionTrigger
+        className={`text-lg font-medium ${isSelectedChap && "font-medium text-blue-800"}`}
+        onClick={() => {
+          selectedItems.chapter === chapter.id
+            ? setSelectedItems({ chapter: "", lesson: "" })
+            : setSelectedItems({ chapter: chapter.id, lesson: "" });
+        }}
+      >
         {chapter.name}
       </AccordionTrigger>
       <AccordionContent>
         <div className="flex flex-col gap-1">
           {chapterLessons.map((lesson) => (
-            <button
-              className="rounded-sm px-3 py-1 text-left text-base hover:bg-slate-100"
+            <LessonItem
               key={lesson.id}
-            >
-              {lesson.title}
-            </button>
+              lesson={lesson}
+              isSelected={selectedItems.lesson === lesson.id}
+              onClick={() => {
+                setSelectedItems({
+                  chapter: lesson.chapterId,
+                  lesson: lesson.id,
+                });
+              }}
+            />
           ))}
         </div>
       </AccordionContent>
     </AccordionItem>
+  );
+}
+export function LessonItem({
+  lesson,
+  isSelected,
+  isNotSaved,
+  onClick,
+}: {
+  lesson: lessonType;
+  isSelected: boolean;
+  isNotSaved?: boolean;
+  onClick: MouseEventHandler<HTMLDivElement>;
+}) {
+  return (
+    <>
+      <div
+        className={`flex items-center justify-between rounded-sm px-3 py-1 text-left text-base ${!isSelected ? "hover:bg-slate-200 hover:text-mainblue" : ""} cursor-pointer ${isSelected ? " bg-[#eef3fa] font-medium text-blue-800" : ""}`}
+        key={lesson.id}
+        onClick={onClick}
+      >
+        {lesson.title}
+        {isNotSaved ? (
+          <div className="size-[6px] rounded-full bg-red-500"></div>
+        ) : null}
+      </div>
+    </>
   );
 }

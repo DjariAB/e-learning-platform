@@ -19,9 +19,12 @@ export default async function DashboardLayout({
       className={`max-h-screen w-full ${anekLatin.className} w-full overflow-x-hidden tracking-wide`}
     >
       <SideBar />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
-        <DashboardHeader />
-        <div>{children}</div>
+      <div className="flex-row">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
+          <DashboardHeader />
+          <div>{children}</div>
+        </div>
+        {/* <div className="h-screen w-[30px]"></div> */}
       </div>
     </div>
   );
