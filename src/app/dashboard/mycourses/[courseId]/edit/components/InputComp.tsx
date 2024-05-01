@@ -11,19 +11,23 @@ function InputComp({
   name,
   onChange,
   formState,
+  placeholder,
+  className,
 }: {
   label: string;
   isTextArea?: boolean;
   rows?: number;
-  value: string;
+  value?: string;
   name: string;
   onChange?: (v: ChangeEvent<HTMLInputElement>) => void;
   formState?: editCourseActionResult;
+  className?: string;
+  placeholder?: string;
 }) {
   let error = "";
   if (formState) error = formState.error ? formState.error[name] : "";
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${className}`}>
       {label ? (
         <label htmlFor={name} className="font-medium">
           {label}
@@ -42,9 +46,10 @@ function InputComp({
             error && "border-red-400",
           )}
           onChange={onChange}
+          placeholder={placeholder}
         ></textarea>
       ) : (
-        <Input onChange={onChange} value={value} name={name} type="text" />
+        <Input onChange={onChange} value={value} name={name} type="text" placeholder={placeholder} />
       )}
       {formState && formState.type
         ? [name] && (

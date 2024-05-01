@@ -256,6 +256,9 @@ export function EditCourseContentForm({
   });
 
   const toEditLesson = lessons.find((less) => less.id === selectedItems.lesson);
+  const toEditChapter = chapters.find(
+    (chap) => chap.id === selectedItems.chapter,
+  );
   return (
     <>
       <form
@@ -337,6 +340,29 @@ export function EditCourseContentForm({
                         <UploadDropzone lessonId="" />
                       </div>
                     </>
+                  ) : toEditChapter ? (
+                    <>
+                      <div className="flex w-full flex-col items-center gap-4 ">
+                        <InputComp
+                          label="Chapter name"
+                          value={toEditChapter.name}
+                          name="courseTitle"
+                          className="w-full self-start"
+                        />
+                        <InputComp
+                          label="New Lesson"
+                          name="courseTitle"
+                          className="w-full self-start"
+                          placeholder="Enter new lesson title here"
+                        />
+                        <Button
+                          variant="default"
+                          className="rounded-md bg-mainblue px-6 text-white hover:bg-[#072e69c9]"
+                        >
+                          Add a new lesson
+                        </Button>
+                      </div>
+                    </>
                   ) : (
                     <img
                       className="m-auto  w-1/2"
@@ -403,21 +429,25 @@ function ChapterAccItem({
         {chapter.name}
       </AccordionTrigger>
       <AccordionContent>
-        <div className="flex flex-col gap-1">
-          {chapterLessons.map((lesson) => (
-            <LessonItem
-              key={lesson.id}
-              lesson={lesson}
-              isSelected={selectedItems.lesson === lesson.id}
-              onClick={() => {
-                setSelectedItems({
-                  chapter: lesson.chapterId,
-                  lesson: lesson.id,
-                });
-              }}
-            />
-          ))}
-        </div>
+        {chapterLessons[0] ? (
+          <div className="flex flex-col gap-1">
+            {chapterLessons.map((lesson) => (
+              <LessonItem
+                key={lesson.id}
+                lesson={lesson}
+                isSelected={selectedItems.lesson === lesson.id}
+                onClick={() => {
+                  setSelectedItems({
+                    chapter: lesson.chapterId,
+                    lesson: lesson.id,
+                  });
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="p-2 text-gray-500">No lessons yet, add new lessons</p>
+        )}
       </AccordionContent>
     </AccordionItem>
   );
@@ -436,7 +466,7 @@ export function LessonItem({
   return (
     <>
       <div
-        className={`flex items-center justify-between rounded-sm px-3 py-1 text-left text-base ${!isSelected ? "hover:bg-slate-200 hover:text-mainblue" : ""} cursor-pointer ${isSelected ? " bg-[#eef3fa] font-medium text-blue-800" : ""}`}
+        className={`flex items-center justify-between rounded-sm px-3 py-1 text-left text-base transition duration-300 ease-in ${!isSelected ? "hover:bg-slate-200 hover:text-mainblue" : ""} cursor-pointer ${isSelected ? " bg-[#eef3fa] font-medium text-blue-800" : ""}`}
         key={lesson.id}
         onClick={onClick}
       >
