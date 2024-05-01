@@ -12,7 +12,8 @@ async function EditCoursePage({ params }: { params: { courseId: string } }) {
   const courseChapters = await db
     .select()
     .from(chapterTable)
-    .where(eq(chapterTable.courseId, params.courseId));
+    .where(eq(chapterTable.courseId, params.courseId))
+    .orderBy(chapterTable.index);
 
   let courseLessons: lessonType[] = [];
 
@@ -22,26 +23,16 @@ async function EditCoursePage({ params }: { params: { courseId: string } }) {
       .from(lessonTable)
       .where(eq(lessonTable.chapterId, chap.id));
     courseLessons = courseLessons.concat(chapLessons);
-
+    courseLessons.sort((l1, l2) => l1.index - l2.index);
     if (!toEditCourse || !toEditCourse[0]) return <div>Course not found</div>;
-    // const courseChapters = await db
-    //   .select()
-    //   .from(chapterTable)
-    //   .where(eq(chapterTable.courseId, params.courseId))
-    //   .orderBy(chapterTable.createdAt);
-
-    // let lessons;
-    // for (const chapter of courseChapters) {
-    //   const chapterLessons = db
-    //     .select()
-    //     .from(lessonTable)
-    //     .where(eq(lessonTable.chapterId, chapter.id));
-    //   lessons = [...lessons , chapterLessons];
-    // }
 
     return (
       <>
-        <EditWrapper course={toEditCourse[0]} courseChapters = {courseChapters} courseLessons = {courseLessons}/>
+        <EditWrapper
+          course={toEditCourse[0]}
+          courseChapters={courseChapters}
+          courseLessons={courseLessons}
+        />
       </>
     );
   }

@@ -11,6 +11,7 @@ import {
   int,
   primaryKey,
   boolean,
+  tinyint,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -89,6 +90,7 @@ export const chapterTable = createTable("chapter", {
     .references(() => courseTable.id)
     .notNull(),
   name: varchar("chapter_name", { length: 255 }).notNull(),
+  index: tinyint("index").notNull().autoincrement().unique(),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -100,6 +102,7 @@ export const chapterTable = createTable("chapter", {
 export const lessonTable = createTable("lesson", {
   id: varchar("id", { length: 196 }).primaryKey(),
   title: varchar("lesson_title", { length: 255 }).notNull(),
+  index: tinyint("index").notNull().autoincrement().unique(),
   chapterId: varchar("chapter_id", { length: 196 })
     .references(() => chapterTable.id)
     .notNull(),
