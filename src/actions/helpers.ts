@@ -72,11 +72,8 @@ export async function addCourse(
     error.category = "Please Select a category";
     type.category = true;
   }
-  console.log("you in line 75");
-  console.log(error);
   if (!title || !category || !level || !briefDescription)
     return { error, type };
-  console.log("you not  here ");
 
   const id = generateId(7);
   const course = await db.insert(courseTable).values({
@@ -174,7 +171,6 @@ export async function editCourseInfo(
       type: { failed: true },
     };
   }
-  console.log("this should be working ");
   return {
     error: { success: "Changes have been added successfully" },
     type: { success: true },
