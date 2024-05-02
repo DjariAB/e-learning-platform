@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/helpers/courseHelpers";
+import { DeleteCourse, enroll } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
   Accordion,
@@ -17,6 +17,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default async function MentorCoursePage({
   params,
@@ -41,6 +42,10 @@ export default async function MentorCoursePage({
   return (
     <>
       <div className={` pt-10 `}>
+        <form action={DeleteCourse}>
+          <Input type="hidden" value={params.courseId} name="id" />
+          <Button variant="destructive">Delete</Button>
+        </form>
         <div className="flex items-center gap-16 px-12  ">
           <img
             src={

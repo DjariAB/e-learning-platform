@@ -10,12 +10,15 @@ import { useFormState } from "react-dom";
 import {
   addChapterAction,
   chapterActionResult,
+  deleteChapterAction,
 } from "@/actions/helpers/chatperHelpers";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import { SubmitButton } from "@/lib/Form";
+import { deleteLessonAction } from "@/actions/helpers/lessonHelpers";
 export function ChapterAccItem({
   chapter,
   lessonsArray,
@@ -110,7 +113,7 @@ export function AddChapterForm({
   const { toast } = useToast();
   useEffect(() => {
     if (formState.type === "success") {
-      toast({title:"Chapter added successfully",description:""});
+      toast({ title: "Chapter added successfully", description: "" });
     } else console.log("not working ", formState.error);
   }, [formState]);
 
@@ -162,6 +165,45 @@ export function UpdateChapterForm({
     </form>
   );
 }
+
+export function DeleteChapterForm({
+  className,
+  courseId,
+  id,
+}: {
+  id: string;
+  className?: string;
+  courseId: string;
+}) {
+  const [formState, formAction] = useFormState(deleteChapterAction, {
+    error: null,
+    type: null,
+  });
+
+  useEffect(() => {
+    if (formState.type === "success") {
+      console.log("works just fine ");
+    } else console.log("not working ", formState.error);
+  }, [formState]);
+
+  return (
+    <form
+      action={formAction}
+      className={cn(
+        "flex flex-col items-center justify-center gap-3",
+        className,
+      )}
+    >
+      <Input type="hidden" name="courseId" value={courseId} />
+      <Input type="hidden" name="id" value={id} />
+
+      <SubmitButton className="w-1/2 rounded-md bg-red-500 px-6 text-white hover:bg-red-600">
+        Delete Chapter
+      </SubmitButton>
+    </form>
+  );
+}
+
 export function AddLessonForm({
   action,
   className,
@@ -214,6 +256,7 @@ export function AddLessonForm({
     </form>
   );
 }
+
 export function UpdateLessonForm({
   action,
   className,
@@ -251,6 +294,44 @@ export function UpdateLessonForm({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
+    </form>
+  );
+}
+
+export function DeleteLessonForm({
+  className,
+  courseId,
+  id,
+}: {
+  id: string;
+  className?: string;
+  courseId: string;
+}) {
+  const [formState, formAction] = useFormState(deleteLessonAction, {
+    error: null,
+    type: null,
+  });
+
+  useEffect(() => {
+    if (formState.type === "success") {
+      console.log("works just fine ");
+    } else console.log("not working ", formState.error);
+  }, [formState]);
+
+  return (
+    <form
+      action={formAction}
+      className={cn(
+        "flex flex-col items-center justify-center gap-3",
+        className,
+      )}
+    >
+      <Input type="hidden" name="courseId" value={courseId} />
+      <Input type="hidden" name="id" value={id} />
+
+      <SubmitButton className="w-1/2 rounded-md bg-red-500 px-6 text-white hover:bg-red-600">
+        Delete lesson
+      </SubmitButton>
     </form>
   );
 }

@@ -18,14 +18,12 @@ import {
   useEffect,
   type Dispatch,
   type SetStateAction,
-  type MouseEventHandler,
 } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers/courseHelpers";
 import { Loader2 } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
 import InputComp from "./InputComp";
-import { Input } from "@/components/ui/input";
 import {
   type chapterType,
   type lessonType,
@@ -38,6 +36,8 @@ import {
   AddChapterForm,
   UpdateLessonForm,
   UpdateChapterForm,
+  DeleteChapterForm,
+  DeleteLessonForm,
 } from "./chapterComps";
 import {
   addChapterAction,
@@ -83,6 +83,7 @@ function EditCourseForm({
         </p>
       )}
 
+      <div></div>
       <form
         onChange={() => setChanged(true)}
         action={formAction}
@@ -364,6 +365,10 @@ export function EditCourseContentForm({
                         <p className="font-medium">Lesson file</p>
                         <UploadDropzone lessonId={toEditLesson.id} />
                       </div>
+                      <DeleteLessonForm
+                        courseId={courseId}
+                        id={toEditLesson.id}
+                      />
                     </>
                   ) : toEditChapter ? (
                     <div className="flex w-full flex-col items-center gap-4 ">
@@ -378,6 +383,10 @@ export function EditCourseContentForm({
                         chapterId={toEditChapter.id}
                         className="w-full"
                         courseId={courseId}
+                      />
+                      <DeleteChapterForm
+                        courseId={courseId}
+                        id={toEditChapter.id}
                       />
                     </div>
                   ) : (

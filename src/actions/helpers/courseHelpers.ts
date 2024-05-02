@@ -2,8 +2,13 @@
 import { type ActionResult } from "@/lib/Form";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { courseTable, enrolledCoursesTable } from "@/server/db/schema";
-import { and, eq } from "drizzle-orm";
+import {
+  chapterTable,
+  courseTable,
+  enrolledCoursesTable,
+  lessonTable,
+} from "@/server/db/schema";
+import { and, eq, exists } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -40,6 +45,39 @@ export async function enroll(
   } catch (err) {
     return { error: "failed enrolling the course", type: null };
   }
+}
+export async function DeleteCourse(
+  // _: unknown,
+  formData: FormData,
+  //  courseId: string
+): Promise<ActionResult> {
+  const { user } = await validateRequest();
+
+  if (!user) redirect("/login");
+
+  const id = formData.get("id")?.toString();
+  if (!id) return { error: "please provide a courseId", type: null };
+
+  const chaptersSq = db
+    .select()
+    .from(chapterTable)
+    .where(
+      and(
+        eq(chapterTable.courseId, id),
+        eq(chapterTable.id, lessonTable.chapterId),
+      ),
+    );
+
+  try {
+    await db.delete(lessonTable).where(exists(chaptersSq));
+    await db.delete(chapterTable).where(eq(chapterTable.courseId, id));
+    await db.delete(courseTable).where(eq(courseTable.id, id));
+  } catch (err) {
+    console.log("not working ", err);
+    return { error: "failed enrolling the course", type: null };
+  }
+
+  redirect("/dashboard/mycourses");
 }
 
 export async function addCourse(

@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/server/db";
-import { chapterTable } from "@/server/db/schema";
+import { chapterTable, lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
@@ -64,6 +64,36 @@ export async function updateChapterAction(
   return { error: null, type: "success" };
 }
 
+export async function deleteChapterAction(
+  _: unknown,
+  formData: FormData,
+): Promise<chapterActionResult> {
+  const id = formData.get("id")?.toString();
+  const courseId = formData.get("courseId")?.toString();
+
+  console.log("you are here before testing");
+
+  if (!id) {
+    return { error: "there is no such chapter", type: "failed" };
+  }
+
+  console.log("you are here after testing ");
+
+  try {
+
+    await db.delete(lessonTable).where(eq(lessonTable.chapterId,id))
+    await db.delete(chapterTable).where(eq(chapterTable.id,id))
+  } catch (err) {
+    return {
+      error: "Failed to delete the chapter please try again",
+      type: "failed",
+    };
+  }
+
+  revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
+
+  return { error: "Chapter and its lesson deleted successfully", type: "success" };
+}
 export type chapterActionResult<> = {
   error: string | null;
   type: inputType | null;
