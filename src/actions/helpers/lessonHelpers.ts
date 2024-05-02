@@ -63,6 +63,27 @@ export async function updateLessonAction(
 
   return { error: "Lesson Updated Successfully", type: "success" };
 }
+export async function deleteLessonAction(
+  _: unknown,
+  formData: FormData,
+  //  courseId: string
+): Promise<lessonActionResult> {
+  const id = formData.get("id")?.toString();
+  const courseId = formData.get("courseId")?.toString();
+
+  if (!id) return { error: "no such lesson in the db", type: "failed" };
+  try {
+    await db.delete(lessonTable).where(eq(lessonTable.id, id));
+  } catch (err) {
+    return {
+      error: "Failed to delete the lesson please try again",
+      type: "failed",
+    };
+  }
+
+  revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
+  return { error: "", type: "success" };
+}
 
 export type lessonActionResult<> = {
   error: string ;

@@ -18,14 +18,12 @@ import {
   useEffect,
   type Dispatch,
   type SetStateAction,
-  type MouseEventHandler,
 } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers/courseHelpers";
 import { Loader2 } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
 import InputComp from "./InputComp";
-import { Input } from "@/components/ui/input";
 import {
   type chapterType,
   type lessonType,
@@ -33,11 +31,10 @@ import {
 } from "./editWrapper";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  AddLessonForm,
   ChapterAccItem,
   AddChapterForm,
-  UpdateLessonForm,
   UpdateChapterForm,
+  DeleteChapterForm,
 } from "./chapterComps";
 import {
   addChapterAction,
@@ -47,6 +44,11 @@ import {
   addLessonAction,
   updateLessonAction,
 } from "@/actions/helpers/lessonHelpers";
+import {
+  AddLessonForm,
+  DeleteLessonForm,
+  UpdateLessonForm,
+} from "./lessonComps";
 
 function EditCourseForm({
   course,
@@ -83,6 +85,7 @@ function EditCourseForm({
         </p>
       )}
 
+      <div></div>
       <form
         onChange={() => setChanged(true)}
         action={formAction}
@@ -342,9 +345,9 @@ export function EditCourseContentForm({
               <h3 className="pb-2 pl-3 font-medium">Editing space</h3>
 
               <Card className="flex grow  pt-4">
-                <CardContent className="flex h-full w-full shrink flex-col gap-2">
+                <CardContent className="flex h-full w-full shrink flex-col justify-between gap-2">
                   {toEditLesson && toEditChapter ? (
-                    <>
+                    <div>
                       <UpdateLessonForm
                         action={updateLessonAction}
                         lesson={toEditLesson}
@@ -357,22 +360,35 @@ export function EditCourseContentForm({
                         <p className="font-medium">Lesson file</p>
                         <UploadDropzone lessonId={toEditLesson.id} />
                       </div>
-                    </>
-                  ) : toEditChapter ? (
-                    <div className="flex w-full flex-col items-center gap-4 ">
-                      <UpdateChapterForm
-                        action={updateChapterAction}
-                        chapter={toEditChapter}
-                        key={toEditChapter.id}
-                      />
-
-                      <AddLessonForm
-                        action={addLessonAction}
-                        chapterId={toEditChapter.id}
-                        className="w-full"
+                      <DeleteLessonForm
                         courseId={courseId}
+                        id={toEditLesson.id}
                       />
                     </div>
+                  ) : toEditChapter ? (
+                    <>
+                      <div className="flex h-full w-full flex-col items-center gap-4 ">
+                        <UpdateChapterForm
+                          action={updateChapterAction}
+                          chapter={toEditChapter}
+                          key={toEditChapter.id}
+                        />
+
+                        <AddLessonForm
+                          action={addLessonAction}
+                          chapterId={toEditChapter.id}
+                          className="w-full"
+                          courseId={courseId}
+                        />
+                      </div>
+                      <div>
+                        <DeleteChapterForm
+                          className="justify-self-end"
+                          courseId={courseId}
+                          id={toEditChapter.id}
+                        />
+                      </div>
+                    </>
                   ) : (
                     <img
                       className="m-auto  w-1/2"

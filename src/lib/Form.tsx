@@ -51,15 +51,17 @@ export function AuthForm({
 
 export function SubmitButton({
   className,
+  variant,
   children,
 }: {
   children: ReactNode;
   className: string;
+  variant?: "default" | "outline";
 }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" disabled={pending} className={className}>
+    <Button type="submit" variant={variant ?? "default"} disabled={pending} className={className}>
       {!pending ? children : <Loader2 className="animate-spin" />}
     </Button>
   );

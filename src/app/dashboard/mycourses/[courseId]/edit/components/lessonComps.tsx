@@ -6,7 +6,8 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { lessonActionResult } from "@/actions/helpers/lessonHelpers";
+import { deleteLessonAction, lessonActionResult } from "@/actions/helpers/lessonHelpers";
+import { SubmitButton } from "@/lib/Form";
 
 export function LessonItem({
     i,
@@ -149,6 +150,43 @@ export function LessonItem({
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
+      </form>
+    );
+  }
+  export function DeleteLessonForm({
+    className,
+    courseId,
+    id,
+  }: {
+    id: string;
+    className?: string;
+    courseId: string;
+  }) {
+    const [formState, formAction] = useFormState(deleteLessonAction, {
+      error: "",
+      type: null,
+    });
+  
+    useEffect(() => {
+      if (formState.type === "success") {
+        console.log("works just fine ");
+      } else console.log("not working ", formState.error);
+    }, [formState]);
+  
+    return (
+      <form
+        action={formAction}
+        className={cn(
+          "flex flex-col items-center justify-center gap-3",
+          className,
+        )}
+      >
+        <Input type="hidden" name="courseId" value={courseId} />
+        <Input type="hidden" name="id" value={id} />
+  
+        <SubmitButton  className="w-1/2 rounded-md text-red-500 px-6 border-red-500 hover:text-white hover:bg-red-500"  variant="outline">
+          Delete lesson
+        </SubmitButton>
       </form>
     );
   }

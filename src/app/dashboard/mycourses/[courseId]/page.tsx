@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/helpers/courseHelpers";
+import { DeleteCourse, enroll } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
   Accordion,
@@ -17,6 +17,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default async function MentorCoursePage({
   params,
@@ -34,7 +35,8 @@ export default async function MentorCoursePage({
   const chapters = await db
     .select()
     .from(chapterTable)
-    .where(eq(chapterTable.courseId, params.courseId));
+    .where(eq(chapterTable.courseId, params.courseId))
+    .orderBy(chapterTable.index);
 
   const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
 
@@ -74,10 +76,20 @@ export default async function MentorCoursePage({
                 />
                 <p>Educator name</p>
               </div>
-
-              <Link href={`/dashboard/mycourses/${params.courseId}/edit`}>
-                <Button className="rounded-md px-8">Edit Course</Button>
-              </Link>
+              <div className="flex gap-2">
+                <Link href={`/dashboard/mycourses/${params.courseId}/edit`}>
+                  <Button className="rounded-md px-5">Edit Course</Button>
+                </Link>
+                <form action={DeleteCourse}>
+                  <Input type="hidden" value={params.courseId} name="id" />
+                  <Button
+                    variant={"outline"}
+                    className="rounded-md border-red-500 px-10 text-red-500 hover:bg-red-500 hover:text-white"
+                  >
+                    Delete
+                  </Button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -101,9 +113,6 @@ export default async function MentorCoursePage({
           <br />
 
           <div>
-            <form action={lessonAction}>
-              <button type="submit"> add chapter</button>
-            </form>
             <h1 className=" pb-2 font-bold">Chapters</h1>
             <div className="p-4 pl-8 pr-24">
               <Accordion type="single" collapsible className="w-full">
@@ -112,7 +121,6 @@ export default async function MentorCoursePage({
                 ))}
               </Accordion>
             </div>
-            <p> {params.courseId} </p>
           </div>
         </div>
       </div>
@@ -134,7 +142,7 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
 
   return (
     <AccordionItem key={chapter.id} value={chapter.id}>
-      <AccordionTrigger>{chapter.id}</AccordionTrigger>
+      <AccordionTrigger>{chapter.name}</AccordionTrigger>
 
       {lessons.map((lesson) => (
         <AccordionContent key={lesson.id}>{lesson.id}</AccordionContent>
