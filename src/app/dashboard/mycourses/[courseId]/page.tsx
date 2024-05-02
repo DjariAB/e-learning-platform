@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/helpers";
+import { enroll } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
   Accordion,
@@ -8,11 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { db } from "@/server/db";
-import {
-  chapterTable,
-  courseTable,
-  lessonTable,
-} from "@/server/db/schema";
+import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 import { validateRequest } from "@/server/auth";
@@ -45,7 +41,6 @@ export default async function MentorCoursePage({
   return (
     <>
       <div className={` pt-10 `}>
-
         <div className="flex items-center gap-16 px-12  ">
           <img
             src={

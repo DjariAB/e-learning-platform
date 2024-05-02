@@ -1,4 +1,7 @@
-import { editCourseActionResult, editInputType } from "@/actions/helpers";
+import {
+  editCourseActionResult,
+  editInputType,
+} from "@/actions/helpers/courseHelpers";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ChangeEvent } from "react";
@@ -24,7 +27,7 @@ function InputComp({
   className?: string;
   placeholder?: string;
 }) {
-  let error = "";
+  let error;
   if (formState) error = formState.error ? formState.error[name] : "";
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -49,7 +52,13 @@ function InputComp({
           placeholder={placeholder}
         ></textarea>
       ) : (
-        <Input onChange={onChange} value={value} name={name} type="text" placeholder={placeholder} />
+        <Input
+          onChange={onChange}
+          value={value}
+          name={name}
+          type="text"
+          placeholder={placeholder}
+        />
       )}
       {formState && formState.type
         ? [name] && (

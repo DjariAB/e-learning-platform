@@ -22,7 +22,7 @@ import {
 } from "./ui/select";
 import { Anek_Latin } from "next/font/google";
 import { useFormState } from "react-dom";
-import { addCourse } from "@/actions/helpers";
+import { addCourse } from "@/actions/helpers/courseHelpers";
 import { SubmitButton } from "@/lib/Form";
 import { PlusIcon } from "@heroicons/react/24/solid";
 

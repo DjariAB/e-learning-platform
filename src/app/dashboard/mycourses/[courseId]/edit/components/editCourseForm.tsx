@@ -21,14 +21,9 @@ import {
   type MouseEventHandler,
 } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { editCourseInfo } from "@/actions/helpers";
+import { editCourseInfo } from "@/actions/helpers/courseHelpers";
 import { Loader2 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
 import InputComp from "./InputComp";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,6 +32,21 @@ import {
   type toEditCourseProps,
 } from "./editWrapper";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  AddLessonForm,
+  ChapterAccItem,
+  AddChapterForm,
+  UpdateLessonForm,
+  UpdateChapterForm,
+} from "./chapterComps";
+import {
+  addChapterAction,
+  updateChapterAction,
+} from "@/actions/helpers/chatperHelpers";
+import {
+  addLessonAction,
+  updateLessonAction,
+} from "@/actions/helpers/lessonHelpers";
 
 function EditCourseForm({
   course,
@@ -45,7 +55,7 @@ function EditCourseForm({
   course: toEditCourseProps;
   setIsEditingInfo: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [courseInfo, setcourseInfo] = useState(course);
+  const [courseInfo, setcourseInfo] = useState<toEditCourseProps>(course);
   const [changed, setChanged] = useState(false);
 
   const [formState, formAction] = useFormState(editCourseInfo, {
@@ -234,10 +244,12 @@ export function EditCourseContentForm({
   setIsEditingInfo,
   chapters,
   lessons,
+  courseId,
 }: {
   setIsEditingInfo: Dispatch<SetStateAction<boolean>>;
   chapters: Array<chapterType>;
   lessons: Array<lessonType>;
+  courseId: string;
 }) {
   const [formState, formAction] = useFormState(editCourseInfo, {
     error: null,
@@ -248,7 +260,7 @@ export function EditCourseContentForm({
     if (formState.type?.success) {
       setChanged(false);
     }
-  }, [formState.type?.success]);
+  }, [formState]);
 
   const [selectedItems, setSelectedItems] = useState({
     chapter: "",
@@ -259,12 +271,22 @@ export function EditCourseContentForm({
   const toEditChapter = chapters.find(
     (chap) => chap.id === selectedItems.chapter,
   );
+
+  const onselectChapter = (chapterId: string) => {
+    if (selectedItems.chapter === chapterId)
+      setSelectedItems({ chapter: "", lesson: "" });
+    else setSelectedItems({ chapter: chapterId, lesson: "" });
+  };
+  const onselectLesson = (lessonId: string, chapterId: string) => {
+    if (selectedItems.lesson === lessonId)
+      setSelectedItems({ chapter: chapterId, lesson: "" });
+    else setSelectedItems({ chapter: chapterId, lesson: lessonId });
+  };
   return (
     <>
-      <form
-        action=""
+      <div
         className="mx-auto flex  flex-col gap-2 pt-8 lg:w-3/4"
-        onChange={() => setChanged(true)}
+        // onChange={() => setChanged(true)}
       >
         {" "}
         {/* <input
@@ -307,7 +329,8 @@ export function EditCourseContentForm({
                   {chapters.map((chap) => (
                     <ChapterAccItem
                       selectedItems={selectedItems}
-                      setSelectedItems={setSelectedItems}
+                      onSelectChapter={onselectChapter}
+                      onSelectLesson={onselectLesson}
                       isSelectedChap={chap.id === selectedItems.chapter}
                       chapter={chap}
                       lessonsArray={lessons}
@@ -316,9 +339,10 @@ export function EditCourseContentForm({
                   ))}
                 </Accordion>
               </ScrollArea>
-              <Input
+              <AddChapterForm
+                action={addChapterAction}
                 className="mt-4 h-14"
-                placeholder="Add a new chapter here"
+                courseId={courseId}
               />
             </div>
             <div className="flex w-1/2 flex-col self-stretch">
@@ -326,43 +350,36 @@ export function EditCourseContentForm({
 
               <Card className="flex grow  pt-4">
                 <CardContent className="flex h-full w-full shrink flex-col gap-2">
-                  {toEditLesson ? (
+                  {toEditLesson && toEditChapter ? (
                     <>
-                      <div className="w-full">
-                        <InputComp
-                          label="Course title"
-                          value={toEditLesson.title}
-                          name="courseTitle"
-                        />
-                      </div>
+                      <UpdateLessonForm
+                        action={updateLessonAction}
+                        lesson={toEditLesson}
+                        className="w-full"
+                        courseId={courseId}
+                        key={toEditLesson.id}
+                      />
+
                       <div className="grow">
                         <p className="font-medium">Lesson file</p>
-                        <UploadDropzone lessonId="" />
+                        <UploadDropzone lessonId={toEditLesson.id} />
                       </div>
                     </>
                   ) : toEditChapter ? (
-                    <>
-                      <div className="flex w-full flex-col items-center gap-4 ">
-                        <InputComp
-                          label="Chapter name"
-                          value={toEditChapter.name}
-                          name="courseTitle"
-                          className="w-full self-start"
-                        />
-                        <InputComp
-                          label="New Lesson"
-                          name="courseTitle"
-                          className="w-full self-start"
-                          placeholder="Enter new lesson title here"
-                        />
-                        <Button
-                          variant="default"
-                          className="rounded-md bg-mainblue px-6 text-white hover:bg-[#072e69c9]"
-                        >
-                          Add a new lesson
-                        </Button>
-                      </div>
-                    </>
+                    <div className="flex w-full flex-col items-center gap-4 ">
+                      <UpdateChapterForm
+                        action={updateChapterAction}
+                        chapter={toEditChapter}
+                        key={toEditChapter.id}
+                      />
+
+                      <AddLessonForm
+                        action={addLessonAction}
+                        chapterId={toEditChapter.id}
+                        className="w-full"
+                        courseId={courseId}
+                      />
+                    </div>
                   ) : (
                     <img
                       className="m-auto  w-1/2"
@@ -374,7 +391,7 @@ export function EditCourseContentForm({
             </div>
           </CardContent>
         </Card>
-      </form>
+      </div>
     </>
   );
 }
@@ -394,87 +411,5 @@ function SubmitButton({
     <Button type="submit" disabled={pending || !disabled} className={className}>
       {!pending ? children : <Loader2 className="size-3 animate-spin" />}
     </Button>
-  );
-}
-
-function ChapterAccItem({
-  chapter,
-  lessonsArray,
-  setSelectedItems,
-  selectedItems,
-  isSelectedChap,
-}: {
-  chapter: chapterType;
-  lessonsArray: Array<lessonType>;
-  setSelectedItems: Dispatch<
-    SetStateAction<{ chapter: string; lesson: string }>
-  >;
-  selectedItems: { chapter: string; lesson: string };
-
-  isSelectedChap: boolean;
-}) {
-  const chapterLessons = lessonsArray.filter(
-    (lesson) => lesson.chapterId === chapter.id,
-  );
-  return (
-    <AccordionItem value={chapter.id}>
-      <AccordionTrigger
-        className={`text-lg font-medium ${isSelectedChap && "font-medium text-blue-800"}`}
-        onClick={() => {
-          selectedItems.chapter === chapter.id
-            ? setSelectedItems({ chapter: "", lesson: "" })
-            : setSelectedItems({ chapter: chapter.id, lesson: "" });
-        }}
-      >
-        {chapter.name}
-      </AccordionTrigger>
-      <AccordionContent>
-        {chapterLessons[0] ? (
-          <div className="flex flex-col gap-1">
-            {chapterLessons.map((lesson) => (
-              <LessonItem
-                key={lesson.id}
-                lesson={lesson}
-                isSelected={selectedItems.lesson === lesson.id}
-                onClick={() => {
-                  setSelectedItems({
-                    chapter: lesson.chapterId,
-                    lesson: lesson.id,
-                  });
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="p-2 text-gray-500">No lessons yet, add new lessons</p>
-        )}
-      </AccordionContent>
-    </AccordionItem>
-  );
-}
-export function LessonItem({
-  lesson,
-  isSelected,
-  isNotSaved,
-  onClick,
-}: {
-  lesson: lessonType;
-  isSelected: boolean;
-  isNotSaved?: boolean;
-  onClick: MouseEventHandler<HTMLDivElement>;
-}) {
-  return (
-    <>
-      <div
-        className={`flex items-center justify-between rounded-sm px-3 py-1 text-left text-base transition duration-300 ease-in ${!isSelected ? "hover:bg-slate-200 hover:text-mainblue" : ""} cursor-pointer ${isSelected ? " bg-[#eef3fa] font-medium text-blue-800" : ""}`}
-        key={lesson.id}
-        onClick={onClick}
-      >
-        {lesson.title}
-        {isNotSaved ? (
-          <div className="size-[6px] rounded-full bg-red-500"></div>
-        ) : null}
-      </div>
-    </>
   );
 }

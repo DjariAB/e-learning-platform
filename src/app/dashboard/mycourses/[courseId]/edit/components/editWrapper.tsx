@@ -28,6 +28,7 @@ export default function EditWrapper({
         <EditCourseContentForm
           setIsEditingInfo={setIsEditingInfo}
           lessons={courseLessons}
+          courseId={course.id}
           chapters={courseChapters}
         />
       )}

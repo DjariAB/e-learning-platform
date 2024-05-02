@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { enroll } from "@/actions/helpers";
+import { enroll } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
   Accordion,
@@ -185,7 +185,7 @@ type CHapterAccordionItemPorps = {
   courseId: string;
 };
 
-async  function CHapterAccordionItem({
+async function CHapterAccordionItem({
   chapter,
 }: {
   chapter: CHapterAccordionItemPorps;

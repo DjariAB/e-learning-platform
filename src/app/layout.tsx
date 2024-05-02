@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { Jost } from "next/font/google";
-
+import { Toaster } from "@/components/ui/toaster";
 const jost = Jost({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans  ${jost.className} h-screen w-screen `}>
         {children}
+        <Toaster />
       </body>
     </html>
   );
