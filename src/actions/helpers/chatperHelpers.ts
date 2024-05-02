@@ -30,7 +30,7 @@ export async function addChapterAction(
   }
 
   revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
-  return { error: null, type: "success" };
+  return { error: "Chapter Added Successfully", type: "success" };
 }
 export async function updateChapterAction(
   _: unknown,
@@ -61,11 +61,11 @@ export async function updateChapterAction(
 
   revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
 
-  return { error: null, type: "success" };
+  return { error: "Chapter Updated Successfully", type: "success" };
 }
 
 export type chapterActionResult<> = {
-  error: string | null;
+  error: string ;
   type: inputType | null;
 };
 type inputType = "failed" | "success";

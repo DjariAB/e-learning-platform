@@ -10,7 +10,7 @@ export async function addLessonAction(
   _: unknown,
   formData: FormData,
   //  courseId: string
-): Promise<chapterActionResult> {
+): Promise<lessonActionResult> {
   const title = formData.get("title")?.toString();
   const chapterId = formData.get("chapterId")?.toString();
   const courseId = formData.get("courseId")?.toString();
@@ -31,12 +31,12 @@ export async function addLessonAction(
   }
 
   revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
-  return { error: null, type: "success" };
+  return { error: "Lesson Added Successfully", type: "success" };
 }
 export async function updateLessonAction(
   _: unknown,
   formData: FormData,
-): Promise<chapterActionResult> {
+): Promise<lessonActionResult> {
   const title = formData.get("title")?.toString();
   const courseId = formData.get("courseId")?.toString();
   const id = formData.get("id")?.toString();
@@ -61,11 +61,11 @@ export async function updateLessonAction(
 
   revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
 
-  return { error: null, type: "success" };
+  return { error: "Lesson Updated Successfully", type: "success" };
 }
 
-export type chapterActionResult<> = {
-  error: string | null;
+export type lessonActionResult<> = {
+  error: string ;
   type: inputType | null;
 };
 type inputType = "failed" | "success";

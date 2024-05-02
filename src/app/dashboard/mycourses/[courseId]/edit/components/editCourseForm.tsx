@@ -304,21 +304,14 @@ export function EditCourseContentForm({
               Customize your course and add content
             </p>
           </div>
-          <div className="space-x-1">
-            <SubmitButton
-              className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 "
-              disabled={changed}
-            >
-              Save
-            </SubmitButton>
-            <Button
-              className="rounded-sm px-4 py-2 font-normal"
-              disabled={changed}
-              onClick={() => setIsEditingInfo(true)}
-            >
-              Edit Course Info
-            </Button>
-          </div>
+
+          <Button
+            className="rounded-sm px-4 py-2 font-normal"
+            disabled={changed}
+            onClick={() => setIsEditingInfo(true)}
+          >
+            Edit Course Info
+          </Button>
         </div>
         <Card>
           <CardContent className="flex flex-row  gap-4 py-4">
