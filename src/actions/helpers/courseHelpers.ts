@@ -126,12 +126,15 @@ export async function addCourse(
     mainDescription: "",
     courseGoals: "",
   });
-  if (!course)
+  if (!course) {
+    console.log("failed adding the course ");
     return {
       error: { failed: "failed to create the course please try again" },
       type: { failed: true },
     };
+  }
 
+  revalidatePath("/dashboard/mycourses");
   redirect(`/dashboard/mycourses/${id}/edit`);
 }
 export async function editCourseInfo(

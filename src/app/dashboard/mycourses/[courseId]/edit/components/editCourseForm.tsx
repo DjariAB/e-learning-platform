@@ -347,18 +347,22 @@ export function EditCourseContentForm({
               <Card className="flex grow  pt-4">
                 <CardContent className="flex h-full w-full shrink flex-col justify-between gap-2">
                   {toEditLesson && toEditChapter ? (
-                    <div>
+                    <div key={toEditLesson.id}>
                       <UpdateLessonForm
                         action={updateLessonAction}
                         lesson={toEditLesson}
                         className="w-full"
                         courseId={courseId}
-                        key={toEditLesson.id}
                       />
-
                       <div className="grow">
-                        <p className="font-medium">Lesson file</p>
-                        <UploadDropzone lessonId={toEditLesson.id} />
+                        {toEditLesson.ImageUrl ? (
+                          <img src={toEditLesson.ImageUrl} alt="lesson img" />
+                        ) : (
+                          <>
+                            <p className="font-medium">Lesson file</p>
+                            <UploadDropzone lessonId={toEditLesson.id} />
+                          </>
+                        )}
                       </div>
                       <DeleteLessonForm
                         courseId={courseId}
@@ -367,15 +371,16 @@ export function EditCourseContentForm({
                     </div>
                   ) : toEditChapter ? (
                     <>
-                      <div className="flex h-full w-full flex-col items-center gap-4 ">
+                      <div
+                        className="flex h-full w-full flex-col items-center gap-4 "
+                        key={toEditChapter.id}
+                      >
                         <UpdateChapterForm
                           action={updateChapterAction}
                           chapter={toEditChapter}
-                          key={toEditChapter.id}
                         />
 
                         <AddLessonForm
-                          action={addLessonAction}
                           chapterId={toEditChapter.id}
                           className="w-full"
                           courseId={courseId}
@@ -386,6 +391,7 @@ export function EditCourseContentForm({
                           className="justify-self-end"
                           courseId={courseId}
                           id={toEditChapter.id}
+                          key={toEditChapter.id}
                         />
                       </div>
                     </>

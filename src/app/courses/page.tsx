@@ -1,4 +1,5 @@
 import { logoutAction } from "@/actions/auth";
+import { DeleteCourse } from "@/actions/helpers/courseHelpers";
 import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,7 @@ const Courses = async () => {
             add courses
           </Button>
         </form>
-        <form action={deleteCourse}>
+        <form action={DeleteCourse}>
           <Button variant="destructive" type="submit">
             {" "}
             remove all courses
@@ -92,33 +93,3 @@ const Courses = async () => {
 };
 
 export default Courses;
-
-async function AddCourse() {
-  "use server";
-  const { user } = await validateRequest();
-  if (user) {
-    const id = generateId(7);
-    await db.insert(courseTable).values({
-      id,
-      level: "intermediate",
-      title: "nextjs course",
-      educatorId: user.id,
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
-      
-    });
-    revalidatePath("/courses");
-  }
-}
-async function deleteCourse() {
-  "use server";
-  const { user } = await validateRequest();
-  if (user) {
-    try {
-      await db.delete(courseTable).where(eq(courseTable.educatorId, user.id));
-      revalidatePath("/courses");
-    } catch (error) {
-      console.log("there is an erorr in here ", error);
-    }
-  }
-}

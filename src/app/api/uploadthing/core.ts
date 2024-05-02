@@ -9,6 +9,7 @@ import {
 } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -22,7 +23,6 @@ export const ourFileRouter = {
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
 
-      console.log("you are here for some reason ");
       // If you throw, the user will not be able to upload
       const { user } = await validateRequest();
       const lessonId = req.headers.get("lessonId");
@@ -55,57 +55,17 @@ export const ourFileRouter = {
 
       await db.insert(fileTable).values({
         id,
-        lessonId: metadata.lessonId,
         userId: metadata.userId,
         url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
         name: file.name,
       });
 
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
-    }),
-  MdFileUploader: f({ ["text/markdown"]: { maxFileSize: "4MB" } })
-    .middleware(async ({ req }) => {
-      // This code runs on your server before upload
-
-      console.log("you are here for some reason ");
-      // If you throw, the user will not be able to upload
-      const { user } = await validateRequest();
-      const lessonId = req.headers.get("lessonId");
-      if (!user) throw new UploadThingError("Unauthorized");
-      if (!lessonId) throw new UploadThingError("no lesson");
-      const lesson = await db
-        .select()
-        .from(lessonTable)
-        .where(eq(lessonTable.id, lessonId));
-
-      if (!lesson[0]?.id) throw new UploadThingError("Unauthorized");
-
-      const isOwner = await db
-        .select()
-        .from(lessonTable)
-        .leftJoin(chapterTable, eq(lessonTable.chapterId, chapterTable.id))
-        .leftJoin(courseTable, eq(chapterTable.courseId, courseTable.id))
-        .leftJoin(userTable, eq(courseTable.educatorId, userTable.id))
-        .where(and(eq(lessonTable.id, lessonId), eq(userTable.id, user.id)));
-
-      if (!isOwner[0]) throw new UploadThingError("Unauthorized");
-
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id, lessonId };
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-
-      const id = generateId(7);
-
-      await db.insert(fileTable).values({
-        id,
-        lessonId: metadata.lessonId,
-        userId: metadata.userId,
-        url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
-        name: file.name,
-      });
+      await db
+        .update(lessonTable)
+        .set({
+          ImageUrl: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+        })
+        .where(eq(lessonTable.id, metadata.lessonId));
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };

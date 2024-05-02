@@ -106,6 +106,7 @@ export const lessonTable = createTable("lesson", {
   chapterId: varchar("chapter_id", { length: 196 })
     .references(() => chapterTable.id)
     .notNull(),
+  ImageUrl: varchar("image_url", { length: 196 }),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -117,9 +118,9 @@ export const fileTable = createTable("file", {
   id: varchar("id", { length: 196 }).primaryKey(),
   name: varchar("lesson_title", { length: 255 }).notNull(),
   url: varchar("url", { length: 255 }).notNull(),
-  lessonId: varchar("lesson_id", { length: 196 })
-    .references(() => lessonTable.id)
-    .notNull(),
+  // lessonId: varchar("lesson_id", { length: 196 })
+  //   .references(() => lessonTable.id)
+  //   .notNull(),
   userId: varchar("user_id", { length: 196 })
     .references(() => userTable.id)
     .notNull(),
