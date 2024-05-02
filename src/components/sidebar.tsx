@@ -33,7 +33,7 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col bg-background px-2 pt-2 sm:flex">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col bg-background px-2 pt-2 sm:flex">
       <nav className="flex flex-col items-stretch gap-4 px-2 sm:py-4">
         <Link className="mb-8 self-center" href="/">
           <img
@@ -47,9 +47,9 @@ const SideBar = () => {
           <Link key={path.url} href={path.url}>
             <div
               className={cn(
-                " flex items-center gap-3 rounded-2xl bg-white p-3 text-xl font-normal transition duration-150 ease-in hover:bg-gray-200 ",
+                " flex items-center gap-3 rounded-lg bg-white p-3 text-xl font-normal transition duration-150 ease-in hover:bg-gray-200 ",
                 path.isActive
-                  ? " bg-black text-white transition duration-300 ease-in hover:bg-gray-800"
+                  ? " bg-mainblue text-white transition duration-300 ease-in hover:bg-mainblue"
                   : "",
               )}
             >

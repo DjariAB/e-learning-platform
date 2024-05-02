@@ -20,7 +20,7 @@ export default async function DashboardLayout({
     >
       <SideBar />
       <div className="flex-row">
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-56">
           <DashboardHeader />
           <div>{children}</div>
         </div>
