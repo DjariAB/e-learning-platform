@@ -47,9 +47,9 @@ const SideBar = () => {
           <Link key={path.url} href={path.url}>
             <div
               className={cn(
-                " flex items-center gap-3 rounded-lg bg-white p-3 text-xl font-normal transition duration-150 ease-in hover:bg-gray-200 ",
+                " flex items-center gap-3 rounded-xl bg-white p-3 text-xl font-normal transition duration-150 ease-in hover:bg-gray-200 ",
                 path.isActive
-                  ? " bg-mainblue text-white transition duration-300 ease-in hover:bg-mainblue"
+                  ? " bg-black text-white transition duration-300 ease-in hover:bg-black"
                   : "",
               )}
             >

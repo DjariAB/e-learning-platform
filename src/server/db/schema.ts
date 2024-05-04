@@ -55,6 +55,7 @@ export const courseTable = createTable(
     id: varchar("id", { length: 196 }).primaryKey(),
     title: varchar("name", { length: 255 }).notNull(),
     imageUrl: varchar("image_url", { length: 511 }).notNull(),
+    lessonsNum: int("lesson_num").$default(() => 0),
     educatorId: varchar("educator_id", { length: 255 })
       .references(() => userTable.id)
       .notNull(),
@@ -157,7 +158,7 @@ export const enrolledCoursesTable = createTable(
     ),
     userId: varchar("user_id", { length: 255 }).references(() => userTable.id),
     progress: int("user_progress").$default(() => 0),
-    currentLessonId: varchar("current_lesson_id", { length: 196 }),
+    currentLessonId: varchar("current_lesson_id", { length: 196 }).references(() => lessonTable.id),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

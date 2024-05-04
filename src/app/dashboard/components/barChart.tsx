@@ -60,12 +60,14 @@ export default function BarChartStat({
   return (
     <>
       <div
-        className={`flex flex-col rounded-2xl border px-6 pb-3 pt-5 ${className}`}
+        className={`flex flex-col rounded-2xl border pb-3 pt-5 px-1 lg:px-6 ${className}`}
       >
-        <p className="text-2xl font-medium leading-6">{title}</p>
-        <p className="pb-4 pt-1 text-lg font-light leading-5 text-gray-500">
-          {description}
-        </p>
+        <div className="px-5 lg:px-0">
+          <p className="pb-1 text-2xl font-medium leading-6">{title}</p>
+          <p className="pb-4 pt-1 text-lg font-light leading-5 text-gray-500">
+            {description}
+          </p>
+        </div>
         <ResponsiveContainer width="100%" height={350}>
           <BarChart data={data}>
             <XAxis

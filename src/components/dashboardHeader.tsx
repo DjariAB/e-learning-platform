@@ -32,7 +32,7 @@ const DashboardHeader = () => {
     },
     {
       name: "My Courses",
-      url: "/dashboard/courses",
+      url: "/dashboard/mycourses",
       icon: <AcademicCapIcon className="size-7" />,
     },
   ];
