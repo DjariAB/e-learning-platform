@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   BarChart,
   SignalHigh,
@@ -10,10 +11,10 @@ import {
 
 function CourseLevel({
   level,
-  additionalStyle,
+  className,
 }: {
   level: string;
-  additionalStyle: string;
+  className: string;
 }) {
   const levelColor =
     level === "advanced"
@@ -23,7 +24,10 @@ function CourseLevel({
         : "text-orange-500";
   return (
     <div
-      className={`flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1 ${additionalStyle}`}
+      className={cn(
+        "flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1",
+        className,
+      )}
     >
       {/* <Image
         src="/SVGs/Level_icon.svg"
@@ -36,7 +40,7 @@ function CourseLevel({
       <BarChart className={`${levelColor} h-5 w-5`} />
 
       {/* <SignalHigh  /> */}
-      <p className="font-medium">{level} </p>
+      <p className="font-semibold">{level} </p>
     </div>
   );
 }

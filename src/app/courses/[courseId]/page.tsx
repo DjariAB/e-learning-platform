@@ -77,8 +77,8 @@ export default async function CoursePage({
             className="size-[280px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-4 text-white">
-            <h1 className="text-3xl font-medium">{course?.title}</h1>
-            <p className="text-2xl font-light">
+            <h1 className="text-3xl font-semibold">{course?.title}</h1>
+            <p className="text-2xl font-thin">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
               tempore impedit, assumenda nisi. Dolor, harum atque facere eaque
@@ -87,7 +87,7 @@ export default async function CoursePage({
             <div>
               <CourseLevel
                 level={course.level.toString()}
-                additionalStyle="text-black"
+                className="font-medium text-black"
               />
             </div>
             <div className="flex justify-between pr-10">
