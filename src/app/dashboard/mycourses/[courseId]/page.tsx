@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DeleteCourse, enroll } from "@/actions/helpers/courseHelpers";
+import { DeleteCourse } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
   Accordion,
@@ -9,9 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 
-import { validateRequest } from "@/server/auth";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -30,7 +29,12 @@ export default async function MentorCoursePage({
     .where(eq(courseTable.id, params.courseId));
   const course = courses[0];
   if (!course) redirect("/courses");
-  const { user } = await validateRequest();
+  const numOfLessons = await db
+    .select({ count: count(lessonTable.id) })
+    .from(courseTable)
+    .leftJoin(chapterTable, eq(courseTable.id, chapterTable.courseId))
+    .leftJoin(lessonTable, eq(chapterTable.id, lessonTable.chapterId))
+    .where(eq(courseTable.id, params.courseId));
 
   const chapters = await db
     .select()
@@ -38,12 +42,12 @@ export default async function MentorCoursePage({
     .where(eq(chapterTable.courseId, params.courseId))
     .orderBy(chapterTable.index);
 
-  const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
+  // const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
 
   return (
     <>
       <div className={` pt-10 `}>
-        <div className="flex items-center gap-16 px-12  ">
+        <div className="flex items-center gap-10 px-12  ">
           <img
             src={
               course.imageUrl
@@ -54,7 +58,9 @@ export default async function MentorCoursePage({
             className="size-[280px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-4 text-black">
-            <h1 className="text-3xl font-medium">{course?.title}</h1>
+            <h1 className="text-3xl font-medium">
+              {course?.title} + {numOfLessons[0]?.count}
+            </h1>
             <p className="text-2xl font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
@@ -145,7 +151,9 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
       <AccordionTrigger>{chapter.name}</AccordionTrigger>
 
       {lessons.map((lesson) => (
-        <AccordionContent key={lesson.id}>{lesson.id}</AccordionContent>
+        <AccordionContent className="pl-6" key={lesson.id}>
+          {lesson.title}
+        </AccordionContent>
       ))}
     </AccordionItem>
   );
