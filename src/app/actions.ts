@@ -1,13 +1,13 @@
-'use server'
+"use server";
 
-import { generateText } from 'ai'
-import { google } from '@ai-sdk/google'
+import { generateText } from "ai";
+import { google } from "@ai-sdk/google";
 
 export async function getAnswer(question: string) {
   const { text, finishReason, usage } = await generateText({
-    model: google('models/gemini-pro'),
-    prompt: question
-  })
+    model: google("models/gemini-pro"),
+    prompt: question,
+  });
   const validJSON = text.replace(/(\w+)\s*:/g, '"$1":');
   // Parse the JSON string into an object
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -20,7 +20,7 @@ export async function getAnswer(question: string) {
     Correct_index: number;
   } = JSON.parse(validJSON);
 
-  console.log(obj)
+  console.log(obj);
 
-  return { text, finishReason, usage }
+  return { obj, finishReason, usage };
 }
