@@ -52,15 +52,18 @@ export default async function CoursePage({
     .where(eq(chapterTable.courseId, params.courseId))
     .orderBy(desc(chapterTable.createdAt));
   const isEnrolled = await db
-    .select()
+    .select({ lessonTitle: lessonTable.title, index: lessonTable.index })
     .from(enrolledCoursesTable)
+    .leftJoin(
+      lessonTable,
+      eq(lessonTable.id, enrolledCoursesTable.currentLessonId),
+      )
     .where(
       and(
         eq(enrolledCoursesTable.userId, user!.id),
         eq(enrolledCoursesTable.courseId, params.courseId),
       ),
     );
-  console.log(isEnrolled);
 
   const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
   const bindedCommentsaciton = commentsAction.bind(null, params.courseId);
@@ -77,7 +80,11 @@ export default async function CoursePage({
             className="size-[280px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-4 text-white">
-            <h1 className="text-3xl font-semibold">{course?.title}</h1>
+            <h1 className="text-3xl font-semibold">
+              {course?.title} {isEnrolled[0]?.lessonTitle}{" "}
+              {isEnrolled[0]?.index}
+              {/* {isEnrolled[1]?.index} */}
+            </h1>
             <p className="text-2xl font-thin">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis

@@ -56,7 +56,6 @@ export function AddLessonForm({
     type: null,
   });
   const [inputLesson, setinputLesson] = useState("");
-  console.log(chapterId);
   useEffect(() => {
     if (formState.type === "success") {
       toast({

@@ -36,7 +36,7 @@ export const CourseCard = ({
           />
           <CourseLevel
             level={level}
-            additionalStyle="absolute bottom-4 left-3"
+            className="absolute bottom-4 left-3"
           />
         </div>
         <div className="font-m flex flex-col gap-2 font-medium">
@@ -81,7 +81,7 @@ export const EnrolledCourseCard = ({
           />
           <CourseLevel
             level={level}
-            additionalStyle="absolute bottom-4 left-3"
+            className="absolute bottom-4 left-3"
           />
         </div>
         <div className="font-m flex flex-col gap-2 font-medium">
@@ -123,7 +123,7 @@ export const MentorCourseCard = ({
           />
           <CourseLevel
             level={level}
-            additionalStyle="absolute bottom-4 left-3"
+            className="absolute bottom-4 left-3"
           />
         </div>
         <div className="font-m flex flex-col gap-2 font-medium">

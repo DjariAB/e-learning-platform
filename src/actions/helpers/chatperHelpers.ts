@@ -40,7 +40,6 @@ export async function updateChapterAction(
   const id = formData.get("id")?.toString();
   const courseId = formData.get("courseId")?.toString();
 
-  console.log("you are here before testing");
   if (!name) {
     return { error: "name can't be empty", type: "failed" };
   }
@@ -48,7 +47,6 @@ export async function updateChapterAction(
     return { error: "there is no such chapter", type: "failed" };
   }
 
-  console.log("you are here after testing ");
 
   try {
     await db.update(chapterTable).set({ name }).where(eq(chapterTable.id, id));
@@ -71,13 +69,11 @@ export async function deleteChapterAction(
   const id = formData.get("id")?.toString();
   const courseId = formData.get("courseId")?.toString();
 
-  console.log("you are here before testing");
 
   if (!id) {
     return { error: "there is no such chapter", type: "failed" };
   }
 
-  console.log("you are here after testing ");
 
   try {
 

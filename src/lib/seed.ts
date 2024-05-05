@@ -30,7 +30,7 @@ export async function Seed() {
 
   const { user } = await validateRequest();
 
-  if (!user) return;
+  if (!user || !user.isMentor) return;
 
   for (const course of courses) {
     const id = generateId(7);

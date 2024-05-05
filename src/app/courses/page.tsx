@@ -12,8 +12,6 @@ import {
   userTable,
 } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const Courses = async () => {
@@ -25,7 +23,10 @@ const Courses = async () => {
     .from(enrolledCoursesTable)
     .where(eq(enrolledCoursesTable.userId, user.id))
     .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
-    .leftJoin(userTable, eq(enrolledCoursesTable.userId, userTable.id));
+    .leftJoin(
+      userTable,
+      eq(userTable.id, courseTable.educatorId),
+    );
 
   const courses = await db
     .select()

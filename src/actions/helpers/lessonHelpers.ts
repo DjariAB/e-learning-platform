@@ -41,7 +41,6 @@ export async function updateLessonAction(
   const courseId = formData.get("courseId")?.toString();
   const id = formData.get("id")?.toString();
 
-  console.log("you are here before testing");
   if (!title) {
     return { error: "name can't be empty", type: "failed" };
   }
@@ -50,7 +49,6 @@ export async function updateLessonAction(
     return { error: "there is no chapter", type: "failed" };
   }
 
-  console.log("you are here after testing ");
 
   try {
     await db.update(lessonTable).set({ title }).where(eq(lessonTable.id, id));

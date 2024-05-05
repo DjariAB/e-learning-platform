@@ -33,7 +33,6 @@ async function EditCoursePage({ params }: { params: { courseId: string } }) {
 
   if (!toEditCourse || !toEditCourse[0]) return <div>Course not found</div>;
 
-  console.log("you are here ");
   return (
     <>
       <EditWrapper

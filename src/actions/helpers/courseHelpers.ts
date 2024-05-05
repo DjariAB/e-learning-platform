@@ -38,8 +38,19 @@ export async function enroll(
     return { error: "coures is already enrolled", type: null };
 
   try {
-    // const currentLesson=await db.select().from(lessonTable).where(eq(lessonTable.))
-    await db.insert(enrolledCoursesTable).values({ courseId, userId: user.id });
+    const currentLesson = await db
+      .select({ id: lessonTable.id })
+      .from(lessonTable)
+      .leftJoin(chapterTable, eq(lessonTable.chapterId, chapterTable.id))
+      .leftJoin(courseTable, eq(chapterTable.courseId, courseTable.id))
+      .where(eq(courseTable.id, courseId))
+      .orderBy(lessonTable.index);
+    if (!currentLesson[0]) throw new Error("no lesson");
+    await db.insert(enrolledCoursesTable).values({
+      courseId,
+      userId: user.id,
+      currentLessonId: currentLesson[0].id,
+    });
     revalidatePath("/courses");
     return { error: null, type: null };
   } catch (err) {
