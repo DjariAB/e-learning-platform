@@ -28,6 +28,7 @@ export const userTable = createTable("user", {
   }).primaryKey(),
   userName: varchar("username", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }),
+  imageUrl: varchar("image_url", { length: 511 }),
   github_id: varchar("github_id", { length: 255 }).unique(),
   isMentor: boolean("is_mentor").default(false),
   createdAt: timestamp("created_at")
@@ -158,7 +159,9 @@ export const enrolledCoursesTable = createTable(
     ),
     userId: varchar("user_id", { length: 255 }).references(() => userTable.id),
     progress: int("user_progress").$default(() => 0),
-    currentLessonId: varchar("current_lesson_id", { length: 196 }).references(() => lessonTable.id),
+    currentLessonId: varchar("current_lesson_id", { length: 196 }).references(
+      () => lessonTable.id,
+    ),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

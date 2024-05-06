@@ -70,6 +70,65 @@ export const ourFileRouter = {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
+  courseImageUploader: f(["image"])
+    // Set permissions and file types for this FileRoute
+    .middleware(async ({ req }) => {
+      // This code runs on your server before upload
+
+      // If you throw, the user will not be able to upload
+      const { user } = await validateRequest();
+      const courseId = req.headers.get("courseId");
+      if (!user) throw new UploadThingError("no user");
+      if (!courseId) throw new UploadThingError("no courseId");
+      const courses = await db
+        .select()
+        .from(courseTable)
+        .where(eq(courseTable.id, courseTable));
+
+      if (!courses[0]?.id)
+        throw new UploadThingError("there is no such course ");
+
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: user.id, courseId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+
+      await db
+        .update(courseTable)
+        .set({
+          imageUrl: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+        })
+        .where(eq(courseTable.id, metadata.courseId));
+
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: metadata.userId };
+    }),
+  profileImageUploader: f(["image"])
+    // Set permissions and file types for this FileRoute
+    .middleware(async ({ req }) => {
+      // This code runs on your server before upload
+
+      // If you throw, the user will not be able to upload
+      const { user } = await validateRequest();
+      if (!user) throw new UploadThingError("no user");
+
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+
+      await db
+        .update(userTable)
+        .set({
+          imageUrl: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+        })
+        .where(eq(userTable.id, metadata.userId));
+
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: metadata.userId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
