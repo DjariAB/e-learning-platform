@@ -11,7 +11,7 @@ import CircularProgress from "@/components/ui/circularProgressBar";
 import { AddCourseDialog } from "@/components/addCourseDialog";
 // import CircularProgress from "@/components/ui/circularProgressBar";
 
-async function getData(): Promise<Student[]> {
+export async function getData(): Promise<Student[]> {
   // Fetch data from your API here.
   return [
     {
