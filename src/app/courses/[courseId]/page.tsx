@@ -26,6 +26,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 export default async function CoursePage({
   params,
@@ -57,7 +58,7 @@ export default async function CoursePage({
     .leftJoin(
       lessonTable,
       eq(lessonTable.id, enrolledCoursesTable.currentLessonId),
-      )
+    )
     .where(
       and(
         eq(enrolledCoursesTable.userId, user!.id),
@@ -158,7 +159,11 @@ export default async function CoursePage({
             <div className="p-4 pl-8 pr-24">
               <Accordion type="single" collapsible className="w-full">
                 {chapters.map((chapter) => (
-                  <CHapterAccordionItem chapter={chapter} key={chapter.id} />
+                  <CHapterAccordionItem
+                    chapter={chapter}
+                    key={chapter.id}
+                    courseId={params.courseId}
+                  />
                 ))}
               </Accordion>
             </div>
@@ -194,8 +199,10 @@ type CHapterAccordionItemPorps = {
 
 async function CHapterAccordionItem({
   chapter,
+  courseId,
 }: {
   chapter: CHapterAccordionItemPorps;
+  courseId: string;
 }) {
   const lessons = await db
     .select()
@@ -207,7 +214,9 @@ async function CHapterAccordionItem({
       <AccordionTrigger>{chapter.name}</AccordionTrigger>
 
       {lessons.map((lesson) => (
-        <AccordionContent key={lesson.id}>{lesson.title}</AccordionContent>
+        <AccordionContent key={lesson.id}>
+          <Link href={`/courses/${courseId}/${lesson.id}`}>{lesson.title}</Link>
+        </AccordionContent>
       ))}
     </AccordionItem>
   );

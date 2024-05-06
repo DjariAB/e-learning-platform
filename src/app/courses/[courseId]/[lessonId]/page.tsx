@@ -9,15 +9,23 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
+import { db } from "@/server/db";
+import { lessonTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function LessonPage({
   params,
 }: {
   params: { lessonId: string };
 }) {
-  const res = await fetch(
-    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/37537334-7e0c-447f-8810-1433ce5343af-2bb5.md",
-  );
+  const lesson = await db
+    .select()
+    .from(lessonTable)
+    .where(eq(lessonTable.id, params.lessonId));
+  if (!lesson[0] || !lesson[0].ImageUrl) return <div> lesson not found</div>;
+
+  const res = await fetch(lesson[0].ImageUrl);
+
   const data = await res.text();
   return (
     <div className="pt-10">

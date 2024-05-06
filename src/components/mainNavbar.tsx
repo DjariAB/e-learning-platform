@@ -12,7 +12,7 @@ const MainNavBar = async () => {
       <div className="absolute w-full">
         <div className="flex items-center justify-center gap-4 bg-transparent px-5 py-2 text-white ">
           {" "}
-          <Link href="/">
+          <Link href="/courses">
             <Image
               src="/SVGs/logo text.svg"
               alt="text logo"
