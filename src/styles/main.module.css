@@ -4,3 +4,6 @@
 .mainBg{
   background-image: url("../../public/SVGs/circuit-board\ 1.svg");
 }
+.gradientBg{
+  background-image: url("../../public/images/gradient.jpg");
+}
