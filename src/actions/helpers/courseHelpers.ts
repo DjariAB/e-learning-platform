@@ -146,7 +146,8 @@ export async function addCourse(
   }
 
   revalidatePath("/dashboard/mycourses");
-  redirect(`/dashboard/mycourses/${id}/edit`);
+  return { type: { success: true }, error: { success: id } };
+  // redirect(`/dashboard/mycourses/${id}/edit`);
 }
 export async function editCourseInfo(
   _: unknown,

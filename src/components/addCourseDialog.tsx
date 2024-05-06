@@ -24,29 +24,43 @@ import { Anek_Latin } from "next/font/google";
 import { useFormState } from "react-dom";
 import { addCourse } from "@/actions/helpers/courseHelpers";
 import { SubmitButton } from "@/lib/Form";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { type ReactNode, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const anekLatin = Anek_Latin({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600"],
 });
-export function AddCourseDialog() {
+export function AddCourseDialog({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const [state, formAction] = useFormState(addCourse, {
     error: null,
     type: null,
   });
+
+  const [isopen, setIsOpen] = useState<boolean>(false);
+  useEffect(() => {
+    if (state.type?.success) {
+      setIsOpen(false);
+      router.push(`/dashboard/mycourses/${state.error?.success}/edit`);
+    } else console.log("not working ", state.error);
+  }, [state, router]);
   return (
-    <Dialog>
+    <Dialog
+      open={isopen}
+      onOpenChange={(v) => {
+        if (!v) setIsOpen(v);
+      }}
+    >
       <DialogTrigger
-        className={`  ${anekLatin.className} flex  cursor-pointer items-center gap-3  rounded-2xl bg-white text-xl  font-normal text-black`}
+        className={`${anekLatin.className} flex  cursor-pointer items-center gap-3  rounded-2xl bg-white text-xl  font-normal text-black`}
         asChild
+        onClick={() => setIsOpen(true)}
       >
-        <div>
-          {/* <PlusCircleIcon className="size-7  stroke-[1.5px] " /> */}
-          {/* <PlusIcon className="size-6" /> */}
+        {/* <div>
           <PlusIcon className="size-6" />
-          {/* <button>New Course</button> */}
-        </div>
+        </div> */}
+        {children}
       </DialogTrigger>
       <DialogContent className={`sm:max-w-[425px] ${anekLatin.className}`}>
         <DialogHeader>
