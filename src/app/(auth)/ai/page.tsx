@@ -1,10 +1,10 @@
 "use client";
 
-import { getAnswer } from "@/app/actions";
+import { getAnswer } from "@/app/(auth)/ai/actions";
 import { useState } from "react";
 
 const test =
-  ' generate a single quiz about the content provided below that follows the following structure in the shape of an object Question : "your question here" Choice_1 : "your first choice" Choice_2 : "your second choice" Choice_3 : "your third choice" Choice_4 : "your fourth choice" Correct_index : "index of the correct choice"';
+  ' generate a single quiz about ';
 
 type test = {
   Question: string;

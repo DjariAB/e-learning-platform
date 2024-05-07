@@ -5,6 +5,9 @@ import { google } from "@ai-sdk/google";
 
 export async function getAnswer(question: string) {
   const { text, finishReason, usage } = await generateText({
+    system:
+      'You are a friendly quizz generator you are given a subject by the user  generate a single quiz about the content provided that follows the following structure in the shape of an object {Question : "your question here" Choice_1 : "your first choice" Choice_2 : "your second choice" Choice_3 : "your third choice" Choice_4 : "your fourth choice" Correct_index : "index of the correct choice"}',
+
     model: google("models/gemini-pro"),
     prompt: question,
   });

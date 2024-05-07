@@ -20,7 +20,7 @@ export async function continueConversation(history: Message[]) {
     model: google("models/gemini-pro"),
     system:
       "You are a friendly quizz generator you are given a subject by the user and you give him a question with answsers about that subject ",
-    messages: history,
+
     tools: {
       generateQuiz: {
         description: "quizz about a subject",
@@ -35,11 +35,10 @@ export async function continueConversation(history: Message[]) {
           const que = question as string;
           const wrong = wronganswer as string;
           const correct = correctAnswer as string;
-
-          stream.update(
+          stream.done(
             <Test correctAnswer={correct} question={que} wronganswer={wrong} />,
           ); // [!code highlight]
-          return `Here's is the question ${question}!`; // [!code highlight]
+          return `${question}!`; // [!code highlight]
         },
       },
     },
