@@ -23,13 +23,15 @@ export default function Header({ user }: { user: User | null }) {
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Image src="/SVGs/logo_text.svg" alt="logo" width={150} height={90} />
-        <p className="text-xl font-medium">
-          {weekdays[date.getDay()]}, {date.getDate()} {months[date.getMonth()]}{" "}
-          {date.getFullYear()}
-        </p>
-        <MentorAvatar name={user!.userName} email="abdelbassetd9@gmail.com" />
+      <div className="fixed -top-1 z-50 w-full bg-white p-4 shadow-sm">
+        <div className="inset-0 z-40 flex items-center justify-between ">
+          <Image src="/SVGs/logo_text.svg" alt="logo" width={150} height={90} />
+          <p className="text-xl font-medium">
+            {weekdays[date.getDay()]}, {date.getDate()}{" "}
+            {months[date.getMonth()]} {date.getFullYear()}
+          </p>
+          <MentorAvatar name={user!.userName} email="abdelbassetd9@gmail.com" />
+        </div>
       </div>
     </>
   );

@@ -14,7 +14,7 @@ export default async function DashboardLayout({
   const { user } = await validateRequest();
   if (!user) return redirect("/login/");
   return (
-    <div className={`p-4 font-sans ${anekLatin.className} space-y-4`}>
+    <div className={`p-4 pt-10 font-sans  ${anekLatin.className} space-y-4`}>
       <Header user={user} />
       {children}
     </div>

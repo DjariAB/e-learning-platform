@@ -22,9 +22,9 @@ export default async function LessonPage({
     .select()
     .from(lessonTable)
     .where(eq(lessonTable.id, params.lessonId));
-  if (!lesson[0] || !lesson[0].ImageUrl) return <div> lesson not found</div>;
+  if (!lesson[0] || !lesson[0].LessonContent) return <div> lesson not found</div>;
 
-  const res = await fetch(lesson[0].ImageUrl);
+  const res = await fetch(lesson[0].LessonContent);
 
   const data = await res.text();
   return (

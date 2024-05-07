@@ -18,8 +18,10 @@ import { getData } from "../dashboard/page";
 import BarChartStat from "../dashboard/components/barChart";
 import { db } from "@/server/db";
 import {
+  chapterTable,
   courseTable,
   enrolledCoursesTable,
+  lessonTable,
   userTable,
 } from "@/server/db/schema";
 import { validateRequest } from "@/server/auth";
@@ -36,6 +38,11 @@ export default async function Page() {
     .from(enrolledCoursesTable)
     .leftJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
     .leftJoin(userTable, eq(courseTable.educatorId, userTable.id))
+    .innerJoin(
+      lessonTable,
+      eq(enrolledCoursesTable.currentLessonId, lessonTable.id),
+    )
+    .innerJoin(chapterTable, eq(lessonTable.chapterId, chapterTable.id))
     .where(eq(enrolledCoursesTable.userId, user.id));
   const completedCourses = totalEnrolledCourses.filter(
     (c) => c.enrolled_Courses.progress == 100,
@@ -79,39 +86,21 @@ export default async function Page() {
       <div className="grid grid-cols-2 grid-rows-1 gap-4 lg:h-[310px]">
         <Carousel className="">
           <CarouselContent className="gap-1 pl-2">
-            <CarouselItem className="basis-auto pl-3">
-              {totalEnrolledCourses.map((course) => (
+            {totalEnrolledCourses.map((course) => (
+              <CarouselItem
+                key={course.enrolled_Courses.courseId}
+                className="basis-auto pl-3"
+              >
                 <CourseCard
-                  key={course.enrolled_Courses.courseId}
-                  progress={course.enrolled_Courses.progress}
+                  progress={course.enrolled_Courses.progress ?? 0}
                   courseId={course.enrolled_Courses.courseId ?? ""}
                   educatorName={course.user ? course.user.userName : "unknown"}
                   imageUrl={course.courses?.imageUrl ?? ""}
-                  level={course.courses?.level ?? ""}
+                  // level={course.courses?.level ?? ""}
                   title={course.courses?.title ?? ""}
                 />
-              )) ?? <p>No Enrolled Courses Yet!</p>}
-            </CarouselItem>
-            <CarouselItem className="basis-auto pl-3">
-              <CourseCard
-                progress={75}
-                courseId=""
-                educatorName="REACT dev"
-                imageUrl="https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"
-                level="Beginner"
-                title="REACT course : complete mastery"
-              />
-            </CarouselItem>
-            <CarouselItem className="basis-auto pl-3">
-              <CourseCard
-                progress={75}
-                courseId=""
-                educatorName="REACT dev"
-                imageUrl="https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"
-                level="Beginner"
-                title="REACT course : complete mastery"
-              />
-            </CarouselItem>
+              </CarouselItem>
+            )) ?? <p>No Enrolled Courses Yet!</p>}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
@@ -121,9 +110,16 @@ export default async function Page() {
           <CardContent>
             <ScrollArea className="h-60 w-full ">
               <div className="space-y-4">
-                <ContinueComp />
-                <ContinueComp />
-                <ContinueComp />
+                {totalEnrolledCourses.map((c) => (
+                  <ContinueComp
+                    key={c.lesson.id}
+                    lesson={c.lesson}
+                    course={c.courses?.title ?? ""}
+                    courseId={c.courses?.id ?? ""}
+                    chapter={c.chapter.name}
+                    progress={c.enrolled_Courses.progress ?? 1}
+                  />
+                ))}
               </div>
               <ScrollBar orientation="vertical" />
             </ScrollArea>
@@ -134,7 +130,7 @@ export default async function Page() {
 
       <div className="grid grid-cols-2 gap-4">
         <Card className="col-span-1 overflow-x-scroll md:overflow-hidden">
-          <CardHeader className="">
+          <CardHeader>
             <CardTitle>Students LeaderBoard</CardTitle>
           </CardHeader>
           <CardContent>

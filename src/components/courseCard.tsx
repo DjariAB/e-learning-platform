@@ -22,11 +22,12 @@ export const CourseCard = ({
 }: {
   title: string;
   educatorName: string;
-  level: string;
+  level?: string;
   imageUrl: string;
   courseId: string;
   progress?: number;
 }) => {
+  console.log(progress);
   const [isHovered, setisHovered] = useState(false);
   return (
     <Link href={`/courses/${courseId}`}>
@@ -41,6 +42,7 @@ export const CourseCard = ({
             alt="Course image"
             className={`ease absolute z-0 size-auto h-full object-cover transition duration-300 ${isHovered ? "scale-110" : ""}`}
           />
+
           {isHovered ? (
             <>
               <div className="absolute z-30 h-full w-full bg-black opacity-40 "></div>
@@ -48,6 +50,12 @@ export const CourseCard = ({
                 <p>Continue</p>
               </div>
             </>
+          ) : null}
+          {level ? (
+            <CourseLevel
+              level={level}
+              className="absolute bottom-4 left-3 z-50"
+            />
           ) : null}
         </div>
         <div className="font-m flex flex-col gap-1.5 px-4 pb-4 pt-2 font-medium">
@@ -57,13 +65,16 @@ export const CourseCard = ({
             <p className="font-normal text-gray-600">{educatorName}</p>
             <p className="font-medium"> {progress} %</p>
           </div>
-          {progress ? <Progress value={progress} className="h-2.5" /> : null}
+          {progress !== undefined ? (
+            <Progress value={progress} className="h-2.5" />
+          ) : (
+            <p>ak tiri brk</p>
+          )}
         </div>
       </div>
     </Link>
   );
 };
-
 
 export const MentorCourseCard = ({
   title,
