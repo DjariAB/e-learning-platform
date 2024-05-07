@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user } = await validateRequest();
-  if (!user || user.isMentor) return redirect("/login/");
+  if (!user) return redirect("/login/");
   return (
     <div className={`p-4 font-sans ${anekLatin.className} space-y-4`}>
       <Header user={user} />

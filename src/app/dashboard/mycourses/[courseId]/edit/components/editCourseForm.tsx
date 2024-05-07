@@ -355,8 +355,11 @@ export function EditCourseContentForm({
                         courseId={courseId}
                       />
                       <div className="grow">
-                        {toEditLesson.ImageUrl ? (
-                          <img src={toEditLesson.ImageUrl} alt="lesson img" />
+                        {toEditLesson.LessonContent ? (
+                          <img
+                            src={toEditLesson.LessonContent}
+                            alt="lesson img"
+                          />
                         ) : (
                           <>
                             <p className="font-medium">Lesson file</p>

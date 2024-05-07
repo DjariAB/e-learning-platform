@@ -108,7 +108,7 @@ export const lessonTable = createTable("lesson", {
   chapterId: varchar("chapter_id", { length: 196 })
     .references(() => chapterTable.id)
     .notNull(),
-  ImageUrl: varchar("image_url", { length: 196 }),
+  LessonContent: varchar("lesson_content", { length: 196 }),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
