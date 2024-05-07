@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export default function ContinueComp() {
   return (
@@ -13,8 +14,9 @@ export default function ContinueComp() {
             Chapter Two : REACT Hooks in depth
           </p>
         </div>
-        <Button className="rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
-          Go to
+        <Button className="flex gap-2 space-x-2 rounded-sm bg-mainblue px-4 py-4 font-normal hover:bg-blue-900 ">
+          Go to{" "}
+          <ArrowTopRightOnSquareIcon className="size-4" strokeWidth={"2px"} />
         </Button>
       </div>
       <hr className="w-full" />

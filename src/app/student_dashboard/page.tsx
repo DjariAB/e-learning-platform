@@ -8,20 +8,42 @@ import {
 
 import StatCard from "../dashboard/components/statCard";
 import styles from "@/styles/main.module.css";
-import { EnrolledCourseCard } from "@/components/courseCard";
+import { CourseCard } from "@/components/courseCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import ContinueComp from "./components/continueComp";
 import { DataTable } from "../dashboard/components/data-table";
 import { columns } from "../dashboard/components/columns";
 import { getData } from "../dashboard/page";
 import BarChartStat from "../dashboard/components/barChart";
+import { db } from "@/server/db";
+import {
+  courseTable,
+  enrolledCoursesTable,
+  userTable,
+} from "@/server/db/schema";
+import { validateRequest } from "@/server/auth";
+import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const data = await getData();
+  const { user } = await validateRequest();
+  if (!user) redirect("/login");
 
+  const data = await getData();
+  const totalEnrolledCourses = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .leftJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
+    .leftJoin(userTable, eq(courseTable.educatorId, userTable.id))
+    .where(eq(enrolledCoursesTable.userId, user.id));
+  const completedCourses = totalEnrolledCourses.filter(
+    (c) => c.enrolled_Courses.progress == 100,
+  );
+  const averageProgress = totalEnrolledCourses.reduce(
+    (sum, currentValue) => sum + currentValue.enrolled_Courses.progress,
+    0,
+  );
   return (
     <div className="flex flex-col gap-4">
       <h2 className="pl-4 text-3xl font-medium">Learning Center</h2>
@@ -29,28 +51,28 @@ export default async function Page() {
         <div
           className={`col-span-2 space-y-2 p-6 ${styles.gradientBg} rounded-xl bg-cover text-white`}
         >
-          <h1 className="text-3xl font-bold">Welcome back, Messi</h1>
+          <h1 className="text-3xl font-bold">Welcome back, {user.userName}</h1>
           <p className="text-3xl font-thin">
             Welcome to your Learning Center! Let&apos;s <br /> learn together
           </p>
         </div>
         <StatCard
           className="col-span-1"
-          title="Completed courses"
-          stat="2"
-          description="Out of 5 enrolled courses"
+          title="Completed Courses"
+          stat={completedCourses ? completedCourses.length : 0}
+          description={`Out of ${totalEnrolledCourses.length} enrolled courses`}
         />
         <StatCard
           className="col-span-1"
-          title="Completed courses"
-          stat="2"
-          description="Out of 5 enrolled courses"
+          title="Total Score"
+          stat={"1,345" + " pts"}
+          description="All courses points combined"
         />
         <StatCard
           className="col-span-1"
-          title="Completed courses"
-          stat="2"
-          description="Out of 5 enrolled courses"
+          title="Average Progress"
+          stat={averageProgress + "%"}
+          description="All courses included"
         />
       </div>
       <h3 className="text-3xl font-medium ">Enrolled courses</h3>
@@ -58,7 +80,20 @@ export default async function Page() {
         <Carousel className="">
           <CarouselContent className="gap-1 pl-2">
             <CarouselItem className="basis-auto pl-3">
-              <EnrolledCourseCard
+              {totalEnrolledCourses.map((course) => (
+                <CourseCard
+                  key={course.enrolled_Courses.courseId}
+                  progress={course.enrolled_Courses.progress}
+                  courseId={course.enrolled_Courses.courseId ?? ""}
+                  educatorName={course.user ? course.user.userName : "unknown"}
+                  imageUrl={course.courses?.imageUrl ?? ""}
+                  level={course.courses?.level ?? ""}
+                  title={course.courses?.title ?? ""}
+                />
+              )) ?? <p>No Enrolled Courses Yet!</p>}
+            </CarouselItem>
+            <CarouselItem className="basis-auto pl-3">
+              <CourseCard
                 progress={75}
                 courseId=""
                 educatorName="REACT dev"
@@ -68,17 +103,7 @@ export default async function Page() {
               />
             </CarouselItem>
             <CarouselItem className="basis-auto pl-3">
-              <EnrolledCourseCard
-                progress={75}
-                courseId=""
-                educatorName="REACT dev"
-                imageUrl="https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png"
-                level="Beginner"
-                title="REACT course : complete mastery"
-              />
-            </CarouselItem>
-            <CarouselItem className="basis-auto pl-3">
-              <EnrolledCourseCard
+              <CourseCard
                 progress={75}
                 courseId=""
                 educatorName="REACT dev"
@@ -100,7 +125,6 @@ export default async function Page() {
                 <ContinueComp />
                 <ContinueComp />
               </div>
-
               <ScrollBar orientation="vertical" />
             </ScrollArea>
           </CardContent>

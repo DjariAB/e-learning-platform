@@ -1,6 +1,6 @@
 import { logoutAction } from "@/actions/auth";
 import { DeleteCourse } from "@/actions/helpers/courseHelpers";
-import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
+import { CourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
 import { Button } from "@/components/ui/button";
 import { Seed } from "@/lib/seed";
@@ -23,10 +23,7 @@ const Courses = async () => {
     .from(enrolledCoursesTable)
     .where(eq(enrolledCoursesTable.userId, user.id))
     .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
-    .leftJoin(
-      userTable,
-      eq(userTable.id, courseTable.educatorId),
-    );
+    .leftJoin(userTable, eq(userTable.id, courseTable.educatorId));
 
   const courses = await db
     .select()
@@ -42,7 +39,7 @@ const Courses = async () => {
         <div className="flex  gap-3 overflow-x-auto ">
           {enrolledcourses.length ? (
             enrolledcourses.map((enrolled) => (
-              <EnrolledCourseCard
+              <CourseCard
                 educatorName={
                   enrolled.user ? enrolled.user.userName : "unknown"
                 }

@@ -5,7 +5,7 @@ export default function StatCard({
   className,
 }: {
   title: string;
-  stat: string;
+  stat: string | number;
   description: string;
   className?: string;
 }) {
