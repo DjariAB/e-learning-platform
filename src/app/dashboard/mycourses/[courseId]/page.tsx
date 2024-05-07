@@ -68,10 +68,7 @@ export default async function MentorCoursePage({
               maiores esse
             </p>
             <div>
-              <CourseLevel
-                level={course.level.toString()}
-                additionalStyle="text-black"
-              />
+              <CourseLevel level={course.level} className="text-black" />
             </div>
             <div className="flex justify-between pr-10">
               <div className="flex items-center gap-5">

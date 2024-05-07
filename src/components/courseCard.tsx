@@ -33,7 +33,7 @@ export const CourseCard = ({
       <div
         onMouseOver={() => setisHovered(true)}
         onMouseOut={() => setisHovered(false)}
-        className={`${anekLatin.className} flex    flex-col overflow-hidden rounded-2xl border bg-white transition duration-150 ease-in hover:border-black lg:h-[310px] lg:w-[290px]`}
+        className={`${anekLatin.className} flex flex-col overflow-hidden rounded-2xl border bg-white transition duration-150 ease-in hover:border-black lg:h-[310px] lg:w-[290px]`}
       >
         <div className="relative h-[250px] w-[100%] overflow-hidden">
           <img

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, PlusIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { columns, type Student } from "./components/columns";
@@ -102,7 +102,11 @@ export default async function Page() {
                   <p className="text-xl leading-7">My courses</p>{" "}
                   <ChevronRight className="size-4" />
                 </Link>{" "}
-                <AddCourseDialog />
+                <AddCourseDialog>
+                  <div>
+                    <PlusIcon className="size-6" />
+                  </div>
+                </AddCourseDialog>
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1 p-0">

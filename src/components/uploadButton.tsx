@@ -19,7 +19,7 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   // const { toast } = useToast();
-  const { startUpload } = useUploadThing("imageUploader", {
+  const { startUpload } = useUploadThing("contentUploader", {
     headers: { lessonId },
     onUploadBegin: () => {
       setIsUploading(true);
