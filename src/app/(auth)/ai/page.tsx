@@ -31,7 +31,7 @@ export default function Home() {
       />
       <button
         onClick={async () => {
-          const { obj } = await getAnswer(`${test} content ${value}`);
+          const { obj } = await getAnswer(`${test} content `);
           setGeneration(obj);
         }}
       >

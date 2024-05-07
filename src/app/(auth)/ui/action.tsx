@@ -16,18 +16,24 @@ export interface Message {
 export async function continueConversation(history: Message[]) {
   const stream = createStreamableUI(); // [!code highlight]
 
+  const res = await fetch(
+    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/7e8cd3f4-7f86-4194-ada6-6228b43a21c5-pkoo3l.md",
+  );
+
+  const data = await res.text();
   const { text, toolResults } = await generateText({
     model: google("models/gemini-pro"),
     system:
       "You are a friendly quizz generator you are given a subject by the user and you give him a question with answsers about that subject ",
     messages: history,
+    prompt: `generate a quizz about this: ${data}`,
     tools: {
       generateQuiz: {
         description: "quizz about a subject",
         parameters: z.object({
           question: z
             .string()
-            .describe("ask the user a question about the subject he chose"),
+            .describe(`ask the user a question about the subject provided`),
           wronganswer: z.string().describe("The wrong answer"),
           correctAnswer: z.string().describe("The correct answer"),
         }),
@@ -36,6 +42,7 @@ export async function continueConversation(history: Message[]) {
           const wrong = wronganswer as string;
           const correct = correctAnswer as string;
 
+          console.log(wrong, correct);
           stream.update(
             <Test correctAnswer={correct} question={que} wronganswer={wrong} />,
           ); // [!code highlight]
