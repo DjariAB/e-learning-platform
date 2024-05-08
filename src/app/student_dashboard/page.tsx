@@ -31,7 +31,7 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) redirect("/login");
-
+  // placeholder data
   const data = await getData();
   const totalEnrolledCourses = await db
     .select()
@@ -50,6 +50,33 @@ export default async function Page() {
   const averageProgress = totalEnrolledCourses.reduce(
     (sum, currentValue) => sum + currentValue.enrolled_Courses.progress,
     0,
+  );
+  const enrollementData = await db.select().from(enrolledCoursesTable);
+  const enrolledStudents = await db
+    .selectDistinct({
+      id: userTable.id,
+      studentName: userTable.userName,
+      imageUrl: userTable.imageUrl,
+    })
+    .from(enrolledCoursesTable)
+    .leftJoin(userTable, eq(userTable.id, enrolledCoursesTable.userId));
+  let LeaderBoardData = enrolledStudents.map((student) => {
+    const score = enrollementData
+      .filter((e) => e.userId === student.id)
+      .reduce((sum, currentValue) => sum + currentValue.score, 0);
+    return {
+      id: student.id,
+      student: {
+        imgUrl: student.imageUrl,
+        studentName: student.studentName,
+      },
+      course: "Freemen Survival Skills",
+      progress: "test",
+      score: score,
+    };
+  });
+  LeaderBoardData = LeaderBoardData.sort((a, b) => a.score - b.score).map(
+    (e, index) => ({ ...e, rank: `${index+1}#` }),
   );
   return (
     <div className="flex flex-col gap-4">
@@ -134,7 +161,7 @@ export default async function Page() {
             <CardTitle>Students LeaderBoard</CardTitle>
           </CardHeader>
           <CardContent>
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={LeaderBoardData} />
           </CardContent>
         </Card>
         <BarChartStat
