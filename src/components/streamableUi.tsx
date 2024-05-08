@@ -7,44 +7,43 @@ export function StreamableUI({
   correctAnswer,
   question,
   wronganswer,
-  // wronganswer2,
-  // wronganswer3,
+  wronganswer2,
+  wronganswer3,
 }: {
   question: string;
   wronganswer: string;
-  // wronganswer2: string;
-  // wronganswer3: string;
+  wronganswer2: string;
+  wronganswer3: string;
   correctAnswer: string;
 }) {
   return (
-    <Card className="w-1/2 rounded-xl">
+    <Card className="w-fit rounded-xl">
       <CardHeader className="">
-        <CardTitle className=" text-center text-xl">{question}</CardTitle>
+        <CardTitle className="  text-xl">{question}</CardTitle>
       </CardHeader>
-      <Separator />
-      <CardContent className="flex flex-col gap-5 px-10  pr-14 pt-8 text-lg tracking-wider text-[#1E1E1E]">
+      <br />
+      <CardContent className="flex flex-col  px-3  text-lg tracking-wider text-[#1E1E1E]">
         <div className="flex gap-3  ">
           <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
             {" "}
             1
           </div>
-          <div className="flex grow flex-col gap-4  ">
+          <div className="flex grow flex-col gap-2  ">
             <input name="one" type="text" value={wronganswer} />
             <div className="pr-5">
-              <Separator />
+              <br className="border border-border " />
             </div>
           </div>
         </div>
-
-        {/* <div className="flex gap-3  ">
+        <div className="flex gap-3  ">
           <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
             {" "}
             2
           </div>
-          <div className="flex grow flex-col gap-4 ">
+          <div className="flex grow flex-col gap-2  ">
             <input name="one" type="text" value={wronganswer2} />
             <div className="pr-5">
-              <Separator />
+              <br className="border border-border " />
             </div>
           </div>
         </div>
@@ -53,33 +52,24 @@ export function StreamableUI({
             {" "}
             3
           </div>
-          <div className="flex grow flex-col gap-4 ">
+          <div className="flex grow flex-col gap-2  ">
             <input name="one" type="text" value={wronganswer3} />
             <div className="pr-5">
-              <Separator />
+              <br className="border border-border " />
             </div>
           </div>
-        </div> */}
+        </div>
         <div className="flex gap-3  ">
           <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
             {" "}
             4
           </div>
-          <div className="flex grow flex-col gap-4 ">
-            <input
-              className="px-1"
-              name="one"
-              type="text"
-              value={correctAnswer}
-            />
+          <div className="flex grow flex-col gap-2  ">
+            <input name="one" type="text" value={correctAnswer} />
             <div className="pr-5">
-              <Separator />
+              <br className="border border-border " />
             </div>
-            {/* <Separator /> */}
           </div>
-        </div>
-        <div className="flex items-center justify-center pb-4  ">
-          <Button className="rounded-md bg-blue-900 ">Check answer</Button>
         </div>
       </CardContent>
     </Card>

@@ -6,9 +6,7 @@ import { google } from "@ai-sdk/google";
 import { createStreamableUI } from "ai/rsc";
 import { type ReactNode } from "react";
 import { z } from "zod";
-
-import { StreamableUI } from "@/components/streamableUi";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface Message {
   role: "user" | "assistant";
@@ -57,7 +55,15 @@ export async function continueConversationTest(question: string) {
           const wrong2 = choice2 as string;
           const wrong3 = choice3 as string;
           const correct = correctAnswer as string;
-          stream.done(<Input value={correct} />); // [!code highlight]
+          stream.done(
+            <StreamableUI
+              correctAnswer={correct}
+              question={que}
+              wronganswer={wrong}
+              wronganswer2={wrong2}
+              wronganswer3={wrong3}
+            />,
+          ); // [!code highlight]
           return `${question}`; // [!code highlight]
         },
       },
@@ -69,4 +75,77 @@ export async function continueConversationTest(question: string) {
     content: text || toolResults.map((toolResult) => toolResult.result).join(),
     display: stream.value, // [!code highlight]
   };
+}
+
+export async function StreamableUI({
+  correctAnswer,
+  question,
+  wronganswer,
+  wronganswer2,
+  wronganswer3,
+}: {
+  question: string;
+  wronganswer: string;
+  wronganswer2: string;
+  wronganswer3: string;
+  correctAnswer: string;
+}) {
+  return (
+    <Card className="w-fit rounded-xl">
+      <CardHeader className="">
+        <CardTitle className="  text-xl">{question}</CardTitle>
+      </CardHeader>
+      <br />
+      <CardContent className="flex flex-col  px-3  text-lg tracking-wider text-[#1E1E1E]">
+        <div className="flex gap-3  ">
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+            {" "}
+            1
+          </div>
+          <div className="flex grow flex-col gap-2  ">
+            <input name="one" type="text" value={wronganswer} />
+            <div className="pr-5">
+              <br className="border border-border " />
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3  ">
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+            {" "}
+            2
+          </div>
+          <div className="flex grow flex-col gap-2  ">
+            <input name="one" type="text" value={wronganswer2} />
+            <div className="pr-5">
+              <br className="border border-border " />
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3  ">
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+            {" "}
+            3
+          </div>
+          <div className="flex grow flex-col gap-2  ">
+            <input name="one" type="text" value={wronganswer3} />
+            <div className="pr-5">
+              <br className="border border-border " />
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3  ">
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+            {" "}
+            4
+          </div>
+          <div className="flex grow flex-col gap-2  ">
+            <input name="one" type="text" value={correctAnswer} />
+            <div className="pr-5">
+              <br className="border border-border " />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }

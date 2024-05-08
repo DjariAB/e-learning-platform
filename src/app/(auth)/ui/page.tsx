@@ -15,48 +15,39 @@ const anekLatin = Anek_Latin({
 function Home() {
   return (
     <div className={`text flex justify-center pt-6 ${anekLatin.className}`}>
-      <Card className="w-1/2 rounded-xl">
+      <Card className="w-fit rounded-xl">
         <CardHeader className="">
-          <CardTitle className=" text-center text-xl">
-            what’s a state hook?
+          <CardTitle className="  text-xl">
+            What is the first argument of the `useState` hook?
           </CardTitle>
         </CardHeader>
-        <Separator />
-        <CardContent className="flex flex-col gap-5 px-10  pr-14 pt-8 text-lg tracking-wider text-[#1E1E1E]">
+        <br />
+        <CardContent className="flex flex-col  px-3  text-lg tracking-wider text-[#1E1E1E]">
           <div className="flex gap-3  ">
             <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
               {" "}
               1
             </div>
-            <div className="flex grow flex-col gap-4  ">
+            <div className="flex grow flex-col gap-2  ">
               <input
                 name="one"
                 type="text"
-                value={
-                  "A state hook in React.js enables functional components to manage local state."
-                }
+                value={"The state updater function"}
               />
               <div className="pr-5">
-                <Separator />
+                <br className="border border-border " />
               </div>
             </div>
           </div>
-
           <div className="flex gap-3  ">
             <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
               {" "}
               2
             </div>
-            <div className="flex grow flex-col gap-4 ">
-              <input
-                name="one"
-                type="text"
-                value={
-                  "Introduced in React 16.8, it facilitates state management akin to class components."
-                }
-              />
+            <div className="flex grow flex-col gap-2  ">
+              <input name="one" type="text" value={"The initial state"} />
               <div className="pr-5">
-                <Separator />
+                <br className="border border-border " />
               </div>
             </div>
           </div>
@@ -65,16 +56,10 @@ function Home() {
               {" "}
               3
             </div>
-            <div className="flex grow flex-col gap-4 ">
-              <input
-                name="one"
-                type="text"
-                value={
-                  "State hooks, like useState(), preserve state between re-renders in functional components."
-                }
-              />
+            <div className="flex grow flex-col gap-2  ">
+              <input name="one" type="text" value={"The initial state"} />
               <div className="pr-5">
-                <Separator />
+                <br className="border border-border " />
               </div>
             </div>
           </div>
@@ -83,23 +68,12 @@ function Home() {
               {" "}
               4
             </div>
-            <div className="flex grow flex-col gap-4 ">
-              <input
-                className="px-1"
-                name="one"
-                type="text"
-                value={
-                  "They foster modularity by encapsulating state within functional components."
-                }
-              />
+            <div className="flex grow flex-col gap-2  ">
+              <input name="one" type="text" value={"The initial state"} />
               <div className="pr-5">
-                <Separator />
+                <br className="border border-border " />
               </div>
-              {/* <Separator /> */}
             </div>
-          </div>
-          <div className="flex items-center justify-center pb-4  ">
-            <Button className="rounded-md bg-blue-900 ">Check answer</Button>
           </div>
         </CardContent>
       </Card>
