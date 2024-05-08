@@ -14,7 +14,7 @@ const MainNavBar = async () => {
           {" "}
           <Link href="/courses">
             <Image
-              src="/SVGs/logo text.svg"
+              src="/SVGs/logo_text.svg"
               alt="text logo"
               className=" "
               width={170}
@@ -28,7 +28,7 @@ const MainNavBar = async () => {
               className=" rounded-full border border-solid border-gray-950"
             />
           </div>
-          <Link href="" className="w-20 break-normal">
+          <Link href="/student_dashboard" className="w-20 text-black">
             my courses
           </Link>
           <Link href="">

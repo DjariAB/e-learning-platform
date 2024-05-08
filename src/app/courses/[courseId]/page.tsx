@@ -71,7 +71,7 @@ export default async function CoursePage({
 
   return (
     <>
-      <div className={` bg-cover pt-10 ${styles.background}`}>
+      <div className={`z-50 bg-cover pt-10 ${styles.background}`}>
         {/* <MainNavBar /> */}
 
         <div className="flex items-center gap-16 px-32 py-12 ">
@@ -152,9 +152,6 @@ export default async function CoursePage({
           <br />
 
           <div>
-            <form action={bindedChapteraciton}>
-              <button type="submit"> add chapter</button>
-            </form>
             <h1 className=" pb-2 font-bold">Chapters</h1>
             <div className="p-4 pl-8 pr-24">
               <Accordion type="single" collapsible className="w-full">
@@ -170,17 +167,23 @@ export default async function CoursePage({
           </div>
 
           <div>
-            <form className="flex gap-3" action={bindedCommentsaciton}>
-              <Input type="text" name="body" />
-              <button type="submit"> add a comment </button>
+            <form className="flex gap-3 pt-4 " action={bindedCommentsaciton}>
+              <Input type="text" name="body" className="shrink" />
+              <button
+                type="submit"
+                className="w-52 rounded-md bg-black px-2 py-2 text-white"
+              >
+                {" "}
+                add a comment{" "}
+              </button>
             </form>
-            <ul>
+            <ul className="space-y-3 p-4">
               {comments.length ? (
                 comments.map((comment) => (
                   <li key={comment.id}>{comment.body}</li>
                 ))
               ) : (
-                <p>there are no courses for now </p>
+                <p>there are no comments for now </p>
               )}
             </ul>
           </div>

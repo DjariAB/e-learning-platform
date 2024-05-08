@@ -10,7 +10,7 @@ const NavBar = async () => {
   return (
     <nav className="flex items-center justify-between bg-transparent px-14 ">
       <div>
-        <Image width={170} height={55} src="/SVGs/logo text.svg" alt="logo" />
+        <Image width={170} height={55} src="/SVGs/logo_text.svg" alt="logo" />
       </div>
       <div className="  flex gap-8 text-lg ">
         <Link href="/courses">Courses</Link>
