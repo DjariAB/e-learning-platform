@@ -20,11 +20,19 @@ export const columns: ColumnDef<Student>[] = [
     cell({ row }) {
       return (
         <div className="flex min-w-36 items-center gap-4">
-          <img
-            className="size-8  overflow-hidden rounded-full object-cover"
-            src={row.original.student.imgUrl}
-            alt="Student avatar image"
-          />
+          {row.original.student.imgUrl ? (
+            <img
+              className="size-8  overflow-hidden rounded-full object-cover"
+              src={row.original.student.imgUrl}
+              alt="Student avatar image"
+            />
+          ) : (
+            <div className="flex size-8 items-center justify-center rounded-full bg-black">
+              <p className="text-xl font-semibold text-white">
+                {row.original.student.studentName.charAt(0).toUpperCase()}
+              </p>
+            </div>
+          )}
 
           <p>{row.original.student.studentName}</p>
         </div>

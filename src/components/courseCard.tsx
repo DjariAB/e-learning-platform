@@ -12,6 +12,7 @@ const anekLatin = Anek_Latin({
   variable: "--font-anek-latin",
 });
 
+
 export const CourseCard = ({
   title,
   educatorName,
@@ -63,13 +64,13 @@ export const CourseCard = ({
 
           <div className="flex justify-between">
             <p className="font-normal text-gray-600">{educatorName}</p>
-            <p className="font-medium"> {progress} %</p>
+            {progress !== undefined ? (
+              <p className="font-medium"> {progress} %</p>
+            ) : null}
           </div>
           {progress !== undefined ? (
             <Progress value={progress} className="h-2.5" />
-          ) : (
-            <p>ak tiri brk</p>
-          )}
+          ) : null}
         </div>
       </div>
     </Link>

@@ -31,32 +31,31 @@ const Courses = async () => {
     .leftJoin(userTable, eq(courseTable.educatorId, userTable.id));
 
   return (
-    <div className="px-3 pt-16">
-      <HeroSec />
-
-      <div className="pt-4">
-        <h1>enrolled</h1>
-        <div className="flex  gap-3 overflow-x-auto ">
-          {enrolledcourses.length ? (
-            enrolledcourses.map((enrolled) => (
-              <CourseCard
-                educatorName={
-                  enrolled.user ? enrolled.user.userName : "unknown"
-                }
-                title={enrolled.courses.title}
-                imageUrl={enrolled.courses.imageUrl}
-                level={enrolled.courses.level}
-                progress={enrolled.enrolled_Courses?.progress ?? 0}
-                courseId={enrolled.courses.id}
-                key={enrolled.courses.id}
-              />
-            ))
-          ) : (
-            <p>no enrolled courses found</p>
-          )}
-        </div>
+    <div className="flex flex-col gap-4 px-3 pb-6 pt-20">
+      <div className="px-4">
+        <HeroSec />
       </div>
-      <h1>new courses</h1>
+      <h3 className="text-3xl font-medium ">Enrolled courses</h3>
+
+      <div className="flex  gap-3 overflow-x-auto ">
+        {enrolledcourses.length ? (
+          enrolledcourses.map((enrolled) => (
+            <CourseCard
+              educatorName={enrolled.user ? enrolled.user.userName : "unknown"}
+              title={enrolled.courses.title}
+              imageUrl={enrolled.courses.imageUrl}
+              level={enrolled.courses.level}
+              progress={enrolled.enrolled_Courses?.progress ?? 0}
+              courseId={enrolled.courses.id}
+              key={enrolled.courses.id}
+            />
+          ))
+        ) : (
+          <p>no enrolled courses found</p>
+        )}
+      </div>
+      <h3 className="text-3xl font-medium ">New courses</h3>
+
       <div className="flex  gap-3 overflow-x-auto">
         {courses.map((course) => (
           <CourseCard
@@ -69,7 +68,7 @@ const Courses = async () => {
           />
         ))}
       </div>
-      <div className=" flex flex-col gap-3">
+      {/* <div className=" flex flex-col gap-3">
         <form action={Seed}>
           <Button className="bg-[#072E6A]" type="submit">
             {" "}
@@ -85,7 +84,7 @@ const Courses = async () => {
         <form action={logoutAction}>
           <Button type="submit">logout</Button>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 };

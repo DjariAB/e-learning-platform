@@ -162,6 +162,7 @@ export const enrolledCoursesTable = createTable(
     currentLessonId: varchar("current_lesson_id", { length: 196 }).references(
       () => lessonTable.id,
     ),
+    score: int("student_score").$default(() => 0),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
