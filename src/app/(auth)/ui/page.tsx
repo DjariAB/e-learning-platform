@@ -10,7 +10,7 @@ const anekLatin = Anek_Latin({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600"],
 });
-export default function Home() {
+ function Home() {
   return (
     <div className={`text flex justify-center pt-6 ${anekLatin.className}`}>
       <Card className="w-fit rounded-xl">
@@ -83,7 +83,7 @@ export default function Home() {
   );
 }
 
-function Test() {
+export default function Test() {
   const [conversation, setConversation] = useState<Message>();
   const [input, setInput] = useState<string>("");
 
