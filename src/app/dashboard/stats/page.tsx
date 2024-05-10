@@ -12,12 +12,12 @@ export default function Page() {
           description="Total enrolled students in all your courses"
         />
         <StatCard
-          title="Overall Completion time"
+          title="Overall Quiz Score"
           stat={"54" + " Pts"}
-          description="Your students score 54 points on average"
+          description="Your students score 54 points in one quiz on average"
         />
         <StatCard
-          title="Total Students"
+          title="Average Completion Time"
           stat="23 days"
           description="Your students takes 23 days to complete one of your courses"
         />

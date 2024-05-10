@@ -60,6 +60,10 @@ export default async function Page() {
     })
     .from(enrolledCoursesTable)
     .leftJoin(userTable, eq(userTable.id, enrolledCoursesTable.userId));
+
+  const studentScore = enrollementData
+    .filter((e) => e.userId === user.id)
+    .reduce((sum, currentValue) => sum + currentValue.score, 0);
   let LeaderBoardData = enrolledStudents.map((student) => {
     const score = enrollementData
       .filter((e) => e.userId === student.id)
@@ -76,7 +80,7 @@ export default async function Page() {
     };
   });
   LeaderBoardData = LeaderBoardData.sort((a, b) => a.score - b.score).map(
-    (e, index) => ({ ...e, rank: `${index+1}#` }),
+    (e, index) => ({ ...e, rank: `${index + 1}#` }),
   );
   return (
     <div className="flex flex-col gap-4">
@@ -99,7 +103,7 @@ export default async function Page() {
         <StatCard
           className="col-span-1"
           title="Total Score"
-          stat={"1,345" + " pts"}
+          stat={studentScore + " pts"}
           description="All courses points combined"
         />
         <StatCard

@@ -28,7 +28,7 @@ function InputComp({
   placeholder?: string;
 }) {
   let error;
-  if (formState) error = formState.error ? formState.error[name] : "";
+  // if (formState) error = formState.error ? formState.error[name] : "";
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {label ? (
