@@ -4,39 +4,21 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import { PlusIcon } from "@heroicons/react/24/outline";
-
-import { useFormState } from "react-dom";
-import { addCourse } from "@/actions/helpers/courseHelpers";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { type Message, continueConversationTest } from "@/lib/ai/actions";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export function AddQuizDialog() {
-  const router = useRouter();
-  const [state, formAction] = useFormState(addCourse, {
-    error: null,
-    type: null,
-  });
   const [conversation, setConversation] = useState<Message>();
   const [input, setInput] = useState<string>("");
-
   const [isopen, setIsOpen] = useState<boolean>(false);
-  useEffect(() => {
-    if (state.type?.success) {
-      setIsOpen(false);
-      router.push(`/dashboard/mycourses/${state.error?.success}/edit`);
-    } else console.log("not working ", state.error);
-  }, [state, router]);
+
   return (
     <Dialog
       open={isopen}
@@ -45,7 +27,7 @@ export function AddQuizDialog() {
       }}
     >
       <DialogTrigger
-        className={`${buttonVariants({ variant: "outline" })} rounded-md`}
+        className={`${buttonVariants({ variant: "outline" })} cursor-pointer rounded-md`}
         asChild
         onClick={() => setIsOpen(true)}
       >

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,10 +44,7 @@ import {
   addChapterAction,
   updateChapterAction,
 } from "@/actions/helpers/chatperHelpers";
-import {
-  addLessonAction,
-  updateLessonAction,
-} from "@/actions/helpers/lessonHelpers";
+import { updateLessonAction } from "@/actions/helpers/lessonHelpers";
 import {
   AddLessonForm,
   DeleteLessonForm,
@@ -153,7 +151,7 @@ function EditCourseForm({
                       setcourseInfo({ ...courseInfo, category: e })
                     }
                   >
-                    <SelectTrigger className="  w-full sm:w-[180px]">
+                    <SelectTrigger className="w-full sm:w-[180px]">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -258,17 +256,6 @@ export function EditCourseContentForm({
   lessons: Array<lessonType>;
   courseId: string;
 }) {
-  const [formState, formAction] = useFormState(editCourseInfo, {
-    error: null,
-    type: {},
-  });
-  const [changed, setChanged] = useState(false);
-  useEffect(() => {
-    if (formState.type?.success) {
-      setChanged(false);
-    }
-  }, [formState]);
-
   const [selectedItems, setSelectedItems] = useState({
     chapter: "",
     lesson: "",
@@ -291,19 +278,8 @@ export function EditCourseContentForm({
   };
   return (
     <>
-      <div
-        className="mx-auto flex  flex-col gap-2 pt-8 lg:w-3/4"
-        // onChange={() => setChanged(true)}
-      >
+      <div className="mx-auto flex  flex-col gap-2 pt-8 lg:w-3/4">
         {" "}
-        {/* <input
-          type="hidden"
-          name="courseId"
-          value={courseInfo.id}
-          onChange={() => {
-            return;
-          }}
-        /> */}
         <div className="flex justify-between px-4">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-medium leading-3 ">Edit Course</h1>
@@ -314,7 +290,6 @@ export function EditCourseContentForm({
 
           <Button
             className="rounded-sm px-4 py-2 font-normal"
-            disabled={changed}
             onClick={() => setIsEditingInfo(true)}
           >
             Edit Course Info
@@ -408,6 +383,7 @@ export function EditCourseContentForm({
                   ) : (
                     <img
                       className="m-auto  w-1/2"
+                      alt="editing space "
                       src="/../../../../../../../images/editing_space.jpg"
                     />
                   )}

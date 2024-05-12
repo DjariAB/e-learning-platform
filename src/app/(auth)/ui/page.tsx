@@ -5,10 +5,6 @@ import {
   continueConversationTest,
   type Message,
 } from "../../../lib/ai/actions";
-import { Anek_Latin } from "next/font/google";
-
-
-
 
 export default function Test() {
   const [conversation, setConversation] = useState<Message>();

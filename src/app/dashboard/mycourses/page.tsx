@@ -1,4 +1,6 @@
 import { MentorCourseCard } from "@/components/courseCard";
+import { Button } from "@/components/ui/button";
+import { Seed } from "@/lib/seed";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import { courseTable } from "@/server/db/schema";
@@ -33,6 +35,13 @@ async function MentorCoursesPage({ params }: { params: { courseId: string } }) {
             />
           ))}
         </div>
+
+        <form action={Seed}>
+          <Button className="bg-[#072E6A]" type="submit">
+            {" "}
+            add courses
+          </Button>
+        </form>
       </div>
     </>
   );

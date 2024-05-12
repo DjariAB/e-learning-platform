@@ -1,9 +1,5 @@
-import { logoutAction } from "@/actions/auth";
-import { DeleteCourse } from "@/actions/helpers/courseHelpers";
 import { CourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
-import { Button } from "@/components/ui/button";
-import { Seed } from "@/lib/seed";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import {

@@ -1,9 +1,8 @@
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
-import { type InferSelectModel, eq, and, exists } from "drizzle-orm";
+import { eq, and, exists } from "drizzle-orm";
 import EditWrapper from "./components/editWrapper";
 
-type lessonType = InferSelectModel<typeof lessonTable>;
 async function EditCoursePage({ params }: { params: { courseId: string } }) {
   const toEditCourse = await db
     .select()

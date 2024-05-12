@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,38 +8,38 @@ import { Progress } from "@/components/ui/progress";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 function Quiz({ quizData }: { quizData: quizType }) {
-  const [questionIndex, setQuestionIndex] = useState(5);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const choices: string[] = [];
-  if (questionIndex < 5) {
+  if (questionIndex < quizData.length) {
     choices.push(quizData[questionIndex]!.choice1);
     choices.push(quizData[questionIndex]!.choice2);
     choices.push(quizData[questionIndex]!.choice3);
-    if (quizData[questionIndex]!.choice4) {
-      choices.push(quizData[questionIndex].choice4);
-    }
+    choices.push(quizData[questionIndex]!.choice4);
   }
 
-  const [selectedChoice, setselectedChoice] = useState(-1);
+  const [selectedChoice, setselectedChoice] = useState<number | null>(null);
 
   const [isChecked, setChecked] = useState(false);
 
   const onSelectChoice = (index: number) => {
     if (!isChecked) {
-      if (selectedChoice === index) setselectedChoice(-1);
+      if (selectedChoice === index) setselectedChoice(null);
       else setselectedChoice(index);
     }
   };
   const check = () => {
-    setChecked(true);
+    if ( selectedChoice !== null) {
+      setChecked(true);
 
-    choices[quizData[questionIndex]!.correct - 1] === choices[selectedChoice]
-      ? setScore(score + 20)
-      : null;
+      choices[quizData[questionIndex]!.correct - 1] === choices[selectedChoice]
+        ? setScore(score + 20)
+        : null;
+    }
   };
   const next = () => {
     setChecked(false);
-    setselectedChoice(-1);
+    setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
   };
   console.log(selectedChoice);
@@ -71,7 +72,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
         <Card className="w-full justify-self-center rounded-xl">
           <CardHeader className="">
             <CardTitle className="text-center text-2xl font-medium">
-              {questionIndex < 5
+              {questionIndex < quizData.length
                 ? quizData[questionIndex]?.question
                 : score < 40
                   ? "Seems like you need to revise the lesson and retry"
@@ -84,7 +85,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
           <CardContent className="flex flex-col items-center gap-5 px-3 pb-7 text-lg tracking-wider text-[#1E1E1E]">
             {questionIndex < 5 ? (
               <>
-                <div className="flex flex-col items-center text-center">
+                <div className="flex w-full flex-col items-center text-center">
                   {choices.map((ch, index) => (
                     <>
                       <ChoiceComp
@@ -118,7 +119,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                 </div>
 
                 <div className="h-8 text-center text-2xl font-medium">
-                  {isChecked ? (
+                  {isChecked && selectedChoice !== null ? (
                     choices[quizData[questionIndex]!.correct - 1] ===
                     choices[selectedChoice] ? (
                       <p className="text-green-500">Correct</p>
@@ -131,7 +132,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                 </div>
                 <Button
                   className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 "
-                  disabled={selectedChoice === -1}
+                  disabled={selectedChoice === null}
                   onClick={() => {
                     isChecked ? next() : check();
                   }}
@@ -141,7 +142,6 @@ function Quiz({ quizData }: { quizData: quizType }) {
               </>
             ) : (
               <>
-                {/* <iframe src="https://giphy.com/embed/mGK1g88HZRa2FlKGbz" width="480" height="400" frameBorder="0" className="" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/Friends-episode-1-season-9-friends-tv-mGK1g88HZRa2FlKGbz">via GIPHY</a></p>                */}
                 <img
                   src="https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
                   alt="gif"
@@ -187,7 +187,7 @@ function ChoiceComp({
   return (
     <>
       <div
-        className={`flex w-full gap-5 rounded-full px-4 py-2 transition duration-200 ease-in ${!style && !disabled ? `hover:bg-gray-100` : ""} ${style} ${disabled ? "cursor-default" : "cursor-pointer"}`}
+        className={`flex w-full gap-5 rounded-md px-4 py-2 transition duration-200 ease-in ${!style && !disabled ? `hover:bg-gray-100` : ""} ${style} ${disabled ? "cursor-default" : "cursor-pointer"}`}
         onClick={() => onSelectChoice(index)}
       >
         <div
