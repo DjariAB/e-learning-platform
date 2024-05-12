@@ -10,6 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AddCourseDialog } from "./addCourseDialog";
+import Image from "next/image";
 
 const SideBar = () => {
   const pathName = usePathname();
@@ -38,10 +39,12 @@ const SideBar = () => {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-56 flex-col bg-background px-2 pt-2 sm:flex">
       <nav className="flex flex-col items-stretch gap-4 px-2 sm:py-4">
         <Link className="mb-8 self-center" href="/">
-          <img
+          <Image
             className="w-40 "
             src="/SVGs/logo_text.svg"
             alt="Platform logo"
+            height={50}
+            width={250}
           />
         </Link>
         {Paths.map((path) => (
