@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 const anekLatin = Anek_Latin({
   subsets: ["latin"],
-  weight: ["300"],
+  weight: "variable",
 });
 export default async function RootLayout({
   children,

@@ -12,6 +12,7 @@ import React from "react";
 import { db } from "@/server/db";
 import { lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import MainNavBar from "@/components/mainNavbar";
 
 export default async function LessonPage({
   params,
@@ -22,14 +23,15 @@ export default async function LessonPage({
     .select()
     .from(lessonTable)
     .where(eq(lessonTable.id, params.lessonId));
-  if (!lesson[0] || !lesson[0].LessonContent) return <div> lesson not found</div>;
+  if (!lesson[0] || !lesson[0].LessonContent)
+    return <div> lesson not found</div>;
 
   const res = await fetch(lesson[0].LessonContent);
 
   const data = await res.text();
   return (
-    <div className="pt-10">
-      {/* <NavBar /> */}
+    <>
+      <MainNavBar />
       <div className="px-32">
         <div className="flex w-fit items-center gap-20  py-12">
           <img
@@ -95,6 +97,6 @@ export default async function LessonPage({
           <div>Scroll tracker</div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ const MainNavBar = async () => {
   const { user } = await validateRequest();
   if (user)
     return (
-      <div className="absolute w-full">
+      <div className="w-full">
         <div className="flex items-center justify-center gap-4 bg-transparent px-5 py-2 text-white ">
           {" "}
           <Link href="/courses">
