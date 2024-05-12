@@ -10,7 +10,10 @@ import {
   SelectLabel,
   SelectValue,
 } from "@/components/ui/select";
-import { UploadDropzone } from "@/components/uploadButton";
+import {
+  UploadDropzone,
+  UploadImageDropZones,
+} from "@/components/uploadButton";
 
 import {
   type ReactNode,
@@ -49,6 +52,7 @@ import {
   DeleteLessonForm,
   UpdateLessonForm,
 } from "./lessonComps";
+import { AddQuizDialog } from "./quizDialog";
 
 function EditCourseForm({
   course,
@@ -234,7 +238,7 @@ function EditCourseForm({
             {/* </div> */}
             <div className="grow">
               <p className="font-medium">Course image</p>
-              <UploadDropzone lessonId="" />
+              <UploadImageDropZones courseId={course.id} />
             </div>
           </CardContent>
         </Card>
@@ -367,10 +371,13 @@ export function EditCourseContentForm({
                           </>
                         )}
                       </div>
-                      <DeleteLessonForm
-                        courseId={courseId}
-                        id={toEditLesson.id}
-                      />
+                      <div className="flex justify-between px-4">
+                        <AddQuizDialog />
+                        <DeleteLessonForm
+                          courseId={courseId}
+                          id={toEditLesson.id}
+                        />
+                      </div>
                     </div>
                   ) : toEditChapter ? (
                     <>

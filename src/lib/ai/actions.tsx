@@ -107,77 +107,57 @@ export async function StreamableUI({
 }) {
   return (
     <form action={quizAction}>
-      <Card className="w-1/2 rounded-xl">
+      <Card className="w-full rounded-xl">
         <CardHeader className="">
-          <CardTitle className="  text-xl">
-            <input className="w-full" name="question" value={question} />
-          </CardTitle>
+          <CardTitle className="  pb-4 text-xl">{question} </CardTitle>
         </CardHeader>
-        <br />
-        <CardContent className="flex flex-col gap-5 px-3  text-lg tracking-wider text-[#1E1E1E]">
-          <div className="flex gap-3  ">
-            <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
-              {" "}
-              1
+
+        <CardContent className="flex flex-col gap-6 text-lg tracking-wider text-[#1E1E1E]">
+          <input type="hidden" name="question" value={question} />
+          <input name="choice1" type="hidden" value={wronganswer} />
+          <input name="choice2" type="hidden" value={wronganswer2} />
+          <input name="choice3" type="hidden" value={wronganswer3} />
+          <input name="correctAnswer" type="hidden" value={correctAnswer} />
+
+          <div className="item-center flex gap-5 ">
+            <div className="flex items-center justify-center">
+              <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+                {" "}
+                1
+              </div>
             </div>
-            <div className="flex grow flex-col gap-2  ">
-              <input
-                className="w-full"
-                name="choice1"
-                type="text"
-                value={wronganswer}
-              />
-              <div className="pr-5"></div>
-            </div>
+            <p className="flex grow flex-col gap-2  ">{wronganswer}</p>
           </div>
-          <div className="flex gap-3  ">
-            <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
-              {" "}
-              2
+          <div className="item-center flex gap-5 ">
+            <div className="flex items-center justify-center">
+              <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+                {" "}
+                2
+              </div>
             </div>
-            <div className="flex grow flex-col gap-2  ">
-              <input
-                className="w-full"
-                name="choice2"
-                type="text"
-                value={wronganswer2}
-              />
-              <div className="pr-5"></div>
-            </div>
+            <p className="flex grow flex-col gap-2  ">{wronganswer2}</p>
           </div>
-          <div className="flex gap-3  ">
-            <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
-              {" "}
-              3
+          <div className="item-center flex gap-5 ">
+            <div className="flex items-center justify-center">
+              <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
+                {" "}
+                3
+              </div>
             </div>
-            <div className="flex grow flex-col gap-2  ">
-              <input
-                className="w-full"
-                name="choice3"
-                type="text"
-                value={wronganswer3}
-              />
-              <div className="pr-5"></div>
-            </div>
+            <p className="flex grow flex-col gap-2">{wronganswer3}</p>
           </div>
-          <div className="flex gap-3  ">
-            <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-900">
-              {" "}
-              4
+          <div className="item-center flex gap-5 ">
+            <div className="flex items-center justify-center">
+              <div className="flex size-8 items-center justify-center rounded-full bg-green-200 text-lg font-semibold text-blue-900">
+                {" "}
+                4
+              </div>
             </div>
-            <div className="flex grow flex-col gap-2  ">
-              <input
-                className="w-full"
-                name="correctAnswer"
-                type="text"
-                value={correctAnswer}
-              />
-              <div className="pr-5"></div>
-            </div>
+            <p className="gap- flex grow flex-col">{correctAnswer}</p>
           </div>
           <div className="flex justify-center px-10">
             <Button type="submit" className="rounded-lg bg-blue-900 ">
-              submit
+              Add
             </Button>
           </div>
         </CardContent>

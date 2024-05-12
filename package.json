@@ -9,7 +9,7 @@
     "db:studio": "drizzle-kit studio",
     "db:migrate": "tsx migrate.ts",
     "db:generate": "drizzle-kit generate:mysql",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "lint": "next lint",
     "start": "next start"
   },
