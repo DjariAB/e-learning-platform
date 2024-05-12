@@ -176,18 +176,12 @@ export function DeleteLessonForm({
   }, [formState]);
 
   return (
-    <form
-      action={formAction}
-      className={cn(
-        "flex flex-col items-center justify-center gap-3",
-        className,
-      )}
-    >
+    <form action={formAction} className={cn("", className)}>
       <Input type="hidden" name="courseId" value={courseId} />
       <Input type="hidden" name="id" value={id} />
 
       <SubmitButton
-        className="w-1/2 rounded-md border-red-500 px-6 text-red-500 hover:bg-red-500 hover:text-white"
+        className=" rounded-md border-red-500 px-6 text-red-500 hover:bg-red-500 hover:text-white"
         variant="outline"
       >
         Delete lesson

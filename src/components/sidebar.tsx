@@ -40,7 +40,7 @@ const SideBar = () => {
         <Link className="mb-8 self-center" href="/">
           <img
             className="w-40 "
-            src="/SVGs/logo text.svg"
+            src="/SVGs/logo_text.svg"
             alt="Platform logo"
           />
         </Link>

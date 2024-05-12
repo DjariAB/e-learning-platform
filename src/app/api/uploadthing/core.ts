@@ -77,16 +77,24 @@ export const ourFileRouter = {
 
       // If you throw, the user will not be able to upload
       const { user } = await validateRequest();
+
       const courseId = req.headers.get("courseId");
       if (!user) throw new UploadThingError("no user");
-      if (!courseId) throw new UploadThingError("no courseId");
+
+      if (!courseId) {
+        console.log("no course id ");
+        throw new UploadThingError("no courseId");
+      }
+
       const courses = await db
         .select()
         .from(courseTable)
-        .where(eq(courseTable.id, courseTable));
+        .where(eq(courseTable.id, courseId));
 
-      if (!courses[0]?.id)
+      if (!courses[0]?.id) {
+        console.log("there is no such course");
         throw new UploadThingError("there is no such course ");
+      }
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: user.id, courseId };
@@ -101,6 +109,7 @@ export const ourFileRouter = {
         })
         .where(eq(courseTable.id, metadata.courseId));
 
+      revalidatePath(`/dashboard/mycourses/${metadata.courseId}/edit`);
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
