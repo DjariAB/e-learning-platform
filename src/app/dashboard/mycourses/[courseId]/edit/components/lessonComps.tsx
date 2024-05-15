@@ -1,5 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
-import { lessonType } from "./editWrapper";
+import { type lessonType } from "./editWrapper";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   addLessonAction,
   deleteLessonAction,
-  lessonActionResult,
+  type lessonActionResult,
 } from "@/actions/helpers/lessonHelpers";
 import { SubmitButton } from "@/lib/Form";
 
@@ -65,7 +65,7 @@ export function AddLessonForm({
       });
       ("");
     } else console.log("not working", formState.error);
-  }, [formState]);
+  }, [formState,toast]);
   useEffect(() => {
     if (formState.type === "success") {
       console.log("works just fine ");
@@ -130,7 +130,7 @@ export function UpdateLessonForm({
       });
       ("");
     } else console.log("not working", formState.error);
-  }, [formState]);
+  }, [formState,toast]);
   useEffect(() => {
     if (formState.type === "success") {
       console.log("works just fine ");

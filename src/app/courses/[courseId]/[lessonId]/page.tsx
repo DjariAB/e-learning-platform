@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { marked } from "marked";

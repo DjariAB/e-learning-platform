@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Progress } from "@/components/ui/progress";
 import { Anek_Latin } from "next/font/google";

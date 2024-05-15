@@ -8,19 +8,15 @@ import {
 import { type chapterType, type lessonType } from "./editWrapper";
 import { useFormState } from "react-dom";
 import {
-  addChapterAction,
-  chapterActionResult,
+  type chapterActionResult,
   deleteChapterAction,
 } from "@/actions/helpers/chatperHelpers";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { LessonItem } from "./lessonComps";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { deleteLessonAction } from "@/actions/helpers/lessonHelpers";
 import { SubmitButton } from "@/lib/Form";
 import { Trash2Icon } from "lucide-react";
 export function ChapterAccItem({
@@ -92,7 +88,7 @@ export function AddChapterForm({
     if (formState.type === "success") {
       toast({ title: "Chapter added successfully", description: "" });
     } else console.log("not working ", formState.error);
-  }, [formState]);
+  }, [formState, toast]);
 
   return (
     <form action={formAction} className={className}>
@@ -134,7 +130,7 @@ export function UpdateChapterForm({
       });
       ("");
     } else console.log("not working", formState.error);
-  }, [formState]);
+  }, [formState, toast, value]);
   useEffect(() => {
     if (formState.type === "success") {
       console.log("works just fine ");
@@ -192,7 +188,7 @@ export function DeleteChapterForm({
       <Input type="hidden" name="id" value={id} />
 
       <SubmitButton
-        className="w-1/2 w-1/2 space-x-3 rounded-md rounded-md border-red-500 px-6 text-red-500 hover:bg-red-500 hover:text-white"
+        className="w-1/2 space-x-3 rounded-md border-red-500 px-6 text-red-500 hover:bg-red-500 hover:text-white"
         variant="outline"
       >
         <p>Delete Chapter</p>

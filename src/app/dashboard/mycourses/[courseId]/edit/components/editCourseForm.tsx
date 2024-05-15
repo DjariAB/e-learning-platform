@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -344,7 +343,7 @@ export function EditCourseContentForm({
                         )}
                       </div>
                       <div className="flex justify-between px-4">
-                        <AddQuizDialog />
+                        <AddQuizDialog lessonId={toEditLesson.id} />
                         <DeleteLessonForm
                           courseId={courseId}
                           id={toEditLesson.id}

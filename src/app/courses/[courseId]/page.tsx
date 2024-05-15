@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { enroll } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
@@ -66,7 +65,6 @@ export default async function CoursePage({
       ),
     );
 
-  const bindedChapteraciton = chapteraciton.bind(null, params.courseId);
   const bindedCommentsaciton = commentsAction.bind(null, params.courseId);
 
   return (
@@ -225,17 +223,6 @@ async function CHapterAccordionItem({
   );
 }
 
-async function chapteraciton(courseId: string) {
-  "use server";
-
-  const id = generateId(7);
-  await db
-    .insert(chapterTable)
-    .values({ courseId: courseId, name: "first chapter", id });
-  const path = `/courses/${courseId}`;
-  revalidatePath(path);
-}
-
 async function commentsAction(courseId: string, formData: FormData) {
   "use server";
 
@@ -252,13 +239,4 @@ async function commentsAction(courseId: string, formData: FormData) {
   });
   const path = `/courses/${courseId}`;
   revalidatePath(path);
-}
-
-async function lessonAction() {
-  "use server";
-
-  const id = generateId(7);
-  await db
-    .insert(lessonTable)
-    .values({ chapterId: "u6eprc7", title: "first lesson", id });
 }

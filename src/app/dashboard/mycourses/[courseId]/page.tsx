@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { DeleteCourse } from "@/actions/helpers/courseHelpers";
 import CourseLevel from "@/components/courselevel";
 import {
@@ -10,9 +9,6 @@ import {
 import { db } from "@/server/db";
 import { chapterTable, courseTable, lessonTable } from "@/server/db/schema";
 import { count, eq } from "drizzle-orm";
-
-import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -156,22 +152,22 @@ async function CHapterAccordionItem({ chapter }: CHapterAccordionItemPorps) {
   );
 }
 
-async function chapteraciton(courseId: string) {
-  "use server";
+// async function chapteraciton(courseId: string) {
+//   "use server";
 
-  const id = generateId(7);
-  await db
-    .insert(chapterTable)
-    .values({ courseId: courseId, name: "first chapter", id });
-  const path = `/courses/${courseId}`;
-  revalidatePath(path);
-}
+//   const id = generateId(7);
+//   await db
+//     .insert(chapterTable)
+//     .values({ courseId: courseId, name: "first chapter", id });
+//   const path = `/courses/${courseId}`;
+//   revalidatePath(path);
+// }
 
-async function lessonAction() {
-  "use server";
+// async function lessonAction() {
+//   "use server";
 
-  const id = generateId(7);
-  await db
-    .insert(lessonTable)
-    .values({ chapterId: "u6eprc7", title: "first lesson", id });
-}
+//   const id = generateId(7);
+//   await db
+//     .insert(lessonTable)
+//     .values({ chapterId: "u6eprc7", title: "first lesson", id });
+// }

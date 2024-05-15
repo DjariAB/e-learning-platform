@@ -13,11 +13,13 @@ import { type Message, continueConversationTest } from "@/lib/ai/actions";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Loader2Icon } from "lucide-react";
 
-export function AddQuizDialog() {
+export function AddQuizDialog({ lessonId }: { lessonId: string }) {
   const [conversation, setConversation] = useState<Message>();
   const [input, setInput] = useState<string>("");
   const [isopen, setIsOpen] = useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = useState<boolean>(true);
 
   return (
     <Dialog
@@ -41,7 +43,13 @@ export function AddQuizDialog() {
           </DialogDescription>
         </DialogHeader>
         <div>
-          <div>{conversation && <div>{conversation.display}</div>}</div>
+          {!isGenerating ? (
+            <div>{conversation && <div>{conversation.display}</div>}</div>
+          ) : (
+            <div className="flex items-center justify-center p-5">
+              <Loader2Icon className="animate-spin text-mainblue" />
+            </div>
+          )}
           <form
             className={cn(
               "flex justify-between gap-2 ",
@@ -49,8 +57,9 @@ export function AddQuizDialog() {
             )}
             onSubmit={async (e) => {
               e.preventDefault();
-              const message = await continueConversationTest(input);
-
+              setIsGenerating(true);
+              const message = await continueConversationTest(input, lessonId);
+              setIsGenerating(false);
               setConversation(message);
             }}
           >

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 const HeroSec = ({ className }: { className?: string }) => {
   return (
     <>

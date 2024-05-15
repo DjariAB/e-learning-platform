@@ -18,7 +18,10 @@ export interface Message {
   display?: ReactNode; // [!code highlight]
 }
 
-export async function continueConversationTest(question: string) {
+export async function continueConversationTest(
+  question: string,
+  lessonId: string,
+) {
   const stream = createStreamableUI(); // [!code highlight]
   // const res = await fetch(
   //   "https://uploadthing-prod.s3.us-west-2.amazonaws.com/7e8cd3f4-7f86-4194-ada6-6228b43a21c5-pkoo3l.md",
@@ -72,6 +75,7 @@ export async function continueConversationTest(question: string) {
           //   });
           stream.done(
             <StreamableUI
+              lessonId={lessonId}
               correctAnswer={correct}
               question={que}
               wronganswer={wrong}
@@ -98,12 +102,14 @@ export async function StreamableUI({
   wronganswer,
   wronganswer2,
   wronganswer3,
+  lessonId,
 }: {
   question: string;
   wronganswer: string;
   wronganswer2: string;
   wronganswer3: string;
   correctAnswer: string;
+  lessonId: string;
 }) {
   return (
     <form action={quizAction}>
@@ -117,6 +123,7 @@ export async function StreamableUI({
           <input name="choice1" type="hidden" value={wronganswer} />
           <input name="choice2" type="hidden" value={wronganswer2} />
           <input name="choice3" type="hidden" value={wronganswer3} />
+          <input name="lessonId" type="hidden" value={lessonId} />
           <input name="correctAnswer" type="hidden" value={correctAnswer} />
 
           <div className="item-center flex gap-5 ">
@@ -172,6 +179,7 @@ async function quizAction(formData: FormData) {
   const choice1 = formData.get("choice1")?.toString();
   const choice2 = formData.get("choice2")?.toString();
   const choice3 = formData.get("choice3")?.toString();
+  const lessonId = formData.get("lessonId")?.toString();
   const correctAnswer = formData.get("correctAnswer")?.toString();
 
   if (!question) return;
@@ -179,12 +187,21 @@ async function quizAction(formData: FormData) {
   if (!choice1) return;
   if (!choice3) return;
   if (!correctAnswer) return;
+  if (!lessonId) return;
 
   const id = generateId(7);
   try {
     await db
       .insert(questionTable)
-      .values({ id, question, choice1, choice2, choice3, correctAnswer });
+      .values({
+        id,
+        question,
+        choice1,
+        choice2,
+        choice3,
+        correctAnswer,
+        lessonId,
+      });
     console.log("success");
   } catch (err) {
     console.log("there was an error pushing to the db please try again ", err);

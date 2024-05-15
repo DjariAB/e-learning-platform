@@ -1,11 +1,5 @@
 import { cn } from "@/lib/utils";
-import {
-  BarChart,
-  SignalHigh,
-  SignalHighIcon,
-  SignalIcon,
-  SignalMediumIcon,
-} from "lucide-react";
+import { BarChart } from "lucide-react";
 // import Image from "next/image";
 // import {} from "@heroicons/react";
 
