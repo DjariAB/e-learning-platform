@@ -27,7 +27,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { editCourseInfo } from "@/actions/helpers/courseHelpers";
 import { Loader2 } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
-import InputComp from "./InputComp";
+import InputComp, { TextAreaComp } from "./InputComp";
 import {
   type chapterType,
   type lessonType,
@@ -192,12 +192,11 @@ function EditCourseForm({
                   </Select>
                 </div>
               </div>
-              <InputComp
+              <TextAreaComp
                 formState={formState}
                 value={courseInfo.briefDescription}
                 label="Brief description"
                 name="Description"
-                isTextArea
                 rows={3}
                 onChange={(e) =>
                   setcourseInfo({
@@ -206,12 +205,11 @@ function EditCourseForm({
                   })
                 }
               />
-              <InputComp
+              <TextAreaComp
                 formState={formState}
                 value={courseInfo.mainDescription}
                 label="Main description"
                 name="mainDescription"
-                isTextArea
                 rows={5}
                 onChange={(e) =>
                   setcourseInfo({
@@ -220,12 +218,11 @@ function EditCourseForm({
                   })
                 }
               />
-              <InputComp
+              <TextAreaComp
                 formState={formState}
                 value={courseInfo.courseGoals}
                 label="Course goals"
                 name="courseGoals"
-                isTextArea
                 rows={5}
                 onChange={(e) =>
                   setcourseInfo({ ...courseInfo, courseGoals: e.target.value })

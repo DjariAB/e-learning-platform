@@ -10,13 +10,14 @@ import Image from "next/image";
 function Quiz({ quizData }: { quizData: quizType }) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const choices: string[] = [];
-  if (questionIndex < quizData.length) {
-    choices.push(quizData[questionIndex]!.choice1);
-    choices.push(quizData[questionIndex]!.choice2);
-    choices.push(quizData[questionIndex]!.choice3);
-    choices.push(quizData[questionIndex]!.choice4);
-  }
+  const current = quizData[questionIndex] ?? {
+    question: "string",
+    choice1: "string",
+    choice2: "string",
+    choice3: "string",
+    correct: "string",
+  };
+  const choices = Object.values(current);
 
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
 
@@ -29,10 +30,10 @@ function Quiz({ quizData }: { quizData: quizType }) {
     }
   };
   const check = () => {
-    if ( selectedChoice !== null) {
+    if (selectedChoice !== null) {
       setChecked(true);
 
-      choices[quizData[questionIndex]!.correct - 1] === choices[selectedChoice]
+      quizData[questionIndex]!.correct === choices[selectedChoice]
         ? setScore(score + 20)
         : null;
     }
@@ -95,15 +96,12 @@ function Quiz({ quizData }: { quizData: quizType }) {
                         index={index}
                         state={
                           index === selectedChoice &&
-                          choices[quizData[questionIndex]!.correct - 1] ===
-                            ch &&
+                          quizData[questionIndex]!.correct === ch &&
                           isChecked
                             ? "correct"
                             : index === selectedChoice &&
                                 isChecked &&
-                                choices[
-                                  quizData[questionIndex]!.correct - 1
-                                ] !== ch
+                                quizData[questionIndex]!.correct !== ch
                               ? "false"
                               : index === selectedChoice
                                 ? "selected"
@@ -120,7 +118,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
 
                 <div className="h-8 text-center text-2xl font-medium">
                   {isChecked && selectedChoice !== null ? (
-                    choices[quizData[questionIndex]!.correct - 1] ===
+                    quizData[questionIndex]!.correct ===
                     choices[selectedChoice] ? (
                       <p className="text-green-500">Correct</p>
                     ) : (

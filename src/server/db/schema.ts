@@ -156,19 +156,19 @@ export const enrolledCoursesTable = createTable(
   {
     courseId: varchar("course_id", { length: 196 }).references(
       () => courseTable.id,
-    ),
-    userId: varchar("user_id", { length: 255 }).references(() => userTable.id),
-    progress: int("user_progress").$default(() => 0),
+    ).notNull(),
+    userId: varchar("user_id", { length: 255 }).references(() => userTable.id).notNull(),
+    progress: int("user_progress").$default(() => 0).notNull(),
     currentLessonId: varchar("current_lesson_id", { length: 196 }).references(
       () => lessonTable.id,
-    ),
-    score: int("student_score").$default(() => 0),
+    ).notNull(),
+    score: int("student_score").$default(() => 0).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt")
       .onUpdateNow()
-      .default(sql`CURRENT_TIMESTAMP`),
+      .default(sql`CURRENT_TIMESTAMP`).notNull(),
   },
   (table) => {
     return {

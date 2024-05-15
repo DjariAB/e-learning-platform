@@ -4,10 +4,9 @@ import { env } from "@/env";
 
 export default defineConfig({
   schema: "./src/server/db/schema.ts",
-  // dialect: "mysql",  "mysql" | "sqlite" | "postgresql"
+  dialect: "mysql",
   out: "./src/server/db/migration",
-  driver: "mysql2",
   dbCredentials: {
-    uri: env.DATABASE_URL,
+    url: env.DATABASE_URL,
   },
 });

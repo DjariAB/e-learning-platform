@@ -3,7 +3,18 @@
 import { type ColumnDef } from "@tanstack/react-table";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-type studentCell = { imgUrl: string; studentName: string };
+
+// {
+//   id: string;
+//   student: {
+//       imgUrl: string | null;
+//       studentName: string;
+//   };
+//   course: string;
+//   progress: string;
+//   score: number;
+// }
+type studentCell = { imgUrl: string | null; studentName: string };
 export type Student = {
   id: string;
   student: studentCell;

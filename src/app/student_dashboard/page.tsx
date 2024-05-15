@@ -48,10 +48,11 @@ export default async function Page() {
     (c) => c.enrolled_Courses.progress == 100,
   );
   const averageProgress = totalEnrolledCourses.reduce(
-    (sum, currentValue) => sum + currentValue.enrolled_Courses.progress,
+    (sum, currentValue) => sum + (currentValue.enrolled_Courses.progress ?? 0),
     0,
   );
   const enrollementData = await db.select().from(enrolledCoursesTable);
+
   const enrolledStudents = await db
     .selectDistinct({
       id: userTable.id,
@@ -59,12 +60,12 @@ export default async function Page() {
       imageUrl: userTable.imageUrl,
     })
     .from(enrolledCoursesTable)
-    .leftJoin(userTable, eq(userTable.id, enrolledCoursesTable.userId));
+    .innerJoin(userTable, eq(userTable.id, enrolledCoursesTable.userId));
 
   const studentScore = enrollementData
     .filter((e) => e.userId === user.id)
     .reduce((sum, currentValue) => sum + currentValue.score, 0);
-  let LeaderBoardData = enrolledStudents.map((student) => {
+  const unRankedLeaderBoardData = enrolledStudents.map((student) => {
     const score = enrollementData
       .filter((e) => e.userId === student.id)
       .reduce((sum, currentValue) => sum + currentValue.score, 0);
@@ -79,9 +80,9 @@ export default async function Page() {
       score: score,
     };
   });
-  LeaderBoardData = LeaderBoardData.sort((a, b) => a.score - b.score).map(
-    (e, index) => ({ ...e, rank: `${index + 1}#` }),
-  );
+  const LeaderBoardData = unRankedLeaderBoardData
+    .sort((a, b) => a.score - b.score)
+    .map((e, index) => ({ ...e, rank: `${index + 1}#` }));
   return (
     <div className="flex flex-col gap-4">
       <h2 className="pl-4 text-3xl font-medium">Learning Center</h2>
