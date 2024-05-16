@@ -14,8 +14,6 @@ const main = async () => {
     await migrate(db, {
       migrationsFolder: "./src/server/db/migration",
     });
-
-    console.log("Migration successful");
   } catch (error) {
     console.error(error);
     process.exit(1);

@@ -82,7 +82,6 @@ export const ourFileRouter = {
       if (!user) throw new UploadThingError("no user");
 
       if (!courseId) {
-        console.log("no course id ");
         throw new UploadThingError("no courseId");
       }
 
@@ -92,7 +91,6 @@ export const ourFileRouter = {
         .where(eq(courseTable.id, courseId));
 
       if (!courses[0]?.id) {
-        console.log("there is no such course");
         throw new UploadThingError("there is no such course ");
       }
 

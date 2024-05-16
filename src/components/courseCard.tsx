@@ -11,7 +11,6 @@ const anekLatin = Anek_Latin({
   variable: "--font-anek-latin",
 });
 
-
 export const CourseCard = ({
   title,
   educatorName,
@@ -27,7 +26,6 @@ export const CourseCard = ({
   courseId: string;
   progress?: number;
 }) => {
-  console.log(progress);
   const [isHovered, setisHovered] = useState(false);
   return (
     <Link href={`/courses/${courseId}`}>

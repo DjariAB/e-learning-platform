@@ -25,7 +25,6 @@ export async function addChapterAction(
     const id = generateId(7);
     await db.insert(chapterTable).values({ name, courseId, id });
   } catch (err) {
-    console.log("there was an error adding a chapter please try again ", err);
     return { error: "error in the server please try again", type: "failed" };
   }
 
@@ -46,7 +45,6 @@ export async function updateChapterAction(
   if (!id) {
     return { error: "there is no such chapter", type: "failed" };
   }
-
 
   try {
     await db.update(chapterTable).set({ name }).where(eq(chapterTable.id, id));
@@ -69,16 +67,13 @@ export async function deleteChapterAction(
   const id = formData.get("id")?.toString();
   const courseId = formData.get("courseId")?.toString();
 
-
   if (!id) {
     return { error: "there is no such chapter", type: "failed" };
   }
 
-
   try {
-
-    await db.delete(lessonTable).where(eq(lessonTable.chapterId,id))
-    await db.delete(chapterTable).where(eq(chapterTable.id,id))
+    await db.delete(lessonTable).where(eq(lessonTable.chapterId, id));
+    await db.delete(chapterTable).where(eq(chapterTable.id, id));
   } catch (err) {
     return {
       error: "Failed to delete the chapter please try again",
@@ -88,11 +83,14 @@ export async function deleteChapterAction(
 
   revalidatePath(`/dashboard/mycourses/${courseId}/edit`);
 
-  return { error: "Chapter and its lesson deleted successfully", type: "success" };
+  return {
+    error: "Chapter and its lesson deleted successfully",
+    type: "success",
+  };
 }
 
 export type chapterActionResult<> = {
-  error: string ;
+  error: string;
   type: inputType | null;
 };
 type inputType = "failed" | "success";

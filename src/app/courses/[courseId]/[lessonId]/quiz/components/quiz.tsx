@@ -42,7 +42,6 @@ function Quiz({ quizData }: { quizData: quizType }) {
     setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
   };
-  console.log(selectedChoice);
 
   return (
     <div className="m-auto flex h-screen flex-col items-center gap-3">
@@ -88,29 +87,33 @@ function Quiz({ quizData }: { quizData: quizType }) {
                 <div className="flex w-full flex-col items-center text-center">
                   {choices.map((ch, index) => (
                     <>
-                      <ChoiceComp
-                        key={index}
-                        disabled={isChecked}
-                        value={ch}
-                        index={index}
-                        state={
-                          index === selectedChoice &&
-                          quizData[questionIndex]!.correct === ch &&
-                          isChecked
-                            ? "correct"
-                            : index === selectedChoice &&
-                                isChecked &&
-                                quizData[questionIndex]!.correct !== ch
-                              ? "false"
-                              : index === selectedChoice
-                                ? "selected"
-                                : undefined
-                        }
-                        onSelectChoice={() => onSelectChoice(index)}
-                      />
-                      <div className="justify-self-centert w-11/12">
-                        <hr />
-                      </div>
+                      {index > 0 ?? (
+                        <>
+                          <ChoiceComp
+                            key={index}
+                            disabled={isChecked}
+                            value={ch}
+                            index={index}
+                            state={
+                              index === selectedChoice &&
+                              quizData[questionIndex]!.correct === ch &&
+                              isChecked
+                                ? "correct"
+                                : index === selectedChoice &&
+                                    isChecked &&
+                                    quizData[questionIndex]!.correct !== ch
+                                  ? "false"
+                                  : index === selectedChoice
+                                    ? "selected"
+                                    : undefined
+                            }
+                            onSelectChoice={() => onSelectChoice(index)}
+                          />
+                          <div className="justify-self-centert w-11/12">
+                            <hr />
+                          </div>
+                        </>
+                      )}
                     </>
                   ))}
                 </div>
@@ -179,7 +182,6 @@ function ChoiceComp({
       : state === "false"
         ? (style = "bg-red-200 font-medium  text-red-900")
         : "";
-  console.log(state);
 
   return (
     <>
