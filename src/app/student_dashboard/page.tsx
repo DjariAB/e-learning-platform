@@ -32,7 +32,7 @@ export default async function Page() {
   const { user } = await validateRequest();
   if (!user) redirect("/login");
   // placeholder data
-  // const data = await getData();
+  const data = await getData();
   const totalEnrolledCourses = await db
     .select()
     .from(enrolledCoursesTable)

@@ -19,7 +19,7 @@ export function AddQuizDialog({ lessonId }: { lessonId: string }) {
   const [conversation, setConversation] = useState<Message>();
   const [input, setInput] = useState<string>("");
   const [isopen, setIsOpen] = useState<boolean>(false);
-  const [isGenerating, setIsGenerating] = useState<boolean>(true);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   return (
     <Dialog

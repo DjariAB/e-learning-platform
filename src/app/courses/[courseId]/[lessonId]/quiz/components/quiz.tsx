@@ -42,7 +42,6 @@ function Quiz({ quizData }: { quizData: quizType }) {
     setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
   };
-  console.log(selectedChoice);
 
   return (
     <div className="m-auto flex h-screen flex-col items-center gap-3">
@@ -186,7 +185,6 @@ function ChoiceComp({
       : state === "false"
         ? (style = "bg-red-200 font-medium  text-red-900")
         : "";
-  console.log(state);
 
   return (
     <>

@@ -202,7 +202,6 @@ async function quizAction(formData: FormData) {
         correctAnswer,
         lessonId,
       });
-    console.log("success");
   } catch (err) {
     console.log("there was an error pushing to the db please try again ", err);
   }

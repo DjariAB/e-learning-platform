@@ -32,10 +32,6 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
       if (p === 100) setUploadProgress(100);
     },
     onUploadError: (e) => {
-      // toast({
-      //   title: "Error while uploading the file",
-      //   variant: "destructive",
-      // });
       console.log(
         " your are in here and this is the cause of the error ",
         e.cause,
@@ -44,16 +40,6 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
       setIsError(true);
     },
   });
-  // const {} = await uploadFiles("imageUploader");
-
-  // const { mutate: startPolling } = trpc.getFile.useMutation({
-  //   onSuccess: (file) => {
-  //     router.push(`/dashboard/${file.id}`);
-  //   },
-
-  //   retry: true,
-  //   retryDelay: 500,
-  // });
 
   const startSimulatedProgress = () => {
     setUploadProgress(0);
@@ -76,11 +62,6 @@ export const UploadDropzone = ({ lessonId }: { lessonId: string }) => {
         const progressInterval = startSimulatedProgress();
         await startUpload(acceptedFiles);
 
-        // if (!res[0]) {
-        //   console.log("something went wrong please try again ");
-        //   return;
-        // }
-        // const key = fileResponse?.key;
         clearInterval(progressInterval);
       }}
       disabled={isUploading}
@@ -212,12 +193,7 @@ export const UploadImageDropZones = ({ courseId }: { courseId: string }) => {
         const progressInterval = startSimulatedProgress();
         await startUpload(acceptedFiles);
 
-        // if (!res[0]) {
-        //   console.log("something went wrong please try again ");
-        //   return;
-        // }
-        // const key = fileResponse?.key;
-        clearInterval(progressInterval);
+     
       }}
       disabled={isUploading}
     >

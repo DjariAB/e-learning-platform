@@ -84,7 +84,6 @@ export async function DeleteCourse(
     await db.delete(chapterTable).where(eq(chapterTable.courseId, id));
     await db.delete(courseTable).where(eq(courseTable.id, id));
   } catch (err) {
-    console.log("not working ", err);
     return { error: "failed enrolling the course", type: null };
   }
 
@@ -138,7 +137,6 @@ export async function addCourse(
     courseGoals: "",
   });
   if (!course) {
-    console.log("failed adding the course ");
     return {
       error: { failed: "failed to create the course please try again" },
       type: { failed: true },
