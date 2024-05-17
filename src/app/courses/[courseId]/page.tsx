@@ -70,9 +70,7 @@ export default async function CoursePage({
   return (
     <>
       <div className={`z-50 bg-cover pt-10 ${styles.background}`}>
-        {/* <MainNavBar /> */}
-
-        <div className="flex items-center gap-16 px-32 py-12 ">
+        <div className="flex items-center gap-16 px-28 py-12 ">
           <img
             src={course.imageUrl ?? ""}
             alt="Course image"

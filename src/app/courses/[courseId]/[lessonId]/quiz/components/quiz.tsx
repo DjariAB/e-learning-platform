@@ -17,7 +17,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
     correct: "string",
   };
   const choices = Object.values(current);
-
+  choices.shift();
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
 
   const [isChecked, setChecked] = useState(false);
@@ -76,7 +76,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                 ? quizData[questionIndex]?.question
                 : score < 40
                   ? "Seems like you need to revise the lesson and retry"
-                  : score < 80
+                  : score <= 80
                     ? "Good job son"
                     : "Can't be better!"}
             </CardTitle>
@@ -94,9 +94,10 @@ function Quiz({ quizData }: { quizData: quizType }) {
                         value={ch}
                         index={index}
                         state={
-                          index === selectedChoice &&
-                          quizData[questionIndex]!.correct === ch &&
-                          isChecked
+                          (index === selectedChoice &&
+                            quizData[questionIndex]!.correct === ch &&
+                            isChecked) ||
+                          (quizData[questionIndex]!.correct === ch && isChecked)
                             ? "correct"
                             : index === selectedChoice &&
                                 isChecked &&
@@ -115,7 +116,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   ))}
                 </div>
 
-                <div className="h-8 text-center text-2xl font-medium">
+                {/* <div className="h-8 text-center text-2xl font-medium">
                   {isChecked && selectedChoice !== null ? (
                     quizData[questionIndex]!.correct ===
                     choices[selectedChoice] ? (
@@ -126,7 +127,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   ) : (
                     <p>Score: {score} pts</p>
                   )}
-                </div>
+                </div> */}
                 <Button
                   className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 "
                   disabled={selectedChoice === null}
@@ -140,9 +141,15 @@ function Quiz({ quizData }: { quizData: quizType }) {
             ) : (
               <>
                 <img
-                  src="https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
+                  src={
+                    score === 100
+                      ? "https://media1.tenor.com/m/H1-R8Mum3nwAAAAC/perfection-perfect.gif"
+                      : score >= 80
+                        ? "https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
+                        : "https://media1.tenor.com/m/bUOrNPAXcMEAAAAd/the-office-michael-scott.gif"
+                  }
                   alt="gif"
-                  className="size-72"
+                  className="h-72 w-auto"
                 />
                 <div className="h-8 text-center text-2xl font-medium">
                   You&apos;ve Scored : {score} pts
@@ -184,7 +191,7 @@ function ChoiceComp({
   return (
     <>
       <div
-        className={`flex w-full gap-5 rounded-md px-4 py-2 transition duration-200 ease-in ${!style && !disabled ? `hover:bg-gray-100` : ""} ${style} ${disabled ? "cursor-default" : "cursor-pointer"}`}
+        className={`flex w-full items-center gap-5 rounded-md px-4 py-2 transition duration-200 ease-in ${!style && !disabled ? `hover:bg-gray-100` : ""} ${style} ${disabled ? "cursor-default" : "cursor-pointer"}`}
         onClick={() => onSelectChoice(index)}
       >
         <div
@@ -193,9 +200,10 @@ function ChoiceComp({
           {" "}
           {index + 1}
         </div>
-        <div className="flex items-center text-center text-xl ">
-          <p>{value}</p>
-        </div>
+        <p className="text-center text-xl ">{value}</p>
+        <p className="grow text-right font-semibold ">
+          {state === "correct" ? "correct" : state === "false" ? "false" : ""}
+        </p>
       </div>
     </>
   );

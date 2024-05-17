@@ -1,3 +1,4 @@
+import MainNavBar from "@/components/mainNavbar";
 import { validateRequest } from "@/server/auth";
 import { Anek_Latin } from "next/font/google";
 import { redirect } from "next/navigation";
@@ -14,8 +15,10 @@ export default async function RootLayout({
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
   return (
-    <main className={`flex flex-col gap-6 px-0 ${anekLatin.className}`}>
+    <main className={`relative gap-6 px-0 ${anekLatin.className}`}>
+      <MainNavBar userName={user.userName} />
       {children}
+      <div className="h-64"></div>
     </main>
   );
 }
