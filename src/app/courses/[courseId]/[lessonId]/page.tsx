@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import "./lessonStyles.css";
 import { marked } from "marked";
 import {
   ArrowLeftCircleIcon,
@@ -12,7 +13,6 @@ import React from "react";
 import { db } from "@/server/db";
 import { lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import MainNavBar from "@/components/mainNavbar";
 
 export default async function LessonPage({
   params,
@@ -23,15 +23,17 @@ export default async function LessonPage({
     .select()
     .from(lessonTable)
     .where(eq(lessonTable.id, params.lessonId));
-  if (!lesson[0] || !lesson[0].LessonContent)
-    return <div> lesson not found</div>;
+  // if (!lesson[0] || !lesson[0].LessonContent)
+  //   return <div> lesson not found</div>;
 
-  const res = await fetch(lesson[0].LessonContent);
+  // const res = await fetch(lesson[0].LessonContent);
+  const res = await fetch(
+    "https://uploadthing-prod.s3.us-west-2.amazonaws.com/91eaeee7-fb49-45c9-85bf-093355962b6a-rv6o9r.md",
+  );
 
   const data = await res.text();
   return (
     <>
-      <MainNavBar />
       <div className="px-32">
         <div className="flex w-fit items-center gap-20  py-12">
           <img
@@ -52,7 +54,7 @@ export default async function LessonPage({
         </div>
         <div className="flex">
           <div className="w-3/4  py-8 text-2xl">
-            <h1 className="text-3xl font-medium">Intorduction</h1>
+            {/* <h1 className="text-3xl font-medium">Intorduction</h1>
             <p className="p-4 font-light text-[#797979] ">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
               Mollitia, quod placeat. Officia libero voluptate animi ratione,
@@ -65,9 +67,12 @@ export default async function LessonPage({
               ducimus esse deleniti ipsam. Quaerat nisi, mollitia quia ab quo
               molestias rem modi recusandae in delectus! Totam, temporibus
               incidunt?
-            </p>
+            </p> */}
 
-            <div dangerouslySetInnerHTML={{ __html: marked(data) }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: marked(data) }}
+              className="flex flex-col gap-4 text-[16pt]"
+            />
 
             <div className="flex flex-col gap-8">
               <hr />

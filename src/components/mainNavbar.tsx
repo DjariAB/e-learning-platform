@@ -1,14 +1,14 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { UIEventHandler, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 function MainNavBar({ userName }: { userName: string }) {
-  const [Bg, setBg] = useState("bg-transparent");
+  const [Bg, setBg] = useState("bg-transparent backdrop-blur-xl");
   function handleScroll() {
     window.scrollY > 360
-      ? setBg("bg-black")
+? setBg("bg-black")
       : setBg("bg-transparent backdrop-blur-xl");
   }
   window.addEventListener("scroll", handleScroll);

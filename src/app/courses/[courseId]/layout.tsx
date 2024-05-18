@@ -16,7 +16,7 @@ export default async function RootLayout({
   if (!user) return redirect("/login");
   return (
     <main className={`relative gap-6 px-0 ${anekLatin.className}`}>
-      <MainNavBar userName={user.userName} />
+      {/* <MainNavBar userName={user.userName} /> */}
       {children}
       <div className="h-64"></div>
     </main>
