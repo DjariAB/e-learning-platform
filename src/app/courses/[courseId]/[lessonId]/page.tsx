@@ -13,6 +13,7 @@ import { db } from "@/server/db";
 import { lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import MainNavBar from "@/components/mainNavbar";
+import { validateRequest } from "@/server/auth";
 
 export default async function LessonPage({
   params,
@@ -29,9 +30,11 @@ export default async function LessonPage({
   const res = await fetch(lesson[0].LessonContent);
 
   const data = await res.text();
+  const { user } = await validateRequest();
+  if (!user) return;
   return (
     <>
-      <MainNavBar />
+      <MainNavBar userName={user.userName} />
       <div className="px-32">
         <div className="flex w-fit items-center gap-20  py-12">
           <img
