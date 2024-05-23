@@ -1,0 +1,21 @@
+h1 {
+  font-size: 20pt;
+  font-weight: 500;
+}
+
+p {
+  font-size: 16pt;
+  font-weight: 400;
+  padding: 10px;
+}
+pre {
+  padding: 20px;
+  background: #1f1f1f;
+  color: rgb(251, 255, 225);
+  border-radius: 10px;
+}
+#text {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 300;
+}

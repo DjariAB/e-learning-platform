@@ -58,7 +58,7 @@ export function SubmitButton({
   className: string;
   variant?: "default" | "outline";
 }) {
-  const { pending } = useFormStatus();
+  const { pending, } = useFormStatus();
 
   return (
     <Button type="submit" variant={variant ?? "default"} disabled={pending} className={className}>
