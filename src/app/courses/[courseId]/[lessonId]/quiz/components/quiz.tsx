@@ -6,15 +6,16 @@ import { type quizType } from "../page";
 import { Progress } from "@/components/ui/progress";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import RecapComp from "@/components/recapComp";
 function Quiz({ quizData }: { quizData: quizType }) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const current = quizData[questionIndex] ?? {
-    question: "string",
-    choice1: "string",
-    choice2: "string",
-    choice3: "string",
-    correct: "string",
+    question: "",
+    choice1: "",
+    choice2: "",
+    choice3: "",
+    correct: "",
   };
   const choices = Object.values(current);
   choices.shift();
@@ -44,8 +45,8 @@ function Quiz({ quizData }: { quizData: quizType }) {
   };
 
   return (
-    <div className="m-auto flex h-screen flex-col items-center gap-3">
-      <div className="grid w-screen grid-cols-3 items-center p-6">
+    <div className="flex h-screen flex-col items-center gap-3 sm:m-auto">
+      <div className="grid w-screen items-center p-6 sm:grid-cols-3">
         <Image
           src="/SVGs/logo_text.svg"
           width={150}
@@ -68,7 +69,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
           </p>
         </div>
 
-        <Card className="w-full justify-self-center rounded-xl">
+        <Card className="w-full justify-self-center rounded-xl ">
           <CardHeader className="">
             <CardTitle className="text-center text-2xl font-medium">
               {questionIndex < quizData.length
@@ -82,7 +83,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
           </CardHeader>
           <hr className="pb-5" />
           <CardContent className="flex flex-col items-center gap-5 px-3 pb-7 text-lg tracking-wider text-[#1E1E1E]">
-            {questionIndex < 5 ? (
+            {questionIndex < quizData.length ? (
               <>
                 <div className="flex w-full flex-col items-center text-center">
                   {choices.map((ch, index) => (
@@ -150,6 +151,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   alt="gif"
                   className="h-72 w-auto"
                 />
+                <RecapComp />
                 <div className="h-8 text-center text-2xl font-medium">
                   You&apos;ve Scored : {score} pts
                 </div>
@@ -164,6 +166,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
     </div>
   );
 }
+
 function ChoiceComp({
   disabled,
   value,

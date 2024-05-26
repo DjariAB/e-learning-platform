@@ -6,7 +6,6 @@ import { createStreamableUI } from "ai/rsc";
 import { type ReactNode } from "react";
 import { z } from "zod";
 
-
 export interface Message {
   role: "user" | "assistant";
   content: string;
@@ -27,7 +26,7 @@ export async function continueConversationTest(
   const { text, toolResults } = await generateText({
     model: google("models/gemini-pro"),
     system:
-      "You are a large language model trained to create informative and engaging quizzes on a wide range of topics. Given a specific topic and desired difficulty level, you can generate a set of questions that assess a user's knowledge and understanding.",
+      "You are a large language model trained to create informative and engaging quizzes on a wide range of topics. Given a specific topic and desired difficulty level, you can generate a set of questions that assess a user's knowledge and understanding. and u can help with mistakes made by the user and explain the correct answer",
     prompt: `generate a quiz about ${question} with this difficulty ${difficulty} `,
     tools: {
       generateQuiz: {

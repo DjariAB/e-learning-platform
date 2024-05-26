@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type Message, continueConversationTest } from "@/lib/ai/actions";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,11 +27,26 @@ import { quizAction } from "@/actions/helpers/quizHelpers";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "@/lib/Form";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 export function AddQuizDialog({ lessonId }: { lessonId: string }) {
   const [formState, formAction] = useFormState(quizAction, {
-    message: "",
+    message: null,
+    status: null,
   });
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (formState.status === "Success")
+      toast({ title: "Success", description: formState.message });
+    else if (formState.status === "Failed")
+      toast({
+        title: "Failed",
+        description: formState.message,
+        variant: "destructive",
+      });
+  }, [formState, toast]);
 
   const [conversation, setConversation] = useState<Message>();
   const [input, setInput] = useState<string>("");

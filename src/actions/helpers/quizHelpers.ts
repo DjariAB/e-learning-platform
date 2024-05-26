@@ -4,7 +4,7 @@ import { db } from "@/server/db";
 import { questionTable } from "@/server/db/schema";
 import { generateId } from "lucia";
 
-type ActionResult = { message: string | null };
+type ActionResult = { message: string | null; status: "Failed" | "Success"|null };
 
 export async function quizAction(
   _: unknown,
@@ -18,26 +18,34 @@ export async function quizAction(
   const correctAnswer = formData.get("correctAnswer")?.toString();
 
   if (!question)
-    return { message: "Seems like the question is missing, please try again" };
+    return {
+      message: "Seems like the question is missing, please try again",
+      status: "Failed",
+    };
   if (!choice2)
     return {
       message: "Seems like one of the answers is missing, please try again",
+      status: "Failed",
     };
   if (!choice1)
     return {
       message: "Seems like one of the answers is missing, please try again",
+      status: "Failed",
     };
   if (!choice3)
     return {
       message: "Seems like one of the answers is missing, please try again",
+      status: "Failed",
     };
   if (!correctAnswer)
     return {
       message: "Seems like one of the answers is missing, please try again",
+      status: "Failed",
     };
   if (!lessonId)
     return {
       message: "Seems like the lesson id is missing, please try again",
+      status: "Failed",
     };
 
   const id = generateId(7);
@@ -51,9 +59,12 @@ export async function quizAction(
       correctAnswer,
       lessonId,
     });
-    return { message: "quiz added successfully" };
+    return { message: "quiz Published successfully", status: "Success" };
   } catch (err) {
     console.log("there was an error pushing to the db please try again ", err);
-    return { message: "a problem adding your quizz please try again" };
+    return {
+      message: "a problem adding your quizz please try again",
+      status: "Failed",
+    };
   }
 }
