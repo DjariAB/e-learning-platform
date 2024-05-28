@@ -2,14 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { type quizType } from "../page";
 import { Progress } from "@/components/ui/progress";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import RecapComp from "@/components/recapComp";
+import { quizType } from "../page";
+
 function Quiz({ quizData }: { quizData: quizType }) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [chatInput, setChatInput] = useState<
+    {
+      question: string;
+      userAnswer: string;
+      correctAnswer: string;
+    }[]
+  >([]);
+
   const current = quizData[questionIndex] ?? {
     question: "",
     choice1: "",
@@ -17,8 +26,10 @@ function Quiz({ quizData }: { quizData: quizType }) {
     choice3: "",
     correct: "",
   };
-  const choices = Object.values(current);
-  choices.shift();
+  const s = Object.values(current);
+
+  s.shift();
+  const choices = s.map((ss, index) => ({ id: index, value: ss }));
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
 
   const [isChecked, setChecked] = useState(false);
@@ -32,8 +43,18 @@ function Quiz({ quizData }: { quizData: quizType }) {
   const check = () => {
     if (selectedChoice !== null) {
       setChecked(true);
+      if (quizData[questionIndex]!.correct !== choices[selectedChoice]?.value) {
+        setChatInput([
+          ...chatInput,
+          {
+            question: quizData[questionIndex]!.question,
+            correctAnswer: quizData[questionIndex]!.correct,
+            userAnswer: choices[selectedChoice]!.value,
+          },
+        ]);
+      }
 
-      quizData[questionIndex]!.correct === choices[selectedChoice]
+      quizData[questionIndex]!.correct === choices[selectedChoice]?.value
         ? setScore(score + 20)
         : null;
     }
@@ -42,8 +63,9 @@ function Quiz({ quizData }: { quizData: quizType }) {
     setChecked(false);
     setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
+    console.log("length" + chatInput.length);
+    console.log(chatInput);
   };
-
   return (
     <div className="flex h-screen flex-col items-center gap-3 sm:m-auto">
       <div className="grid w-screen items-center p-6 sm:grid-cols-3">
@@ -74,11 +96,15 @@ function Quiz({ quizData }: { quizData: quizType }) {
             <CardTitle className="text-center text-2xl font-medium">
               {questionIndex < quizData.length
                 ? quizData[questionIndex]?.question
-                : score < 40
-                  ? "Seems like you need to revise the lesson and retry"
-                  : score <= 80
-                    ? "Good job son"
-                    : "Can't be better!"}
+                : questionIndex > quizData.length && chatInput.length !== 0
+                  ? "here's a quiz recap"
+                  : score < 40
+                    ? "Seems like you need to revise the lesson and retry"
+                    : score <= 80
+                      ? "Good job son"
+                        ? score === 100
+                        : "Can't be better!"
+                      : null}
             </CardTitle>
           </CardHeader>
           <hr className="pb-5" />
@@ -89,19 +115,20 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   {choices.map((ch, index) => (
                     <>
                       <ChoiceComp
-                        key={index}
+                        key={ch.id}
                         disabled={isChecked}
-                        value={ch}
+                        value={ch.value}
                         index={index}
                         state={
                           (index === selectedChoice &&
-                            quizData[questionIndex]!.correct === ch &&
+                            quizData[questionIndex]!.correct === ch.value &&
                             isChecked) ||
-                          (quizData[questionIndex]!.correct === ch && isChecked)
+                          (quizData[questionIndex]!.correct === ch.value &&
+                            isChecked)
                             ? "correct"
                             : index === selectedChoice &&
                                 isChecked &&
-                                quizData[questionIndex]!.correct !== ch
+                                quizData[questionIndex]!.correct !== ch.value
                               ? "false"
                               : index === selectedChoice
                                 ? "selected"
@@ -115,19 +142,6 @@ function Quiz({ quizData }: { quizData: quizType }) {
                     </>
                   ))}
                 </div>
-
-                {/* <div className="h-8 text-center text-2xl font-medium">
-                  {isChecked && selectedChoice !== null ? (
-                    quizData[questionIndex]!.correct ===
-                    choices[selectedChoice] ? (
-                      <p className="text-green-500">Correct</p>
-                    ) : (
-                      <p className="text-red-500">false</p>
-                    )
-                  ) : (
-                    <p>Score: {score} pts</p>
-                  )}
-                </div> */}
                 <Button
                   className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 "
                   disabled={selectedChoice === null}
@@ -138,28 +152,21 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   {isChecked ? <p>Next</p> : <p>Check</p>}
                 </Button>
               </>
-            ) : (
+            ) : questionIndex === quizData.length ? (
               <>
-                <img
-                  src={
-                    score === 100
-                      ? "https://media1.tenor.com/m/H1-R8Mum3nwAAAAC/perfection-perfect.gif"
-                      : score >= 80
-                        ? "https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
-                        : "https://media1.tenor.com/m/bUOrNPAXcMEAAAAd/the-office-michael-scott.gif"
-                  }
-                  alt="gif"
-                  className="h-72 w-auto"
-                />
-                <RecapComp />
-                <div className="h-8 text-center text-2xl font-medium">
-                  You&apos;ve Scored : {score} pts
-                </div>
-                <Button className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 ">
+                <ResultComp score={score} />
+                <Button
+                  className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 "
+                  onClick={() => next()}
+                >
                   Continue
                 </Button>
               </>
-            )}
+            ) : chatInput.length !== 0 && questionIndex > quizData.length ? (
+              <>
+                <RecapComp chatInput={chatInput} />
+              </>
+            ) : null}
           </CardContent>
         </Card>
       </div>
@@ -210,4 +217,24 @@ function ChoiceComp({
   );
 }
 
+function ResultComp({ score }: { score: number }) {
+  return (
+    <>
+      <img
+        src={
+          score === 100
+            ? "https://media1.tenor.com/m/H1-R8Mum3nwAAAAC/perfection-perfect.gif"
+            : score >= 80
+              ? "https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
+              : "https://media1.tenor.com/m/bUOrNPAXcMEAAAAd/the-office-michael-scott.gif"
+        }
+        alt="gif"
+        className="h-72 w-auto"
+      />
+      <div className="h-8 text-center text-2xl font-medium">
+        You&apos;ve Scored : {score} pts
+      </div>
+    </>
+  );
+}
 export default Quiz;

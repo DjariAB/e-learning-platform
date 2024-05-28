@@ -7,11 +7,11 @@ const quizData: {
   correct: string;
 }[] = [
   {
-    question: "What is the capital of France?",
-    choice1: "Rome",
-    choice2: "London",
-    choice3: "Berlin",
-    correct: "Paris",
+    question: "Who painted the Mona Lisa?",
+    choice1: "Pablo Picasso",
+    choice2: "Michelangelo",
+    choice3: "Vincent van Gogh",
+    correct: "Leonardo da Vinci",
   },
   {
     question: "Who wrote 'Romeo and Juliet'?",
@@ -34,12 +34,13 @@ const quizData: {
     choice3: "H2SO4",
     correct: "HZO",
   },
+
   {
-    question: "Who painted the Mona Lisa?",
-    choice1: "Pablo Picasso",
-    choice2: "Michelangelo",
-    choice3: "Vincent van Gogh",
-    correct: "Leonardo da Vinci",
+    question: "What is the purpose of the useState hook in React?",
+    choice1: "It is used to fetch data from an API",
+    choice2: "London",
+    choice3: "Berlin",
+    correct: "It is used to add state to functional components",
   },
 ];
 export type quizType = typeof quizData;

@@ -1,4 +1,4 @@
-import { CoreMessage, StreamingTextResponse, streamText } from "ai";
+import {type CoreMessage, StreamingTextResponse, streamText } from "ai";
 import { google } from "@ai-sdk/google";
 
 export async function POST(req: Request) {
@@ -7,7 +7,8 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     model: google("models/gemini-pro"),
-    system: "You are a large language model trained to provide feedback to users. Given a question, you provide an answer with a small explanation to it.",
+    system:
+      "You are a highly intelligent AI assistant designed to help users learn from their mistakes in a quiz. After a user completes a quiz, they will provide you with the questions they answered incorrectly along with their incorrect answers. Your task is to generate a brief and informative summary for each mistake, explaining the correct answer and the concept behind it. Make sure your explanations are clear, concise,  educational and doesn't exceed 5 lines",
     messages,
   });
 

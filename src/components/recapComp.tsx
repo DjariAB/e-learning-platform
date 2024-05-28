@@ -1,61 +1,72 @@
 "use client";
-
 import { useChat } from "ai/react";
 import { Brain, User2 } from "lucide-react";
 import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { marked } from "marked";
 
-export default function RecapComp({ question }: { question?: string }) {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+export default function RecapComp({
+  chatInput,
+}: {
+  chatInput: {
+    question: string;
+    userAnswer: string;
+    correctAnswer: string;
+  }[];
+}) {
+  console.log("here : ", chatInput);
+  const [chatInputButtons, setchatInputButtons] = useState(chatInput);
+  const { messages, input, setInput, handleInputChange, handleSubmit } =
+    useChat();
+  const [isChatting, setIsChatting] = useState(false);
   console.log(messages);
   return (
-    <div className=" flex h-[500px] flex-col items-center  pt-4 sm:w-10/12 ">
-      <ScrollArea className="w-11/12 overflow-scroll px-2">
-        <div className="flex gap-4 pb-4">
-          <div className="border-black-200 h-fit rounded-xl border p-1.5">
-            <User2 />
-          </div>
-          Absolutely! Here&apos;s a prompt you can use for your AI model to
-          generate quizzes with explanations for wrong answers:
-        </div>
-        <div className="flex gap-4 pb-4">
-          <div className="border-black-200 h-fit rounded-xl border p-1.5">
-            <Brain />
-          </div>
-          You are a large language model trained to create informative quizzes
-          and provide feedback to users. Given a question, multiple answer
-          choices (including a correct answer and distractors), and the
-          difficulty level, you can explain why a chosen wrong answer is
-          incorrect and why the correct answer is true.
-        </div>
-        <div className="flex gap-4 pb-4">
-          <div className="border-black-200 h-fit rounded-xl border p-1.5">
-            <Brain className="" />
-          </div>
-          You are a large language model trained to create informative quizzes
-          and provide feedback to users. Given a question, multiple answer
-          choices (including a correct answer and distractors), and the
-          difficulty level, you can explain why a chosen wrong answer is
-          incorrect and why the correct answer is true.
-        </div>
+    <div className=" flex h-fit flex-col items-center  pt-4 sm:w-10/12 ">
+      <div className="w-fit px-5 py-3">
         {messages.map((message) => (
           <div key={message.id}>
-            <div className="flex gap-4 pb-4">
-              <div className="border-black-200 h-fit rounded-xl border p-1.5">
+            <div className="flex items-center gap-4 pb-4">
+              <div className="border-black-200 h-fit self-start rounded-xl border p-1.5">
                 {message.role === "user" ? <User2 /> : <Brain />}{" "}
               </div>
-              {message.content}
+              <div
+                dangerouslySetInnerHTML={{ __html: marked(message.content) }}
+              />{" "}
             </div>
           </div>
         ))}
-      </ScrollArea>
+      </div>
 
-      <form onSubmit={handleSubmit} className="mt-auto w-11/12 ">
+      <form onSubmit={handleSubmit} className="mt-auto w-11/12 space-y-4">
+        <div className="flex w-full flex-wrap gap-2">
+          {chatInputButtons.map((inputItem, i) => (
+            <button
+              className="h-fit w-fit cursor-pointer rounded-xl border px-4 py-2 text-base leading-6 hover:bg-gray-50"
+              key={inputItem.question}
+              onClick={() => {
+                setInput(`Question: ${inputItem.question}
+          user Answer: ${inputItem.userAnswer}
+          Correct Answer: ${inputItem.correctAnswer}`);
+                setTimeout(() => {
+                  setchatInputButtons(
+                    chatInputButtons.filter((value) => value !== inputItem),
+                  );
+                }, 0);
+              }}
+              type="submit"
+            >
+              {i + 1}. {inputItem.question}
+            </button>
+          ))}
+        </div>
+
         <Input
           name="prompt"
           className="w-full border-black"
           value={input}
-          placeholder="Message our AI here"
+          placeholder="ََAsk your questions here"
           onChange={handleInputChange}
           id="input"
         />
