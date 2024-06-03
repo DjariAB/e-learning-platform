@@ -9,7 +9,7 @@ import RecapComp from "@/components/recapComp";
 import { quizType } from "../page";
 
 function Quiz({ quizData }: { quizData: quizType }) {
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(4);
   const [score, setScore] = useState(0);
   const [chatInput, setChatInput] = useState<
     {
@@ -26,10 +26,12 @@ function Quiz({ quizData }: { quizData: quizType }) {
     choice3: "",
     correct: "",
   };
-  const s = Object.values(current);
+  const choices = Object.values(current).map((ss, index) => ({
+    id: index,
+    value: ss,
+  }));
 
-  s.shift();
-  const choices = s.map((ss, index) => ({ id: index, value: ss }));
+  choices.shift();
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
 
   const [isChecked, setChecked] = useState(false);
@@ -113,9 +115,8 @@ function Quiz({ quizData }: { quizData: quizType }) {
               <>
                 <div className="flex w-full flex-col items-center text-center">
                   {choices.map((ch, index) => (
-                    <>
+                    <div key={ch.id} className="w-full">
                       <ChoiceComp
-                        key={ch.id}
                         disabled={isChecked}
                         value={ch.value}
                         index={index}
@@ -139,7 +140,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
                       <div className="justify-self-centert w-11/12">
                         <hr />
                       </div>
-                    </>
+                    </div>
                   ))}
                 </div>
                 <Button

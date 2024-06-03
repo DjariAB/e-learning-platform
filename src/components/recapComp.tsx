@@ -3,7 +3,7 @@ import { useChat } from "ai/react";
 import { Brain, User2 } from "lucide-react";
 import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { marked } from "marked";
 
@@ -16,12 +16,17 @@ export default function RecapComp({
     correctAnswer: string;
   }[];
 }) {
-  console.log("here : ", chatInput);
-  const [chatInputButtons, setchatInputButtons] = useState(chatInput);
+  const inputref = useRef<HTMLInputElement | null>(null);
+
   const { messages, input, setInput, handleInputChange, handleSubmit } =
-    useChat();
+    useChat({
+      onFinish: () => {
+        if (inputref.current) inputref.current?.scrollIntoView();
+      },
+    });
+
   const [isChatting, setIsChatting] = useState(false);
-  console.log(messages);
+  const [chatInputButtons, setchatInputButtons] = useState(chatInput);
   return (
     <div className=" flex h-fit flex-col items-center  pt-4 sm:w-10/12 ">
       <div className="w-fit px-5 py-3">
@@ -64,6 +69,7 @@ export default function RecapComp({
 
         <Input
           name="prompt"
+          ref={inputref}
           className="w-full border-black"
           value={input}
           placeholder="ََAsk your questions here"
