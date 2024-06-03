@@ -3,5 +3,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="h-screen bg-black">{children}</main>;
+  return (
+    <main className="h-screen overflow-x-auto bg-[#131313]">{children}</main>
+  );
 }

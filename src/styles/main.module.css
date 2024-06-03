@@ -1,9 +1,15 @@
 .background {
   background-image: url("../../public/SVGs/course-hero-background.svg");
 }
-.mainBg{
+.mainBg {
   background-image: url("../../public/SVGs/circuit-board\ 1.svg");
 }
-.gradientBg{
+.gradientBg {
   background-image: url("../../public/images/gradient.jpg");
+}
+.joinusBg {
+  background-image: url("../../public/images/joinus_bg.jpg");
+}
+.whyUsBg{
+  background-image: url("../../public/SVGs/lines_pattern.svg");
 }
