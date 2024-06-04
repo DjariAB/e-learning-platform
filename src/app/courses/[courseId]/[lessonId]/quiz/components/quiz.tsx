@@ -6,18 +6,29 @@ import { Progress } from "@/components/ui/progress";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import RecapComp from "@/components/recapComp";
-import { quizType } from "../page";
+import { type quizType } from "../page";
+import { InferSelectModel } from "drizzle-orm";
+import { enrolledCoursesTable } from "@/server/db/schema";
+import { useFormState } from "react-dom";
+import { NextLessonAction } from "@/actions/helpers/quizHelpers";
+import { SubmitButton } from "@/lib/Form";
+type QuizProps = {
+  quizData: quizType;
+  currentCourse: InferSelectModel<typeof enrolledCoursesTable>;
+};
 
-function Quiz({ quizData }: { quizData: quizType }) {
-  const [questionIndex, setQuestionIndex] = useState(4);
+function Quiz({ quizData, currentCourse }: QuizProps) {
+  const [questionIndex, setQuestionIndex] = useState(quizData.length - 1);
   const [score, setScore] = useState(0);
-  const [chatInput, setChatInput] = useState<
+  const [UserMistakes, setUserMistakes] = useState<
     {
       question: string;
       userAnswer: string;
       correctAnswer: string;
     }[]
   >([]);
+
+  const [isRecap, setIsRecap] = useState(false);
 
   const current = quizData[questionIndex] ?? {
     question: "",
@@ -46,8 +57,8 @@ function Quiz({ quizData }: { quizData: quizType }) {
     if (selectedChoice !== null) {
       setChecked(true);
       if (quizData[questionIndex]!.correct !== choices[selectedChoice]?.value) {
-        setChatInput([
-          ...chatInput,
+        setUserMistakes([
+          ...UserMistakes,
           {
             question: quizData[questionIndex]!.question,
             correctAnswer: quizData[questionIndex]!.correct,
@@ -65,8 +76,8 @@ function Quiz({ quizData }: { quizData: quizType }) {
     setChecked(false);
     setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
-    console.log("length" + chatInput.length);
-    console.log(chatInput);
+    console.log("length" + UserMistakes.length);
+    console.log(UserMistakes);
   };
   return (
     <div className="flex h-screen flex-col items-center gap-3 sm:m-auto">
@@ -79,7 +90,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
         />
         <div className="flex flex-grow justify-center">
           <Progress
-            value={(questionIndex * 100) / 5}
+            value={(questionIndex * 100) / quizData.length}
             className="h-3.5 w-96 text-center"
           />
         </div>
@@ -98,7 +109,7 @@ function Quiz({ quizData }: { quizData: quizType }) {
             <CardTitle className="text-center text-2xl font-medium">
               {questionIndex < quizData.length
                 ? quizData[questionIndex]?.question
-                : questionIndex > quizData.length && chatInput.length !== 0
+                : questionIndex > quizData.length && UserMistakes.length !== 0
                   ? "here's a quiz recap"
                   : score < 40
                     ? "Seems like you need to revise the lesson and retry"
@@ -153,21 +164,41 @@ function Quiz({ quizData }: { quizData: quizType }) {
                   {isChecked ? <p>Next</p> : <p>Check</p>}
                 </Button>
               </>
-            ) : questionIndex === quizData.length ? (
+            ) : (
               <>
-                <ResultComp score={score} />
-                <Button
-                  className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 "
-                  onClick={() => next()}
-                >
-                  Continue
-                </Button>
+                {isRecap ? (
+                  <RecapComp
+                    UserMistakes={UserMistakes}
+                    courseId={currentCourse.courseId}
+                    lessonIndex={currentCourse.currentLessonIndex}
+                  />
+                ) : UserMistakes.length === 0 ? (
+                  <>
+                    <ResultComp
+                      score={score}
+                      possibleScore={quizData.length * 20}
+                    />
+                    <NextLesson
+                      courseId={currentCourse.courseId}
+                      lessonIndex={currentCourse.currentLessonIndex}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <ResultComp
+                      score={score}
+                      possibleScore={quizData.length * 20}
+                    />
+                    <Button
+                      className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900"
+                      onClick={() => setIsRecap(true)}
+                    >
+                      Recap with AI
+                    </Button>
+                  </>
+                )}
               </>
-            ) : chatInput.length !== 0 && questionIndex > quizData.length ? (
-              <>
-                <RecapComp chatInput={chatInput} />
-              </>
-            ) : null}
+            )}
           </CardContent>
         </Card>
       </div>
@@ -218,14 +249,20 @@ function ChoiceComp({
   );
 }
 
-function ResultComp({ score }: { score: number }) {
+function ResultComp({
+  score,
+  possibleScore,
+}: {
+  score: number;
+  possibleScore: number;
+}) {
   return (
     <>
       <img
         src={
-          score === 100
+          score === possibleScore
             ? "https://media1.tenor.com/m/H1-R8Mum3nwAAAAC/perfection-perfect.gif"
-            : score >= 80
+            : score >= (possibleScore * 2) / 3
               ? "https://media1.tenor.com/m/V1oCWmxLZYcAAAAd/internin-job.gif"
               : "https://media1.tenor.com/m/bUOrNPAXcMEAAAAd/the-office-michael-scott.gif"
         }
@@ -236,6 +273,29 @@ function ResultComp({ score }: { score: number }) {
         You&apos;ve Scored : {score} pts
       </div>
     </>
+  );
+}
+
+export function NextLesson({
+  courseId,
+  lessonIndex,
+}: {
+  lessonIndex: number;
+  courseId: string;
+}) {
+  const [formState, formAction] = useFormState(NextLessonAction, {
+    message: null,
+    status: null,
+  });
+  return (
+    <form action={formAction}>
+      <input name="courseId" value={courseId} type="hidden" />
+      <input name="lessonIndex" value={lessonIndex} type="hidden" />
+      <SubmitButton className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 ">
+        Continue
+      </SubmitButton>
+      {formState.message}
+    </form>
   );
 }
 export default Quiz;

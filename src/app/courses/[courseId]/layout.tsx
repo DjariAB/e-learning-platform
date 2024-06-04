@@ -1,4 +1,3 @@
-import MainNavBar from "@/components/mainNavbar";
 import { validateRequest } from "@/server/auth";
 import { Anek_Latin } from "next/font/google";
 import { redirect } from "next/navigation";

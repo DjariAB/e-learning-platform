@@ -21,7 +21,7 @@ import { validateRequest } from "@/server/auth";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
@@ -50,7 +50,11 @@ export default async function CoursePage({
     .where(eq(chapterTable.courseId, params.courseId))
     .orderBy(asc(chapterTable.index));
   const isEnrolled = await db
-    .select({ lessonTitle: lessonTable.title, index: lessonTable.index })
+    .select({
+      lessonTitle: lessonTable.title,
+      index: lessonTable.index,
+      currentLesson: enrolledCoursesTable.currentLessonId,
+    })
     .from(enrolledCoursesTable)
     .leftJoin(
       lessonTable,
@@ -101,13 +105,13 @@ export default async function CoursePage({
                 />
                 <p>Educator name</p>
               </div>
-              {isEnrolled.length ? (
-                <Button
-                  type="submit"
-                  className="bg-white px-7 py-5 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
+              {isEnrolled.length && isEnrolled[0] ? (
+                <Link
+                  href={`/courses/${params.courseId}/${isEnrolled[0].currentLesson}`}
+                  className="rounded-md bg-white px-7 py-4 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
                 >
                   Continue Learning{" "}
-                </Button>
+                </Link>
               ) : (
                 <Form action={enroll}>
                   <input

@@ -18,7 +18,7 @@ import Script from "next/script";
 export default async function LessonPage({
   params,
 }: {
-  params: { lessonId: string };
+  params: { lessonId: string; courseId: string };
 }) {
   const lesson = await db
     .select()
@@ -36,9 +36,6 @@ export default async function LessonPage({
 
   return (
     <>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" />
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css" />
-      <Script id="hljs">hljs.highlightAll();</Script>
       <div className="px-32">
         <div className="flex w-fit items-center gap-20  py-12">
           <img
@@ -89,10 +86,13 @@ export default async function LessonPage({
                   <ArrowLeftCircleIcon className="size-5" />
                   Previous
                 </Button>
-                <Button className="w-52 items-center gap-2 rounded-md bg-[#072e6a] px-2 text-xl font-normal hover:bg-[#072f6acc]">
+                <Link
+                  href={`/courses/${params.courseId}/${params.lessonId}/quiz`}
+                  className=" flex w-52 items-center  justify-center gap-2 rounded-md bg-mainblue px-2 text-xl font-normal text-white hover:opacity-80"
+                >
                   <FlagIcon className="size-5 rounded-full bg-white px-1 text-[#072e6a]" />
                   Take Your Quiz
-                </Button>
+                </Link>
                 <Button
                   // disabled={true}
                   variant={"outline"}

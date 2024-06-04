@@ -39,7 +39,7 @@ export default function HomePage() {
           Get Started
         </Button>
         <Link
-          href="login/mentor"
+          href="signin/mentor"
           className={`${buttonVariants({ variant: "outlinehover" })} `}
         >
           I&apos;m A Mentor

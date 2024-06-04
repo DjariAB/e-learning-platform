@@ -2,15 +2,18 @@
 import { useChat } from "ai/react";
 import { Brain, User2 } from "lucide-react";
 import { Input } from "./ui/input";
-import { ScrollArea } from "./ui/scroll-area";
 import { useRef, useState } from "react";
-import { Button } from "./ui/button";
 import { marked } from "marked";
+import { NextLesson } from "@/app/courses/[courseId]/[lessonId]/quiz/components/quiz";
 
 export default function RecapComp({
-  chatInput,
+  UserMistakes,
+  courseId,
+  lessonIndex,
 }: {
-  chatInput: {
+  lessonIndex: number;
+  courseId: string;
+  UserMistakes: {
     question: string;
     userAnswer: string;
     correctAnswer: string;
@@ -25,10 +28,10 @@ export default function RecapComp({
       },
     });
 
-  const [isChatting, setIsChatting] = useState(false);
-  const [chatInputButtons, setchatInputButtons] = useState(chatInput);
+  // const [isChatting, setIsChatting] = useState(false);
+  const [UserMistakesButtons, setUserMistakesButtons] = useState(UserMistakes);
   return (
-    <div className=" flex h-fit flex-col items-center  pt-4 sm:w-10/12 ">
+    <div className=" flex h-fit min-h-80 flex-col  items-center pt-4 sm:w-10/12">
       <div className="w-fit px-5 py-3">
         {messages.map((message) => (
           <div key={message.id}>
@@ -46,7 +49,7 @@ export default function RecapComp({
 
       <form onSubmit={handleSubmit} className="mt-auto w-11/12 space-y-4">
         <div className="flex w-full flex-wrap gap-2">
-          {chatInputButtons.map((inputItem, i) => (
+          {UserMistakesButtons.map((inputItem, i) => (
             <button
               className="h-fit w-fit cursor-pointer rounded-xl border px-4 py-2 text-base leading-6 hover:bg-gray-50"
               key={inputItem.question}
@@ -55,8 +58,8 @@ export default function RecapComp({
           user Answer: ${inputItem.userAnswer}
           Correct Answer: ${inputItem.correctAnswer}`);
                 setTimeout(() => {
-                  setchatInputButtons(
-                    chatInputButtons.filter((value) => value !== inputItem),
+                  setUserMistakesButtons(
+                    UserMistakesButtons.filter((value) => value !== inputItem),
                   );
                 }, 0);
               }}
@@ -77,6 +80,11 @@ export default function RecapComp({
           id="input"
         />
       </form>
+      {!UserMistakesButtons.length ? (
+        <div className="pt-4">
+          <NextLesson courseId={courseId} lessonIndex={lessonIndex} />
+        </div>
+      ) : null}
     </div>
   );
 }

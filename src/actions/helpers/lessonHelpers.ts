@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/server/db";
-import { lessonTable } from "@/server/db/schema";
+import { courseTable, lessonTable } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
@@ -18,11 +18,15 @@ export async function addLessonAction(
   if (!title) {
     return { error: "please provide a title", type: "failed" };
   }
-  if (!chapterId) {
-    return { error: "chapter Id missing", type: "failed" };
+  if (!chapterId || !courseId) {
+    return { error: "chapter or courseId Id missing", type: "failed" };
   }
 
   try {
+    const course = await db
+      .select()
+      .from(courseTable)
+      .where(eq(courseTable.id, courseId));
     const id = generateId(7);
     await db.insert(lessonTable).values({ title, chapterId, id });
   } catch (err) {
@@ -48,7 +52,6 @@ export async function updateLessonAction(
   if (!id) {
     return { error: "there is no chapter", type: "failed" };
   }
-
 
   try {
     await db.update(lessonTable).set({ title }).where(eq(lessonTable.id, id));
@@ -84,7 +87,7 @@ export async function deleteLessonAction(
 }
 
 export type lessonActionResult<> = {
-  error: string ;
+  error: string;
   type: inputType | null;
 };
 type inputType = "failed" | "success";

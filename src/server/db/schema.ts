@@ -12,6 +12,7 @@ import {
   primaryKey,
   boolean,
   tinyint,
+  smallint,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -101,21 +102,29 @@ export const chapterTable = createTable("chapter", {
     .default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const lessonTable = createTable("lesson", {
-  id: varchar("id", { length: 196 }).primaryKey(),
-  title: varchar("lesson_title", { length: 255 }).notNull(),
-  index: tinyint("index").notNull().autoincrement().unique(),
-  chapterId: varchar("chapter_id", { length: 196 })
-    .references(() => chapterTable.id)
-    .notNull(),
-  LessonContent: varchar("lesson_content", { length: 196 }),
-  createdAt: timestamp("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updatedAt")
-    .onUpdateNow()
-    .default(sql`CURRENT_TIMESTAMP`),
-});
+export const lessonTable = createTable(
+  "lesson",
+  {
+    id: varchar("id", { length: 196 }).primaryKey(),
+    title: varchar("lesson_title", { length: 255 }).notNull(),
+    index: tinyint("index").notNull().autoincrement().unique(),
+    chapterId: varchar("chapter_id", { length: 196 })
+      .references(() => chapterTable.id)
+      .notNull(),
+    LessonContent: varchar("lesson_content", { length: 196 }),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt")
+      .onUpdateNow()
+      .default(sql`CURRENT_TIMESTAMP`),
+  },
+  (table) => {
+    return {
+      indexIdx: index("indexIdx").on(table.index),
+    };
+  },
+);
 export const fileTable = createTable("file", {
   id: varchar("id", { length: 196 }).primaryKey(),
   name: varchar("lesson_title", { length: 255 }).notNull(),
@@ -154,21 +163,31 @@ export const questionTable = createTable("question", {
 export const enrolledCoursesTable = createTable(
   "enrolled_Courses",
   {
-    courseId: varchar("course_id", { length: 196 }).references(
-      () => courseTable.id,
-    ).notNull(),
-    userId: varchar("user_id", { length: 255 }).references(() => userTable.id).notNull(),
-    progress: int("user_progress").$default(() => 0).notNull(),
-    currentLessonId: varchar("current_lesson_id", { length: 196 }).references(
-      () => lessonTable.id,
-    ).notNull(),
-    score: int("student_score").$default(() => 0).notNull(),
+    courseId: varchar("course_id", { length: 196 })
+      .references(() => courseTable.id)
+      .notNull(),
+    userId: varchar("user_id", { length: 255 })
+      .references(() => userTable.id)
+      .notNull(),
+    progress: int("user_progress")
+      .$default(() => 0)
+      .notNull(),
+    currentLessonId: varchar("current_lesson_id", { length: 196 })
+      .references(() => lessonTable.id)
+      .notNull(),
+    currentLessonIndex: tinyint("current_lesson_index")
+      .references(() => lessonTable.index)
+      .notNull(),
+    score: int("student_score")
+      .$default(() => 0)
+      .notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt")
       .onUpdateNow()
-      .default(sql`CURRENT_TIMESTAMP`).notNull(),
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
   },
   (table) => {
     return {

@@ -39,7 +39,7 @@ export async function enroll(
 
   try {
     const currentLesson = await db
-      .select({ id: lessonTable.id })
+      .select({ id: lessonTable.id, index: lessonTable.index })
       .from(lessonTable)
       .leftJoin(chapterTable, eq(lessonTable.chapterId, chapterTable.id))
       .leftJoin(courseTable, eq(chapterTable.courseId, courseTable.id))
@@ -50,6 +50,7 @@ export async function enroll(
       courseId,
       userId: user.id,
       currentLessonId: currentLesson[0].id,
+      currentLessonIndex: currentLesson[0].index,
     });
     revalidatePath("/courses");
     return { error: null, type: null };

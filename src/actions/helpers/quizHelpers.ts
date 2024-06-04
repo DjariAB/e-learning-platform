@@ -1,10 +1,21 @@
 "use server";
 
+import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
-import { questionTable } from "@/server/db/schema";
+import {
+  courseTable,
+  enrolledCoursesTable,
+  lessonTable,
+  questionTable,
+} from "@/server/db/schema";
+import { and, eq, gt } from "drizzle-orm";
 import { generateId } from "lucia";
+import { redirect } from "next/navigation";
 
-type ActionResult = { message: string | null; status: "Failed" | "Success"|null };
+type ActionResult = {
+  message: string | null;
+  status: "Failed" | "Success" | null;
+};
 
 export async function quizAction(
   _: unknown,
@@ -67,4 +78,93 @@ export async function quizAction(
       status: "Failed",
     };
   }
+}
+export async function NextLessonAction(
+  _: unknown,
+  formData: FormData,
+): Promise<ActionResult> {
+  const courseIdx = formData.get("lessonIndex")?.toString();
+  const courseId = formData.get("courseId")?.toString();
+  const { user } = await validateRequest();
+
+  if (!courseIdx || !courseId)
+    return {
+      message: "Seems like this course info is missing , please try again",
+      status: "Failed",
+    };
+  if (!user)
+    return {
+      message: "this operation is forbined if you are not logged in ",
+      status: "Failed",
+    };
+
+  const lessonIndex = Number(courseIdx);
+  const coursesEnrolment = await db
+    .select()
+    .from(enrolledCoursesTable)
+    .where(
+      and(
+        eq(enrolledCoursesTable.courseId, courseId),
+        eq(enrolledCoursesTable.userId, user.id),
+      ),
+    )
+    .leftJoin(courseTable, eq(courseTable.id, enrolledCoursesTable.courseId));
+
+  const enrolledCourse = coursesEnrolment[0];
+  if (!coursesEnrolment || !enrolledCourse || !enrolledCourse.courses)
+    return {
+      message: "No such course exists or is enrolled, please try again",
+      status: "Failed",
+    };
+
+  console.log("you are here");
+  console.log(
+    enrolledCourse.enrolled_Courses.currentLessonIndex ===
+      enrolledCourse.courses.lessonsNum,
+    " and : ",
+    enrolledCourse.enrolled_Courses.currentLessonIndex,
+    " and : ",
+    enrolledCourse.courses.lessonsNum,
+  );
+  if (
+    enrolledCourse.enrolled_Courses.currentLessonIndex ===
+    enrolledCourse.courses.lessonsNum
+  ) {
+    console.log("you should be inside ");
+    redirect(`/courses/${courseId}`);
+  }
+
+  console.log("you  are in the second part ");
+
+  const nextlesson = await db
+    .select()
+    .from(lessonTable)
+    .where(gt(lessonTable.index, lessonIndex))
+    .orderBy(lessonTable.index);
+  try {
+    await db
+      .update(enrolledCoursesTable)
+      .set({
+        currentLessonIndex: nextlesson[0]?.index,
+        currentLessonId: nextlesson[0]?.id,
+      })
+      .where(
+        and(
+          eq(
+            enrolledCoursesTable.userId,
+            enrolledCourse.enrolled_Courses.userId,
+          ),
+          eq(enrolledCoursesTable.courseId, enrolledCourse.courses.id),
+        ),
+      );
+  } catch (err) {
+    return {
+      message: "Error in the server, please try again",
+      status: "Failed",
+    };
+  }
+
+  redirect(`/courses/${courseId}/${nextlesson[0]?.id}`);
+
+  return { message: null, status: "Success" };
 }

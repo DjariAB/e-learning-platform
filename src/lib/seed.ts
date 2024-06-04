@@ -83,6 +83,7 @@ export async function Seed() {
       category: course.category,
       briefDescription: course.briefDescription,
       mainDescription: course.mainDescription,
+      lessonsNum: 3,
       courseGoals: course.courseGoals,
     });
   }
@@ -108,8 +109,16 @@ async function generateLessons(id: string) {
   const thirdlesson = generateId(7);
   await db.insert(lessonTable).values([
     { id: firstlesson, chapterId: id, title: "Your first component" },
-    { id: secondlesson, chapterId: id, title: "State: A component memory" },
-    { id: thirdlesson, chapterId: id, title: "Choosing the state structure" },
+    {
+      id: secondlesson,
+      chapterId: id,
+      title: "State: A component memory",
+    },
+    {
+      id: thirdlesson,
+      chapterId: id,
+      title: "Choosing the state structure",
+    },
   ]);
 }
 

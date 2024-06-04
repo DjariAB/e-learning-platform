@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { type Message, continueConversationTest } from "@/lib/ai/actions";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Loader2Icon } from "lucide-react";

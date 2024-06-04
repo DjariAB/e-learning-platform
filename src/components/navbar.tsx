@@ -22,7 +22,7 @@ const NavBar = async () => {
 
       {!user ? (
         <Link
-          href="/login"
+          href="/signin"
           className={`${buttonVariants({ variant: "outlinehover" })}  text-lg font-semibold hover:-translate-y-1 `}
         >
           Login
