@@ -13,6 +13,7 @@ import {
   courseTable,
   enrolledCoursesTable,
   lessonTable,
+  userTable,
 } from "@/server/db/schema";
 import styles from "@/styles/main.module.css";
 import { Form } from "@/lib/Form";
@@ -24,6 +25,7 @@ import { redirect } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import CourseCategory from "@/components/courseCategory";
 
 export default async function CoursePage({
   params,
@@ -33,6 +35,7 @@ export default async function CoursePage({
   const courses = await db
     .select()
     .from(courseTable)
+    .leftJoin(userTable, eq(userTable.id, courseTable.educatorId))
     .where(eq(courseTable.id, params.courseId));
   const comments = await db
     .select()
@@ -74,41 +77,41 @@ export default async function CoursePage({
       <div className={`z-50 bg-cover pt-10 ${styles.background}`}>
         <div className="flex items-center gap-16 px-28 py-12 ">
           <img
-            src={course.imageUrl ?? ""}
+            src={
+              course.courses.imageUrl ??
+              "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+            }
             alt="Course image"
             className="size-[280px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-4 text-white">
-            <h1 className="text-3xl font-semibold">
-              {course?.title} {isEnrolled[0]?.lessonTitle}{" "}
-              {isEnrolled[0]?.index}
-              {/* {isEnrolled[1]?.index} */}
-            </h1>
-            <p className="text-2xl font-thin">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptates, accusamus labore quo natus, ipsa sint at perspiciatis
-              tempore impedit, assumenda nisi. Dolor, harum atque facere eaque
-              maiores esse
+            <h1 className="text-4xl font-semibold">{course?.courses.title}</h1>
+            <p className="text-3xl font-extralight py-2">
+              {course.courses.briefDescription}
             </p>
-            <div>
+            <div className="flex  gap-6">
               <CourseLevel
-                level={course.level.toString()}
+                level={course.courses.level.toString()}
                 className="font-medium text-black"
               />
+              <CourseCategory category={course.courses.category} />
             </div>
             <div className="flex justify-between pr-10">
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2">
                 <img
-                  src="https://i.pinimg.com/736x/f1/50/2c/f1502cf311fc2652aba302f0513a2490.jpg"
+                  src={
+                    course.user?.imageUrl ??
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSykf1DK2I0-lBz5TsSPm9_OQ-fc5YxO4aISQ&s"
+                  }
                   className="size-10 rounded-full object-cover"
                   alt="educator's avatar"
                 />
-                <p>Educator name</p>
+                <p>{course.user?.userName}</p>
               </div>
               {isEnrolled.length && isEnrolled[0] ? (
                 <Link
                   href={`/courses/${params.courseId}/${isEnrolled[0].currentLesson}`}
-                  className="rounded-md bg-white px-7 py-4 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
+                  className="rounded-lg bg-white px-7 py-3.5 font-bold text-[#072e6a] hover:bg-[#ffffffcf]"
                 >
                   Continue Learning{" "}
                 </Link>
@@ -135,16 +138,7 @@ export default async function CoursePage({
         <div className="w-3/4 px-24 py-6 text-2xl">
           <h1 className="text-3xl font-medium">Description </h1>
           <p className="text p-4 font-light">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia,
-            quod placeat. Officia libero voluptate animi ratione, nesciunt
-            repellendus delectus facere cupiditate deleniti magni ab, eos nobis
-            ipsa, eveniet sint atque! Lorem ipsum, dolor sit amet consectetur
-            adipisicing elit. Voluptate fugit quibusdam ab maxime magnam velit
-            quidem ut et, labore expedita quo, rem voluptatibus? Aliquam minima
-            incidunt porro quaerat dolores ex! Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Dolore officia magni ducimus esse
-            deleniti ipsam. Quaerat nisi, mollitia quia ab quo molestias rem
-            modi recusandae in delectus! Totam, temporibus incidunt?
+            {course.courses.mainDescription}
           </p>
 
           <br />

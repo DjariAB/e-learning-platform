@@ -81,10 +81,14 @@ export async function DeleteCourse(
     );
 
   try {
+    await db
+      .delete(enrolledCoursesTable)
+      .where(eq(enrolledCoursesTable.courseId, id));
     await db.delete(lessonTable).where(exists(chaptersSq));
     await db.delete(chapterTable).where(eq(chapterTable.courseId, id));
     await db.delete(courseTable).where(eq(courseTable.id, id));
   } catch (err) {
+    console.log(err);
     return { error: "failed enrolling the course", type: null };
   }
 
@@ -130,7 +134,7 @@ export async function addCourse(
     title,
     educatorId: user.id,
     imageUrl:
-      "https://miro.medium.com/v2/resize:fit:1358/0*Wkrz5TuOxQs9tXri.png",
+      "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
     id,
     category,
     briefDescription: briefDescription,

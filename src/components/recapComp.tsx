@@ -80,7 +80,7 @@ export default function RecapComp({
           id="input"
         />
       </form>
-      {!UserMistakesButtons.length ? (
+      {!UserMistakesButtons.length && messages.length ? (
         <div className="pt-4">
           <NextLesson courseId={courseId} lessonIndex={lessonIndex} />
         </div>

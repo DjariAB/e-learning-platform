@@ -8,10 +8,10 @@ import { revalidatePath } from "next/cache";
 const courses = [
   {
     title: "REACT course: complete mastery",
-    level: "beginner",
+    level: "Beginner",
     imageUrl:
       "https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png",
-    category: "web dev",
+    category: "Web development",
     briefDescription:
       "Welcome to REACT course: complete mastery! This course will give you an introduction to the 80% of React concepts that you will use on a daily basis.",
     mainDescription:
@@ -20,9 +20,9 @@ const courses = [
   },
   {
     title: "drizzle course: complete mastery",
-    level: "beginner",
+    level: "Beginner",
     imageUrl: "https://pbs.twimg.com/media/F7V2rLQWUAAgaLh.jpg",
-    category: "Web dev",
+    category: "Web development",
     briefDescription: "",
     mainDescription: "",
     courseGoals:
@@ -30,10 +30,10 @@ const courses = [
   },
   {
     title: "The Typescript crash course",
-    level: "beginner",
+    level: "Beginner",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2zH78gT3m8RMp54k_ER9PUV5F4i38jTSA4A&s",
-    category: "Web dev",
+    category: "Mobile development",
     briefDescription:
       "Uncover the power of TypeScript, a superset of JavaScript that adds optional static typing. This course will equip you to write cleaner, more maintainable, and error-resistant code.",
     mainDescription:
@@ -43,10 +43,10 @@ const courses = [
   },
   {
     title: "Next js course: from zero to hero",
-    level: "beginner",
+    level: "Beginner",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI05b9H1lM5Vj-WzbXl5uLkS5zzyca1MEwZROSldHqXw&s",
-    category: "Web dev",
+    category: "Web development",
     briefDescription:
       "Empower yourself to build fast, user-friendly, and SEO-optimized web applications with Next.js, a powerful React framework.",
     mainDescription:
@@ -55,10 +55,10 @@ const courses = [
   },
   {
     title: "Data structures and algorithms",
-    level: "beginner",
+    level: "Beginner",
     imageUrl:
       "https://msatechnosoft.in/blog/wp-content/uploads/2018/09/DSA-MSA-Technosoft.png",
-    category: "Web dev",
+    category: "Web development",
     briefDescription: "",
     mainDescription: "",
     courseGoals: "",
