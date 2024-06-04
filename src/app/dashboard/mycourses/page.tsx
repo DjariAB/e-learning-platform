@@ -18,7 +18,7 @@ async function MentorCoursesPage({ params }: { params: { courseId: string } }) {
     .where(eq(courseTable.educatorId, user.id))
     .orderBy(courseTable.createdAt);
 
-  const mostRecentCourse = courses[0];
+  const mostRecentCourse = courses[2];
   return (
     <>
       <div className="px-5">

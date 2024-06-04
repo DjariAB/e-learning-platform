@@ -18,8 +18,8 @@ const UserButton = () => {
           size="icon"
           className="overflow-hidden rounded-full"
         >
-          <Image
-            src="/SVGs/skillmaxxing-brain-logo.jpg"
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSykf1DK2I0-lBz5TsSPm9_OQ-fc5YxO4aISQ&s"
             width={36}
             height={36}
             alt="Avatar"

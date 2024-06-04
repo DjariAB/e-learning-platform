@@ -156,9 +156,9 @@ function EditCourseForm({
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Categories</SelectLabel>
-                        <SelectItem value="Web dev">Web dev</SelectItem>
-                        <SelectItem value="Mobile dev">Mobile dev</SelectItem>
-                        <SelectItem value="desktop">desktop</SelectItem>
+                        <SelectItem value="Web development">Web dev</SelectItem>
+                        <SelectItem value="Mobile development">Mobile dev</SelectItem>
+                        <SelectItem value="Desktop development">desktop</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -181,11 +181,11 @@ function EditCourseForm({
                       <SelectGroup>
                         <SelectLabel>Levels</SelectLabel>
 
-                        <SelectItem value="beginner">beginner</SelectItem>
-                        <SelectItem value="intermediate">
+                        <SelectItem value="Beginner">beginner</SelectItem>
+                        <SelectItem value="Intermediate">
                           intermediate
                         </SelectItem>
-                        <SelectItem value="advanced">advanced</SelectItem>
+                        <SelectItem value="Advanced">advanced</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

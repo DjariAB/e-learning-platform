@@ -1,5 +1,6 @@
 import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
+import MainNavBar from "@/components/mainNavbar";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import {
@@ -27,7 +28,8 @@ const Courses = async () => {
     .leftJoin(userTable, eq(courseTable.educatorId, userTable.id));
 
   return (
-    <div className="flex flex-col gap-4 px-3 pb-6 pt-20">
+    <div className="flex flex-col gap-4 px-3 pb-6 ">
+      <MainNavBar userName={user.userName}/>
       <div className="px-4">
         <HeroSec />
       </div>
