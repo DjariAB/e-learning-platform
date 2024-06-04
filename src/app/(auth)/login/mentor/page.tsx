@@ -17,7 +17,7 @@ const Login = async () => {
     <div className="flex h-screen flex-row-reverse">
       <div className="sm:disabled basis-1/2 lg:relative">
         <Image
-          src="/SVGs/Side login image.jpg"
+          src="/SVGs/Side image mentor.jpg"
           alt="side image"
           fill
           className="h-fit w-fit"

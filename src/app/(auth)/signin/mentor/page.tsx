@@ -18,7 +18,7 @@ const Signin = async () => {
     <div className="flex h-screen">
       <div className="relative basis-1/2">
         <Image
-          src="/SVGs/Side login image.jpg"
+          src="/SVGs/Side image mentor.jpg"
           alt="side image"
           fill
           className="h-fit w-fit"
@@ -35,7 +35,7 @@ const Signin = async () => {
             />
           </Link>
 
-          <Link href="login/mentor">
+          <Link href="/login/mentor">
             <Button className="rounded-md px-6" variant="ghost">
               {" "}
               Login{" "}
@@ -48,16 +48,6 @@ const Signin = async () => {
             <p>Start your learning journey now!</p>
           </div>
           <div className="m-auto space-y-7 text-center ">
-            {/* <Form className="w-[488px] space-y-7" action={signupAction}>
-              <Input name="username" placeholder="Enter your user name" />
-              <Input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-              />
-
-              <Button className="w-full rounded-lg">Create Account</Button>
-            </Form> */}
             <AuthForm
               action={mentorSignupAction}
               ButtonText="Create Account"
