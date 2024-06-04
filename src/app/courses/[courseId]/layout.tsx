@@ -17,7 +17,6 @@ export default async function RootLayout({
     <main className={`relative gap-6 px-0 ${anekLatin.className}`}>
       {/* <MainNavBar userName={user.userName} /> */}
       {children}
-      <div className="h-24"></div>
     </main>
   );
 }

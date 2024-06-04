@@ -132,32 +132,6 @@ export default function HomePage() {
           for an enriching educational experience.
         </p>
       </section>
-      <footer className="flex flex-col items-center gap-6 bg-[#131313] py-14">
-        <img src="/SVGs/logo-text-white.svg" className="w-52" />
-        <div className="space-x-5 text-white">
-          <Link href="#whyus" passHref>
-            <u>Why choose us</u>
-          </Link>
-          <Link href="#instructors" passHref>
-            <u>Our instructors</u>
-          </Link>
-          <Link href="#joinus" passHref>
-            <u>join-us</u>
-          </Link>
-          <Link href={"courses"}>courses</Link>
-          <Link href={"login"}>login</Link>
-        </div>
-        <p className="text-sm text-white">
-          designed and realized by{" "}
-          <Link target="_blank" href={"https://github.com/saif799"}>
-            <u>Bekziz Saif</u>
-          </Link>{" "}
-          &{" "}
-          <Link target="_blank" href={"https://github.com/DjariAB"}>
-            <u>Djari Abdelbasset</u>
-          </Link>
-        </p>
-      </footer>
     </main>
   );
 }

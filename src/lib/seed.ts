@@ -19,12 +19,15 @@ const courses = [
     courseGoals: "",
   },
   {
-    title: "drizzle course: complete mastery",
-    level: "Beginner",
-    imageUrl: "https://pbs.twimg.com/media/F7V2rLQWUAAgaLh.jpg",
-    category: "Web development",
-    briefDescription: "",
-    mainDescription: "",
+    title: "Conquer Swift: From Beginner to App Developer",
+    level: "Advanced",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEBvyXcIAZH_WxDtpa5dgimO2lOFMuxObWFQ&s",
+    category: "Mobile development",
+    briefDescription:
+      "Unleash your inner app developer! This beginner-friendly Swift course equips you with the skills to create real iOS apps. Master variables, functions, user interfaces, and more, all while building projects that bring your ideas to life",
+    mainDescription:
+      "This comprehensive Swift course is designed to take you from absolute beginner to confident app developer. Whether you're new to coding entirely or have some experience in other languages, Master variables, functions, user interfaces, this course will provide a solid foundation in Swift and equip you with the skills to create real-world iOS applications.",
     courseGoals:
       " Gain a solid understanding of React's core concepts, including components, JSX, state, props, and hooks. Master the art of creating modular and reusable components, promoting efficient and maintainable code",
   },
@@ -33,7 +36,7 @@ const courses = [
     level: "Beginner",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2zH78gT3m8RMp54k_ER9PUV5F4i38jTSA4A&s",
-    category: "Mobile development",
+    category: "Web development",
     briefDescription:
       "Uncover the power of TypeScript, a superset of JavaScript that adds optional static typing. This course will equip you to write cleaner, more maintainable, and error-resistant code.",
     mainDescription:
@@ -54,13 +57,15 @@ const courses = [
     courseGoals: "",
   },
   {
-    title: "Data structures and algorithms",
-    level: "Beginner",
+    title: "Flutter 3: the complete guide",
+    level: "Intermediate",
     imageUrl:
-      "https://msatechnosoft.in/blog/wp-content/uploads/2018/09/DSA-MSA-Technosoft.png",
-    category: "Web development",
-    briefDescription: "",
-    mainDescription: "",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9NNoU91dgcnpfjiH1WXVV9nCu9GvB-7OpUg&s",
+    category: "Mobile development",
+    briefDescription:
+      "Leap into the world of Flutter with our groundbreaking course designed for absolute beginners. Flutter Jump-Start takes a unique approach, introducing advanced techniques from day one,",
+    mainDescription:
+      "Are you new to programming but dream of creating stunning, high-performance mobile apps? Look no further than This innovative course turns traditional learning on its head, proving that you don't need years of experience to harness Flutter's most powerful features.",
     courseGoals: "",
   },
 ];

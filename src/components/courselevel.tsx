@@ -8,7 +8,7 @@ function CourseLevel({
   className,
 }: {
   level: string;
-  className: string;
+  className?: string;
 }) {
   const levelColor =
     level === "Advanced"

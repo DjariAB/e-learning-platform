@@ -49,8 +49,8 @@ export default async function MentorCoursePage({
 
   return (
     <>
-      <div className={` pt-10 `}>
-        <div className="flex items-center gap-10 px-12  ">
+      <div className="pt-10">
+        <div className="flex items-center gap-10 px-12">
           <img
             src={
               course.courses.imageUrl ??

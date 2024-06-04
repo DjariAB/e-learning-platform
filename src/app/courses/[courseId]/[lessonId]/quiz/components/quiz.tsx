@@ -179,6 +179,7 @@ function Quiz({ quizData, currentCourse }: QuizProps) {
                       possibleScore={quizData.length * 20}
                     />
                     <NextLesson
+                      score={score}
                       courseId={currentCourse.courseId}
                       lessonIndex={currentCourse.currentLessonIndex}
                     />
@@ -279,9 +280,11 @@ function ResultComp({
 export function NextLesson({
   courseId,
   lessonIndex,
+  score,
 }: {
   lessonIndex: number;
   courseId: string;
+  score: number;
 }) {
   const [formState, formAction] = useFormState(NextLessonAction, {
     message: null,
@@ -290,6 +293,7 @@ export function NextLesson({
   return (
     <form action={formAction}>
       <input name="courseId" value={courseId} type="hidden" />
+      <input name="score" value={score} type="hidden" />
       <input name="lessonIndex" value={lessonIndex} type="hidden" />
       <SubmitButton className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 ">
         Continue

@@ -8,7 +8,7 @@ import {
 
 import StatCard from "../dashboard/components/statCard";
 import styles from "@/styles/main.module.css";
-import { CourseCard } from "@/components/courseCard";
+import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import ContinueComp from "./components/continueComp";
@@ -31,12 +31,14 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const { user } = await validateRequest();
   if (!user) redirect("/login");
+
   // placeholder data
-  const data = await getData();
+  // const data = await getData();
+
   const totalEnrolledCourses = await db
     .select()
     .from(enrolledCoursesTable)
-    .leftJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
+    .innerJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
     .leftJoin(userTable, eq(courseTable.educatorId, userTable.id))
     .innerJoin(
       lessonTable,
@@ -44,13 +46,16 @@ export default async function Page() {
     )
     .innerJoin(chapterTable, eq(lessonTable.chapterId, chapterTable.id))
     .where(eq(enrolledCoursesTable.userId, user.id));
+
   const completedCourses = totalEnrolledCourses.filter(
-    (c) => c.enrolled_Courses.progress == 100,
+    (c) => c.enrolled_Courses.currentLessonIndex == c.courses?.lessonsNum,
   );
+
   const averageProgress = totalEnrolledCourses.reduce(
     (sum, currentValue) => sum + (currentValue.enrolled_Courses.progress ?? 0),
     0,
   );
+
   const enrollementData = await db.select().from(enrolledCoursesTable);
 
   const enrolledStudents = await db
@@ -65,6 +70,7 @@ export default async function Page() {
   const studentScore = enrollementData
     .filter((e) => e.userId === user.id)
     .reduce((sum, currentValue) => sum + currentValue.score, 0);
+
   const unRankedLeaderBoardData = enrolledStudents.map((student) => {
     const score = enrollementData
       .filter((e) => e.userId === student.id)
@@ -123,12 +129,13 @@ export default async function Page() {
                 key={course.enrolled_Courses.courseId}
                 className="basis-auto pl-3"
               >
-                <CourseCard
-                  progress={course.enrolled_Courses.progress ?? 0}
-                  courseId={course.enrolled_Courses.courseId ?? ""}
+                <EnrolledCourseCard
+                  progress={course.enrolled_Courses.progress}
+                  category={course.courses.category}
+                  courseId={course.enrolled_Courses.courseId}
                   educatorName={course.user ? course.user.userName : "unknown"}
                   imageUrl={course.courses?.imageUrl ?? ""}
-                  // level={course.courses?.level ?? ""}
+                  level={course.courses?.level}
                   title={course.courses?.title ?? ""}
                 />
               </CarouselItem>

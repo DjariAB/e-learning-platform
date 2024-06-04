@@ -1,4 +1,4 @@
-import { CourseCard } from "@/components/courseCard";
+import { CourseCard, EnrolledCourseCard } from "@/components/courseCard";
 import HeroSec from "@/components/heroSection";
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
@@ -31,15 +31,16 @@ const Courses = async () => {
       <div className="px-4">
         <HeroSec />
       </div>
-      <h3 className="text-3xl font-medium ">Enrolled courses</h3>
+      <h3 className="py-4 text-3xl font-medium ">Enrolled courses</h3>
 
       <div className="flex  gap-3 overflow-x-auto ">
         {enrolledcourses.length ? (
           enrolledcourses.map((enrolled) => (
-            <CourseCard
+            <EnrolledCourseCard
               educatorName={enrolled.user ? enrolled.user.userName : "unknown"}
               title={enrolled.courses.title}
               imageUrl={enrolled.courses.imageUrl}
+              category={enrolled.courses.category}
               level={enrolled.courses.level}
               progress={enrolled.enrolled_Courses?.progress ?? 0}
               courseId={enrolled.courses.id}
@@ -50,37 +51,21 @@ const Courses = async () => {
           <p>no enrolled courses found</p>
         )}
       </div>
-      <h3 className="text-3xl font-medium ">New courses</h3>
+      <h3 className="py-4 text-3xl font-medium ">New courses</h3>
 
-      <div className="flex  gap-3 overflow-x-auto">
+      <div className="grid grid-cols-4 gap-y-4 overflow-x-auto px-5">
         {courses.map((course) => (
           <CourseCard
             educatorName={course.user ? course.user.userName : "unknown "}
             title={course.courses.title}
             imageUrl={course.courses.imageUrl}
+            category={course.courses.category}
             level={course.courses.level}
             courseId={course.courses.id}
             key={course.courses.id}
           />
         ))}
       </div>
-      {/* <div className=" flex flex-col gap-3">
-        <form action={Seed}>
-          <Button className="bg-[#072E6A]" type="submit">
-            {" "}
-            add courses
-          </Button>
-        </form>
-        <form action={DeleteCourse}>
-          <Button variant="destructive" type="submit">
-            {" "}
-            remove all courses
-          </Button>
-        </form>
-        <form action={logoutAction}>
-          <Button type="submit">logout</Button>
-        </form>
-      </div> */}
     </div>
   );
 };

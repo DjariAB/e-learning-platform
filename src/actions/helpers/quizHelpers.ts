@@ -84,10 +84,11 @@ export async function NextLessonAction(
   formData: FormData,
 ): Promise<ActionResult> {
   const courseIdx = formData.get("lessonIndex")?.toString();
+  const scoreStr = formData.get("score")?.toString();
   const courseId = formData.get("courseId")?.toString();
   const { user } = await validateRequest();
 
-  if (!courseIdx || !courseId)
+  if (!courseIdx || !courseId || scoreStr === undefined)
     return {
       message: "Seems like this course info is missing , please try again",
       status: "Failed",
@@ -99,6 +100,7 @@ export async function NextLessonAction(
     };
 
   const lessonIndex = Number(courseIdx);
+  const score = Number(scoreStr);
   const coursesEnrolment = await db
     .select()
     .from(enrolledCoursesTable)
@@ -117,15 +119,6 @@ export async function NextLessonAction(
       status: "Failed",
     };
 
-  console.log("you are here");
-  console.log(
-    enrolledCourse.enrolled_Courses.currentLessonIndex ===
-      enrolledCourse.courses.lessonsNum,
-    " and : ",
-    enrolledCourse.enrolled_Courses.currentLessonIndex,
-    " and : ",
-    enrolledCourse.courses.lessonsNum,
-  );
   if (
     enrolledCourse.enrolled_Courses.currentLessonIndex ===
     enrolledCourse.courses.lessonsNum
@@ -147,6 +140,7 @@ export async function NextLessonAction(
       .set({
         currentLessonIndex: nextlesson[0]?.index,
         currentLessonId: nextlesson[0]?.id,
+        score: enrolledCourse.enrolled_Courses.score + score,
       })
       .where(
         and(

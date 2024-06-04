@@ -16,7 +16,10 @@ export default async function DashboardLayout({
   return (
     <div className={`p-4 pt-10 font-sans  ${anekLatin.className} space-y-4`}>
       <Header user={user} />
+      <div className="py-4">
+
       {children}
+      </div>
     </div>
   );
 }

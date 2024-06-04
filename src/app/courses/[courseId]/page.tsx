@@ -26,6 +26,7 @@ import { and, asc, eq } from "drizzle-orm";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import CourseCategory from "@/components/courseCategory";
+import { PackageOpenIcon } from "lucide-react";
 
 export default async function CoursePage({
   params,
@@ -40,6 +41,7 @@ export default async function CoursePage({
   const comments = await db
     .select()
     .from(commentsTable)
+    .leftJoin(userTable, eq(commentsTable.userId, userTable.id))
     .where(eq(commentsTable.courseId, params.courseId));
 
   const course = courses[0];
@@ -86,7 +88,7 @@ export default async function CoursePage({
           />
           <div className="flex flex-col gap-4 text-white">
             <h1 className="text-4xl font-semibold">{course?.courses.title}</h1>
-            <p className="text-3xl font-extralight py-2">
+            <p className="py-2 text-3xl font-extralight">
               {course.courses.briefDescription}
             </p>
             <div className="flex  gap-6">
@@ -158,24 +160,46 @@ export default async function CoursePage({
             </div>
           </div>
 
-          <div>
+          <div className="py-4">
+            <h2 className="text-2xl font-semibold">Comments</h2>
             <form className="flex gap-3 pt-4 " action={bindedCommentsaciton}>
-              <Input type="text" name="body" className="shrink" />
-              <button
-                type="submit"
-                className="w-52 rounded-md bg-black px-2 py-2 text-white"
-              >
-                {" "}
-                add a comment{" "}
-              </button>
+              <Input
+                type="text"
+                name="body"
+                className="py-8"
+                placeholder="Add a comment"
+              />
             </form>
-            <ul className="space-y-3 p-4">
+            <ul className="space-y-2 p-4">
               {comments.length ? (
                 comments.map((comment) => (
-                  <li key={comment.id}>{comment.body}</li>
+                  <li
+                    key={comment.comments.id}
+                    className=" flex gap-4 rounded-md bg-slate-50 p-2"
+                  >
+                    <div>
+                      <img
+                        alt="user profile pic"
+                        className="size-12"
+                        src={
+                          comment.user?.imageUrl ??
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSykf1DK2I0-lBz5TsSPm9_OQ-fc5YxO4aISQ&s"
+                        }
+                      />
+                    </div>
+                    <div className="pt-1">
+                      <h3 className="text-xl "> {comment.user?.userName} </h3>
+                      <p>{comment.comments.body} </p>
+                    </div>
+                  </li>
                 ))
               ) : (
-                <p>there are no comments for now </p>
+                <div className="flex h-44 items-center justify-center gap-8 ">
+                  <PackageOpenIcon className="size-14" />
+                  <p className="text-2xl ">
+                    there are no comments for now{" "}
+                  </p>
+                </div>
               )}
             </ul>
           </div>
