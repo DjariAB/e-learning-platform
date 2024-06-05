@@ -23,12 +23,24 @@ export async function addLessonAction(
   }
 
   try {
-    const course = await db
+    const courses = await db
       .select()
       .from(courseTable)
       .where(eq(courseTable.id, courseId));
+    const course = courses[0];
+    if (!course) throw new Error("no course ");
     const id = generateId(7);
-    await db.insert(lessonTable).values({ title, chapterId, id });
+    await db.insert(lessonTable).values({
+      title,
+      chapterId,
+      id,
+      courseId: course.id,
+      index: course.lessonsNum + 1,
+    });
+    await db
+      .update(courseTable)
+      .set({ lessonsNum: course.lessonsNum + 1 })
+      .where(eq(courseTable.id, courseId));
   } catch (err) {
     console.log("there was an error adding a chapter please try again ", err);
     return { error: "error in the server please try again", type: "failed" };

@@ -11,9 +11,85 @@ import CircularProgress from "@/components/ui/circularProgressBar";
 import { AddCourseDialog } from "@/components/addCourseDialog";
 // import CircularProgress from "@/components/ui/circularProgressBar";
 
-export async function getData(): Promise<Student[]> {
-  // Fetch data from your API here.
-  return [
+// export async function getData(): Promise<Student[]> {
+//   // Fetch data from your API here.
+//   return [
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl:
+//           "https://upload.wikimedia.org/wikipedia/en/f/ff/Timoth%C3%A9e_Chalamet_as_Paul_Atreides_%28Dune_2021%29.jpg",
+//         studentName: "paul atreides",
+//       },
+//       course: "Freemen Survival Skills",
+//       progress: "test",
+//       rank: "# 1",
+//       score: 22,
+//     },
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl:
+//           "https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Zendaya_as_Chani_%28Dune_2021%29.jpg/220px-Zendaya_as_Chani_%28Dune_2021%29.jpg",
+//         studentName: "Chani",
+//       },
+//       course: "Freemen Survival Skills",
+//       progress: "test",
+//       rank: "# 2",
+//       score: 22,
+//     },
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl:
+//           "https://upload.wikimedia.org/wikipedia/en/c/c2/Jason_Momoa_Duncan_Idaho.png",
+//         studentName: "Duncan Idaho",
+//       },
+//       course: "Duncan Idaho",
+//       progress: "test",
+//       rank: "# 3",
+//       score: 22,
+//     },
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl:
+//           "https://i.kym-cdn.com/entries/icons/facebook/000/048/705/stilgar_dune.jpg",
+//         studentName: "Stilgar",
+//       },
+//       course: "Freemen Survival Skills",
+//       progress: "test",
+//       rank: "# 4",
+//       score: 22,
+//     },
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl:
+//           "https://imgix.bustle.com/uploads/image/2023/6/8/f70f1e10-8726-4643-b80f-a826c0bb60c4-dune-part-two-lady-jessica.jpg",
+//         studentName: "Lady jessica",
+//       },
+//       course: "Freemen Survival Skills",
+//       progress: "test",
+//       rank: "# 5",
+//       score: 22,
+//     },
+//     {
+//       id: "728ed52f",
+//       student: {
+//         imgUrl: "https://i.redd.it/16gvesb43bj71.jpg",
+//         studentName: "Gurney Halleck",
+//       },
+//       course: "Freemen Survival Skills",
+//       progress: "test",
+//       rank: "# 6",
+//       score: 22,
+//     },
+//   ];
+// }
+
+export default function Page() {
+  const data = [
     {
       id: "728ed52f",
       student: {
@@ -86,10 +162,6 @@ export async function getData(): Promise<Student[]> {
       score: 22,
     },
   ];
-}
-
-export default async function Page() {
-  const data = await getData();
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4  sm:px-6 sm:py-0 md:gap-6 lg:grid-cols-3 xl:grid-cols-3">

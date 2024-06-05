@@ -3,6 +3,7 @@
 import { validateRequest } from "@/server/auth";
 import { db } from "@/server/db";
 import {
+  chapterTable,
   courseTable,
   enrolledCoursesTable,
   lessonTable,
@@ -83,12 +84,13 @@ export async function NextLessonAction(
   _: unknown,
   formData: FormData,
 ): Promise<ActionResult> {
-  const courseIdx = formData.get("lessonIndex")?.toString();
+  const lessonIdx = formData.get("lessonIndex")?.toString();
+  const lessonId = formData.get("lessonId")?.toString();
   const scoreStr = formData.get("score")?.toString();
   const courseId = formData.get("courseId")?.toString();
   const { user } = await validateRequest();
 
-  if (!courseIdx || !courseId || scoreStr === undefined)
+  if (!lessonIdx || !courseId || !lessonId || scoreStr === undefined)
     return {
       message: "Seems like this course info is missing , please try again",
       status: "Failed",
@@ -99,8 +101,17 @@ export async function NextLessonAction(
       status: "Failed",
     };
 
-  const lessonIndex = Number(courseIdx);
+  //selecting our lesson
+  const yourlesson = await db
+    .select({ lessonIndex: lessonTable.index })
+    .from(lessonTable)
+    .where(eq(lessonTable.id, lessonId));
+
+  const lessonIndex = Number(lessonIdx);
+
   const score = Number(scoreStr);
+
+  //selecting the enrolled course
   const coursesEnrolment = await db
     .select()
     .from(enrolledCoursesTable)
@@ -113,32 +124,39 @@ export async function NextLessonAction(
     .leftJoin(courseTable, eq(courseTable.id, enrolledCoursesTable.courseId));
 
   const enrolledCourse = coursesEnrolment[0];
-  if (!coursesEnrolment || !enrolledCourse || !enrolledCourse.courses)
+  if (
+    !coursesEnrolment ||
+    !enrolledCourse ||
+    !enrolledCourse.courses ||
+    !yourlesson[0]
+  )
     return {
       message: "No such course exists or is enrolled, please try again",
       status: "Failed",
     };
 
-  if (
-    enrolledCourse.enrolled_Courses.currentLessonIndex ===
-    enrolledCourse.courses.lessonsNum
-  ) {
+  //checking if this lesson is the last lesson in the course
+  if (yourlesson[0].lessonIndex === enrolledCourse.courses.lessonsNum) {
     console.log("you should be inside ");
     redirect(`/courses/${courseId}`);
   }
 
-  console.log("you  are in the second part ");
-
+  // querying the next lessons in the course
   const nextlesson = await db
     .select()
     .from(lessonTable)
-    .where(gt(lessonTable.index, lessonIndex))
+    .where(
+      and(
+        eq(lessonTable.courseId, courseId),
+        gt(lessonTable.index, lessonIndex),
+      ),
+    )
     .orderBy(lessonTable.index);
   try {
+    //updating the enrolled course to the next lesson
     await db
       .update(enrolledCoursesTable)
       .set({
-        currentLessonIndex: nextlesson[0]?.index,
         currentLessonId: nextlesson[0]?.id,
         score: enrolledCourse.enrolled_Courses.score + score,
       })

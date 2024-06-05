@@ -15,10 +15,12 @@ import { SubmitButton } from "@/lib/Form";
 type QuizProps = {
   quizData: quizType;
   currentCourse: InferSelectModel<typeof enrolledCoursesTable>;
+  lessonIndex: number;
+  lessonId: string;
 };
 
-function Quiz({ quizData, currentCourse }: QuizProps) {
-  const [questionIndex, setQuestionIndex] = useState(quizData.length - 1);
+function Quiz({ quizData, currentCourse, lessonIndex, lessonId }: QuizProps) {
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [UserMistakes, setUserMistakes] = useState<
     {
@@ -41,6 +43,7 @@ function Quiz({ quizData, currentCourse }: QuizProps) {
     id: index,
     value: ss,
   }));
+  // const choices = choicess.sort(() => Math.random() - 0.5);
 
   choices.shift();
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
@@ -169,8 +172,10 @@ function Quiz({ quizData, currentCourse }: QuizProps) {
                 {isRecap ? (
                   <RecapComp
                     UserMistakes={UserMistakes}
+                    score={score}
+                    lessonId={lessonId}
                     courseId={currentCourse.courseId}
-                    lessonIndex={currentCourse.currentLessonIndex}
+                    lessonIndex={lessonIndex}
                   />
                 ) : UserMistakes.length === 0 ? (
                   <>
@@ -181,7 +186,8 @@ function Quiz({ quizData, currentCourse }: QuizProps) {
                     <NextLesson
                       score={score}
                       courseId={currentCourse.courseId}
-                      lessonIndex={currentCourse.currentLessonIndex}
+                      lessonIndex={lessonIndex}
+                      lessonId={lessonId}
                     />
                   </>
                 ) : (
@@ -281,10 +287,12 @@ export function NextLesson({
   courseId,
   lessonIndex,
   score,
+  lessonId,
 }: {
   lessonIndex: number;
   courseId: string;
   score: number;
+  lessonId: string;
 }) {
   const [formState, formAction] = useFormState(NextLessonAction, {
     message: null,
@@ -293,6 +301,7 @@ export function NextLesson({
   return (
     <form action={formAction}>
       <input name="courseId" value={courseId} type="hidden" />
+      <input name="lessonId" value={lessonId} type="hidden" />
       <input name="score" value={score} type="hidden" />
       <input name="lessonIndex" value={lessonIndex} type="hidden" />
       <SubmitButton className="w-fit self-center rounded-sm bg-mainblue px-6 py-6 font-normal hover:bg-blue-900 ">

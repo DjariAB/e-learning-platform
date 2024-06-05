@@ -6,6 +6,7 @@ import { db } from "@/server/db";
 import {
   courseTable,
   enrolledCoursesTable,
+  lessonTable,
   userTable,
 } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -20,7 +21,11 @@ const Courses = async () => {
     .from(enrolledCoursesTable)
     .where(eq(enrolledCoursesTable.userId, user.id))
     .rightJoin(courseTable, eq(enrolledCoursesTable.courseId, courseTable.id))
-    .leftJoin(userTable, eq(userTable.id, courseTable.educatorId));
+    .leftJoin(userTable, eq(userTable.id, courseTable.educatorId))
+    .innerJoin(
+      lessonTable,
+      eq(lessonTable.id, enrolledCoursesTable.currentLessonId),
+    );
 
   const courses = await db
     .select()
@@ -29,7 +34,7 @@ const Courses = async () => {
 
   return (
     <div className="flex flex-col gap-4 px-3 pb-6 ">
-      <MainNavBar userName={user.userName}/>
+      <MainNavBar userName={user.userName} />
       <div className="px-4">
         <HeroSec />
       </div>
@@ -44,7 +49,10 @@ const Courses = async () => {
               imageUrl={enrolled.courses.imageUrl}
               category={enrolled.courses.category}
               level={enrolled.courses.level}
-              progress={enrolled.enrolled_Courses?.progress ?? 0}
+              progress={Math.floor(
+                ((enrolled.lesson.index - 1) / enrolled.courses.lessonsNum) *
+                  100,
+              )}
               courseId={enrolled.courses.id}
               key={enrolled.courses.id}
             />

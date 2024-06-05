@@ -14,7 +14,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import ContinueComp from "./components/continueComp";
 import { DataTable } from "../dashboard/components/data-table";
 import { columns } from "../dashboard/components/columns";
-import { getData } from "../dashboard/page";
+// import { getData } from "../dashboard/page";
 import BarChartStat from "../dashboard/components/barChart";
 import { db } from "@/server/db";
 import {
@@ -48,7 +48,7 @@ export default async function Page() {
     .where(eq(enrolledCoursesTable.userId, user.id));
 
   const completedCourses = totalEnrolledCourses.filter(
-    (c) => c.enrolled_Courses.currentLessonIndex == c.courses?.lessonsNum,
+    (c) => c.lesson.index == c.courses?.lessonsNum,
   );
 
   const averageProgress = totalEnrolledCourses.reduce(
@@ -130,7 +130,10 @@ export default async function Page() {
                 className="basis-auto pl-3"
               >
                 <EnrolledCourseCard
-                  progress={course.enrolled_Courses.progress}
+                  progress={Math.floor(
+                    ((course.lesson.index - 1) / course.courses.lessonsNum) *
+                      100,
+                  )}
                   category={course.courses.category}
                   courseId={course.enrolled_Courses.courseId}
                   educatorName={course.user ? course.user.userName : "unknown"}

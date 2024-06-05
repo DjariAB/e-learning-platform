@@ -10,9 +10,13 @@ export default function RecapComp({
   UserMistakes,
   courseId,
   lessonIndex,
+  lessonId,
+  score,
 }: {
   lessonIndex: number;
   courseId: string;
+  score: number;
+  lessonId: string;
   UserMistakes: {
     question: string;
     userAnswer: string;
@@ -82,7 +86,12 @@ export default function RecapComp({
       </form>
       {!UserMistakesButtons.length && messages.length ? (
         <div className="pt-4">
-          <NextLesson courseId={courseId} lessonIndex={lessonIndex} />
+          <NextLesson
+            courseId={courseId}
+            lessonIndex={lessonIndex}
+            score={score}
+            lessonId={lessonId}
+          />
         </div>
       ) : null}
     </div>

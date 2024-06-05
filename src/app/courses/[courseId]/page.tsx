@@ -196,9 +196,7 @@ export default async function CoursePage({
               ) : (
                 <div className="flex h-44 items-center justify-center gap-8 ">
                   <PackageOpenIcon className="size-14" />
-                  <p className="text-2xl ">
-                    there are no comments for now{" "}
-                  </p>
+                  <p className="text-2xl ">there are no comments for now </p>
                 </div>
               )}
             </ul>

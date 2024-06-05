@@ -88,7 +88,7 @@ export async function Seed() {
       category: course.category,
       briefDescription: course.briefDescription,
       mainDescription: course.mainDescription,
-      lessonsNum: 3,
+      lessonsNum: 9,
       courseGoals: course.courseGoals,
     });
   }
@@ -100,29 +100,39 @@ export async function Seed() {
 
     await insertchapterReact(id, firstid, secondid, thirdid);
 
-    await generateLessons(firstid);
-    await generateLessons(secondid);
-    await generateLessons(thirdid);
+    await generateLessons(firstid, id, 0);
+    await generateLessons(secondid, id, 3);
+    await generateLessons(thirdid, id, 6);
   }
 
   revalidatePath("/courses");
 }
 
-async function generateLessons(id: string) {
+async function generateLessons(id: string, courseId: string, chaptern: number) {
   const firstlesson = generateId(7);
   const secondlesson = generateId(7);
   const thirdlesson = generateId(7);
   await db.insert(lessonTable).values([
-    { id: firstlesson, chapterId: id, title: "Your first component" },
+    {
+      id: firstlesson,
+      chapterId: id,
+      title: "Your first component",
+      courseId,
+      index: chaptern + 1,
+    },
     {
       id: secondlesson,
       chapterId: id,
       title: "State: A component memory",
+      courseId,
+      index: chaptern + 2,
     },
     {
       id: thirdlesson,
       chapterId: id,
       title: "Choosing the state structure",
+      courseId,
+      index: chaptern + 3,
     },
   ]);
 }

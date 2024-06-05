@@ -11,19 +11,36 @@ import {
 import Link from "next/link";
 import React from "react";
 import { db } from "@/server/db";
-import { lessonTable } from "@/server/db/schema";
+import {
+  chapterTable,
+  courseTable,
+  enrolledCoursesTable,
+  lessonTable,
+} from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import Script from "next/script";
+import { redirect } from "next/navigation";
 
 export default async function LessonPage({
   params,
 }: {
   params: { lessonId: string; courseId: string };
 }) {
-  const lesson = await db
+  const lessons = await db
     .select()
     .from(lessonTable)
-    .where(eq(lessonTable.id, params.lessonId));
+    .where(eq(lessonTable.id, params.lessonId))
+    .leftJoin(courseTable, eq(lessonTable.courseId, courseTable.id))
+    .leftJoin(
+      enrolledCoursesTable,
+      eq(enrolledCoursesTable.courseId, courseTable.id),
+    );
+
+  const lesson = lessons[0]?.lesson;
+  const course = lessons[0]?.courses;
+  const enrolledCourse = lessons[0]?.enrolled_Courses;
+
+  if (!lesson || !course || !enrolledCourse)
+    redirect(`/courses/${params.courseId}`);
   // if (!lesson[0] || !lesson[0].LessonContent)
   //   return <div> lesson not found</div>;
 
@@ -44,13 +61,19 @@ export default async function LessonPage({
             className="size-[180px] rounded-2xl object-cover"
           />
           <div className="flex flex-col gap-6 ">
-            <h1 className="text-4xl font-bold">REACT state hook</h1>
+            <h1 className="text-4xl font-bold">{course.title} </h1>
             <Link href={""} className="text-3xl font-normal text-[#717171]">
-              Introduction to REACT JS
+              {lesson.title}
             </Link>
             <div className="flex items-center gap-10">
-              <Progress value={60} />
-              <p className="text-2xl font-medium">60%</p>
+              <Progress
+                value={Math.floor(
+                  ((lesson.index - 1) / course.lessonsNum) * 100,
+                )}
+              />
+              <p className="text-2xl font-medium">
+                {Math.floor(((lesson.index - 1) / course.lessonsNum) * 100)}%
+              </p>
             </div>
           </div>
         </div>

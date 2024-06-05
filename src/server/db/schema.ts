@@ -57,7 +57,9 @@ export const courseTable = createTable(
     id: varchar("id", { length: 196 }).primaryKey(),
     title: varchar("name", { length: 255 }).notNull(),
     imageUrl: varchar("image_url", { length: 511 }).notNull(),
-    lessonsNum: int("lesson_num").$default(() => 0),
+    lessonsNum: int("lesson_num")
+      .$default(() => 0)
+      .notNull(),
     educatorId: varchar("educator_id", { length: 255 })
       .references(() => userTable.id)
       .notNull(),
@@ -107,7 +109,10 @@ export const lessonTable = createTable(
   {
     id: varchar("id", { length: 196 }).primaryKey(),
     title: varchar("lesson_title", { length: 255 }).notNull(),
-    index: tinyint("index").notNull().autoincrement().unique(),
+    index: tinyint("index").notNull(),
+    courseId: varchar("course_id", { length: 196 })
+      .references(() => courseTable.id)
+      .notNull(),
     chapterId: varchar("chapter_id", { length: 196 })
       .references(() => chapterTable.id)
       .notNull(),
@@ -175,9 +180,9 @@ export const enrolledCoursesTable = createTable(
     currentLessonId: varchar("current_lesson_id", { length: 196 })
       .references(() => lessonTable.id)
       .notNull(),
-    currentLessonIndex: tinyint("current_lesson_index")
-      .references(() => lessonTable.index)
-      .notNull(),
+    // currentLessonIndex: tinyint("current_lesson_index")
+    //   .references(() => lessonTable.index)
+    //   .notNull(),
     score: int("student_score")
       .$default(() => 0)
       .notNull(),

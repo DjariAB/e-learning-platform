@@ -50,7 +50,6 @@ export async function enroll(
       courseId,
       userId: user.id,
       currentLessonId: currentLesson[0].id,
-      currentLessonIndex: currentLesson[0].index,
     });
     revalidatePath("/courses");
     return { error: null, type: null };
