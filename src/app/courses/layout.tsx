@@ -9,8 +9,8 @@ export default async function RootLayout({
   const { user } = await validateRequest();
   if (!user) return redirect("/login");
   return (
-    <main className="max-w-screen flex flex-col  gap-6">
-      {children}
+    <main className="max-w-screen flex h-fit flex-col  justify-between gap-6">
+      <div>{children}</div>
       <Footer href="/courses" className="mt-20" />
     </main>
   );

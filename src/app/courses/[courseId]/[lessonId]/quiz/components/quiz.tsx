@@ -7,11 +7,12 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import RecapComp from "@/components/recapComp";
 import { type quizType } from "../page";
-import { InferSelectModel } from "drizzle-orm";
-import { enrolledCoursesTable } from "@/server/db/schema";
+import { type InferSelectModel } from "drizzle-orm";
+import { type enrolledCoursesTable } from "@/server/db/schema";
 import { useFormState } from "react-dom";
 import { NextLessonAction } from "@/actions/helpers/quizHelpers";
 import { SubmitButton } from "@/lib/Form";
+
 type QuizProps = {
   quizData: quizType;
   currentCourse: InferSelectModel<typeof enrolledCoursesTable>;
@@ -43,7 +44,6 @@ function Quiz({ quizData, currentCourse, lessonIndex, lessonId }: QuizProps) {
     id: index,
     value: ss,
   }));
-  // const choices = choicess.sort(() => Math.random() - 0.5);
 
   choices.shift();
   const [selectedChoice, setselectedChoice] = useState<number | null>(null);
@@ -79,11 +79,9 @@ function Quiz({ quizData, currentCourse, lessonIndex, lessonId }: QuizProps) {
     setChecked(false);
     setselectedChoice(null);
     setQuestionIndex(questionIndex + 1);
-    console.log("length" + UserMistakes.length);
-    console.log(UserMistakes);
   };
   return (
-    <div className="flex h-screen flex-col items-center gap-3 sm:m-auto">
+    <div className="flex h-fit flex-col items-center gap-3 sm:m-auto">
       <div className="grid w-screen items-center p-6 sm:grid-cols-3">
         <Image
           src="/SVGs/logo_text.svg"
@@ -114,11 +112,11 @@ function Quiz({ quizData, currentCourse, lessonIndex, lessonId }: QuizProps) {
                 ? quizData[questionIndex]?.question
                 : questionIndex > quizData.length && UserMistakes.length !== 0
                   ? "here's a quiz recap"
-                  : score < 40
+                  : score < (quizData.length / 2) * 20
                     ? "Seems like you need to revise the lesson and retry"
-                    : score <= 80
+                    : score <= ((quizData.length * 3) / 4) * 20
                       ? "Good job son"
-                        ? score === 100
+                        ? score === quizData.length * 20
                         : "Can't be better!"
                       : null}
             </CardTitle>

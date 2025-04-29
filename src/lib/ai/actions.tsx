@@ -9,14 +9,14 @@ import { z } from "zod";
 export interface Message {
   role: "user" | "assistant";
   content: string;
-  display?: ReactNode; // [!code highlight]
+  display?: ReactNode;
 }
 
 export async function continueConversationTest(
   question: string,
   difficulty: string,
 ) {
-  const stream = createStreamableUI(); // [!code highlight]
+  const stream = createStreamableUI();
   // const res = await fetch(
   //   "https://uploadthing-prod.s3.us-west-2.amazonaws.com/7e8cd3f4-7f86-4194-ada6-6228b43a21c5-pkoo3l.md",
   // );
@@ -75,7 +75,7 @@ export async function continueConversationTest(
               wronganswer3={wrong3}
             />,
           );
-          return que; // [!code highlight]
+          return que;
         },
       },
     },
@@ -84,7 +84,7 @@ export async function continueConversationTest(
   return {
     role: "assistant" as const,
     content: text || toolResults.map((toolResult) => toolResult.result).join(),
-    display: stream.value, // [!code highlight]
+    display: stream.value,
   };
 }
 

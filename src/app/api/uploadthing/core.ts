@@ -91,7 +91,7 @@ export const ourFileRouter = {
         .where(eq(courseTable.id, courseId));
 
       if (!courses[0]?.id) {
-        throw new UploadThingError("there is no such course ");
+        throw new UploadThingError("there is no such course");
       }
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
@@ -113,7 +113,7 @@ export const ourFileRouter = {
     }),
   profileImageUploader: f(["image"])
     // Set permissions and file types for this FileRoute
-    .middleware(async ({  }) => {
+    .middleware(async ({}) => {
       // This code runs on your server before upload
 
       // If you throw, the user will not be able to upload

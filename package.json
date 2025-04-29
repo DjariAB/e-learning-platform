@@ -36,6 +36,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.29.5",
+    "elearning_platform": "file:",
     "embla-carousel-react": "^8.0.4",
     "install": "^0.13.0",
     "lottie-react": "^2.4.0",

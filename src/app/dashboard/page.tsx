@@ -9,6 +9,11 @@ import CourseRow from "./components/courseRow";
 import StatContainer from "./components/statConainter";
 import CircularProgress from "@/components/ui/circularProgressBar";
 import { AddCourseDialog } from "@/components/addCourseDialog";
+import { db } from "@/server/db";
+import { courseTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import { validateRequest } from "@/server/auth";
+import { redirect } from "next/navigation";
 // import CircularProgress from "@/components/ui/circularProgressBar";
 
 // export async function getData(): Promise<Student[]> {
@@ -88,7 +93,15 @@ import { AddCourseDialog } from "@/components/addCourseDialog";
 //   ];
 // }
 
-export default function Page() {
+export default async function Page() {
+  const { user } = await validateRequest();
+  if (!user) redirect("/login/mentor");
+  const courses = await db
+    .select()
+    .from(courseTable)
+    .where(eq(courseTable.educatorId, user.id))
+    .limit(3);
+
   const data = [
     {
       id: "728ed52f",
@@ -182,7 +195,16 @@ export default function Page() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1 p-0">
-              <CourseRow
+              {courses.map((course) => (
+                <CourseRow
+                  key={course.id}
+                  courseImage={course.imageUrl}
+                  courseRating="4.8"
+                  courseTag={course.category}
+                  courseTitle={course.title}
+                />
+              ))}
+              {/* <CourseRow
                 courseImage="https://legendary-digital-network-assets.s3.amazonaws.com/wp-content/uploads/2024/02/29104928/Dune-Part-Two-Paul-Atreides.jpg"
                 courseRating="4.8"
                 courseTag="Fighting"
@@ -199,7 +221,7 @@ export default function Page() {
                 courseRating="4.6"
                 courseTag="Politics"
                 courseTitle="Bene Gesserit Rituals"
-              />
+              /> */}
             </CardContent>
           </Card>
           <Card className="h-72 sm:col-span-2" x-chunk="dashboard-05-chunk-1">
@@ -253,14 +275,14 @@ export default function Page() {
             <div className="overflow-hidden rounded-lg">
               <Link href="">
                 <img
-                  src="/images/dune2-Poster.jpg"
+                  src={courses[0]?.imageUrl}
                   className="h-52 w-full overflow-hidden  object-cover transition-transform duration-300 ease-in hover:scale-110"
                   alt=""
                 />
               </Link>
             </div>
             <h2 className="pt-2 text-xl">
-              Universal War From Nothing to Emperor
+              {courses[0]?.title ?? "React hook form"}
             </h2>
 
             <div className="flex flex-col items-center justify-center gap-4 space-y-1 py-3">
